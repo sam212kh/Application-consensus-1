@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="container">
+	<div class="row">
+		<h2>School staffs</h2>
+
+
+    <form method="post">{% csrf_token %}
+    {{ form.as_p }}
+        <input type="submit" class="btn btn-primary" value="Create staff">
+    </form>
+
+<table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Firstname</th>
+        <th>Lastname</th>
+        <th>Email</th>
+        <th>Phone number</th>
+        <th>Is super staff?</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for staff in school.school_staffs.all %}
+            <tr>
+                <td>{{ staff.first_name }}</td>
+                <td>{{ staff.last_name }}</td>
+                <td>{{ staff.email }}</td>
+                <td>{{ staff.phone_number }}</td>
+                <td>{{ staff.is_super_staff }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+	</div>
+
+{% endblock content %}

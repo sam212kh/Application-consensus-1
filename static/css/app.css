@@ -1,0 +1,49 @@
+h1{
+    text-align: center;
+}
+
+.card-title{
+    padding: 30px;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.card a{
+    color: #fff;
+}
+
+.table {
+    border-radius: 12px;
+}
+
+.table thead tr{
+    background-color:#428bca;
+    border: 2px solid #ddd;
+}
+
+.table thead tr th{
+    border: 2px solid #ddd;
+}
+
+
+.table {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+    font-size: 14px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+.table tr td{
+     border: 2px solid #ddd;
+}
+
+input{
+    width: 100%;
+}
+
+.logout-btn{
+    margin-right: 10px;
+}

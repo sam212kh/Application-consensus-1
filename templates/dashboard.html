@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="row">
+{% if request.user.staff and request.user.staff.is_super_staff %}
+  <div class="col-sm-6">
+      <div class="card text-white bg-primary mb-3">
+          <a href="{% url 'staff' %}" class="card-body">
+            <h5 class="card-title">School staffs</h5>
+          </a>
+      </div>
+  </div>
+{% endif %}
+  <div class="col-sm-6">
+    <div class="card text-white bg-primary mb-3">
+          <a href="{% url 'student' %}" class="card-body">
+            <h5 class="card-title">School students</h5>
+          </a>
+      </div>
+  </div>
+</div>
+
+{% endblock content %}
