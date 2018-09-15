@@ -127,7 +127,7 @@ class SchoolAuthAdmin(BaseUserAdmin):
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
         (_('School info'), {'fields': ('email', 'full_name', 'address', 'phone_number',  'city', 'state', 'country', 'zip_code')}),
-        (_('Permissions'), {'fields': ('is_active',)}),
+        (_('Permissions'), {'fields': ('is_active', 'groups')}),
     )
 
     add_fieldsets = (
@@ -161,7 +161,7 @@ class StaffAuthAdmin(BaseUserAdmin):
     )
 
 class StudentAdminModel(admin.ModelAdmin):
-    list_display = ['first_name', 'last_name', 'application_text', 'student_school']
+    list_display = ['first_name', 'last_name', 'date_of_birth', 'gender']
 
 admin.site.register(School, SchoolAuthAdmin)
 admin.site.register(Staff, StaffAuthAdmin)

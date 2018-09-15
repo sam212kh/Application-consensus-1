@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<div class="container">
+    <div class="row">
+		<div class="col-md-8 col-md-offset-2">
+    		<div class="panel panel-default">
+			  	<div class="panel-heading">
+			    	<h3 class="panel-title">Submit you school application</h3>
+			 	</div>
+			  	<div class="panel-body">
+			    	<form method="post">
+                    {% csrf_token %}
+                        {{ form.as_p }}
+                        <input type="submit" class="btn btn-dark" value="Submit application">
+                        <br/>
+			      	</form>
+			    </div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+{#    <div class="container">#}
+{#        <div class="row">#}
+{#            <h2>Submit you school application</h2>#}
+{##}
+{#            <form method="post">{% csrf_token %}#}
+{#            {{ form.as_p }}#}
+{#                <input type="submit" class="btn btn-primary" value="Submit application">#}
+{#            </form>#}
+{##}
+{#        </div>#}
+{#    </div>#}
+
+
+    <script>
+  $(function() {
+    $( ".datepicker" ).datepicker({
+      changeMonth: true,
+      changeYear: true,
+    });
+  });
+  </script>
+
+{% endblock content %}

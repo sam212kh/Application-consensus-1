@@ -1,33 +1,43 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div id="content-container" class="container p-none">
-        <div class="lgn-container col-lg-12">
-            <form id="login-form" method="post">
-                {% csrf_token %}
-                <table class="table">
-                    <tr>
-                        <td><label for="id_username">Username</label></td>
-                        <td><input id="id_username" name="username"
-                                   type="text" class="form-control"></td>
-                    </tr>
-                    <tr>
-                        <td><label for="id_password">Password</label></td>
-                        <td><input id="id_password" name="password"
-                                   type="password" class="form-control"></td>
-                    </tr>
-                </table>
-                {% if form.errors %}
-                    <p class=" label label-danger">
-                        Your username and password didn't match.
-                        Please try again.
-                    </p>
-                {% endif %}
 
-                <input type="submit" value="Login"
-                       class="btn btn-primary pull-right" />
-                <input type="hidden" name="next" value="{{ next }}" />
-            </form>
-        </div>
-    </div>
+
+    <div class="container login-container">
+    <div class="row">
+		<div class="col-md-4 col-md-offset-4">
+    		<div class="panel panel-default">
+			  	<div class="panel-heading">
+			    	<h3 class="panel-title">Please sign in</h3>
+			 	</div>
+			  	<div class="panel-body">
+			    	<form id="login-form" method="post">
+                    {% csrf_token %}
+                    <fieldset>
+			    	  	<div class="form-group">
+			    		    <input class="form-control" placeholder="Username" name="username" type="text">
+			    		</div>
+			    		<div class="form-group">
+			    			<input class="form-control" placeholder="Password" name="password" type="password" value="">
+			    		</div>
+{#			    		<div class="checkbox">#}
+{#			    	    	<label>#}
+{#			    	    		<input name="remember" type="checkbox" value="Remember Me"> Remember Me#}
+{#			    	    	</label>#}
+{#			    	    </div>#}
+                        <input type="submit" class="btn btn-dark" value="Login">
+                        <a class="register-btn" href="{% url 'school-signup' %}">Register school?</a>
+
+                        {% if form.errors %}
+                            <p class=" label label-danger">
+                                Your username and password didn't match.
+                            </p>
+                        {% endif %}
+			    	</fieldset>
+			      	</form>
+			    </div>
+			</div>
+		</div>
+	</div>
+</div>
 {% endblock content %}

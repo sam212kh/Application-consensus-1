@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <div class="container">
+    <div class="row">
+		<div class="col-md-8 col-md-offset-2">
+    		<div class="panel panel-default">
+			  	<div class="panel-heading">
+			    	<h3 class="panel-title">Please sign up school</h3>
+			 	</div>
+			  	<div class="panel-body">
+			    	<form method="post">
+                    {% csrf_token %}
+                        {{ form.as_p }}
+                        <input type="submit" class="btn btn-dark" value="Create school">
+                        <br/>
+                        <p class="go-back">or go back to <a href="{% url 'login' %}">LOGIN</a></p>
+			      	</form>
+			    </div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+{#    <div id="content-container" class="container p-none">#}
+{#        <div class="lgn-container col-lg-12">#}
+{#            <form method="post">{% csrf_token %}#}
+{#            {{ form.as_p }}#}
+{#                <input type="submit" class="btn btn-primary" value="Create school">#}
+{#            </form>#}
+{#            or go back to <a href="{% url 'login' %}">LOGIN</a>#}
+{#        </div>#}
+{#    </div>#}
+{% endblock content %}

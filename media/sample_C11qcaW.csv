@@ -1,0 +1,4 @@
+"first_name","last_name","date_of_birth","gender","email","phone_number","application_text","educational_info"
+test,student1,1993-18-09,male,teststudent1@gmail.com,123,no info,no education
+test,student2,1993-18-09,female,teststudent2@gmail.com,123,no info,no education
+test,student3,1993-18-09,male,teststudent3@gmail.com,123,no info,no education

@@ -12,6 +12,7 @@ from django.contrib.auth.models import (
     PermissionsMixin, Group)
 from django.contrib.auth.models import Permission
 from accounts.constants import *
+import datetime
 
 class UserManager(BaseUserManager):
 
@@ -91,29 +92,6 @@ class UserManager(BaseUserManager):
 
         staff.save(using=self._db)
         return staff
-    #
-    # def create_student(self, username, school, **fields):
-    #     if not fields['email']:
-    #         raise ValueError('Users must have an email address')
-    #
-    #     student = Student(
-    #         username=username,
-    #         email=self.normalize_email(fields['email']),
-    #         first_name=self.normalize_email(fields['first_name']),
-    #         last_name=self.normalize_email(fields['last_name']),
-    #         application_text=self.normalize_email(fields['application_text']),
-    #         school=school,
-    #     )
-    #     if fields.has_key('password'):
-    #         student.set_password(fields['password'])
-    #     else:
-    #         student.set_unusable_password()
-    #
-    #     group = Group.objects.get(name='Student')
-    #     student.groups.add(group)
-    #
-    #     student.save(using=self._db)
-    #     return student
 
     def create_superuser(self, username, **fields):
         """
@@ -189,6 +167,7 @@ class School(User, PermissionsMixin):
     state = models.CharField(max_length=255, null=True, blank=True)
     city = models.CharField(max_length=255, null=True, blank=True)
     zip_code = models.IntegerField(null=True, blank=True)
+    application_reviews_required = models.IntegerField(help_text="Reviews required for each application received", default=3)
 
 
 class Staff(User, PermissionsMixin):
@@ -204,8 +183,45 @@ class Staff(User, PermissionsMixin):
     def has_perm(self, perm, obj=None):
         return self.is_super_staff
 
+
+class Department(models.Model):
+    name = models.CharField(max_length=255)
+    department_school = models.ForeignKey(School, related_name='school_departments', on_delete=models.CASCADE)
+
+
+class Batch(models.Model):
+    YEAR_CHOICES = []
+    for r in range(datetime.datetime.now().year, (datetime.datetime.now().year + 10)):
+        YEAR_CHOICES.append((r, r))
+
+    name = models.CharField(max_length=255, null=True, blank=True)
+    year = models.IntegerField(choices=YEAR_CHOICES, default=datetime.datetime.now().year)
+    batch_school = models.ForeignKey(School, related_name='school_batches', on_delete=models.CASCADE)
+    application_acceptance_start_at = models.DateField()
+    application_acceptance_end_at = models.DateField()
+    max_batch_size = models.IntegerField(help_text="Maximum students to enroll each year in a batch", null=True, blank=True)
+    is_current = models.BooleanField(default=True)
+
+    def save(self, *args, **kwargs):
+        if self.is_current:
+            qs = type(self).objects.filter(is_current=True)
+            if self.pk:
+                qs = qs.exclude(pk=self.pk)
+            qs.update(is_current=False)
+        super(Batch, self).save(*args, **kwargs)
+
+
 class Student(models.Model):
+    Male = 'Male'
+    Female = 'Female'
+    STATUS_CHOICES = (
+        (Male, 'Male'),
+        (Female, 'Female'),
+    )
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
-    application_text = models.CharField(max_length=1000, null=True, blank=True)
-    student_school = models.ForeignKey(School, related_name='school_students', on_delete=models.CASCADE)
+    date_of_birth = models.DateField(null=True, blank=True)
+    gender = models.CharField(max_length=20, choices=STATUS_CHOICES, null=True, blank=True)
+    phone_number = models.CharField(max_length=255, null=True, blank=True)
+    email = models.EmailField(max_length=255)
+    student_batch = models.ForeignKey(Batch, related_name='batch_students', on_delete=models.CASCADE, null=True, blank=True)

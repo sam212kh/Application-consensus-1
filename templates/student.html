@@ -2,39 +2,93 @@
 
 {% block content %}
 
-    <div class="container">
-	<div class="row">
-		<h2>School students</h2>
+     <div class="page-wrapper" style="display: block;">
+        <div class="page-breadcrumb">
+                <div class="col-5 align-self-center">
+                    <h4 class="page-title">School batch students</h4>
+                </div>
+        </div>
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                        <div class="d-flex no-block align-items-center m-b-30">
+                                    <h4 class="card-title">All Students</h4>
+
+                            </div>
+                             <div class="table-responsive">
+                                <table class="table table-striped table-bordered">
+                                    <thead>
+                                          <tr>
+                                            <th>Firstname</th>
+                                            <th>Lastname</th>
+                                            <th>Gender</th>
+                                            <th>Email</th>
+                                            <th>Phone Number</th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        {% for student in students %}
+                                                <tr>
+                                                    <td>{{ student.first_name }}</td>
+                                                    <td>{{ student.last_name }}</td>
+                                                    <td>{{ student.gender }}</td>
+                                                    <td>{{ student.email }}</td>
+                                                    <td>{{ student.phone_number }}</td>
+                                                </tr>
+                                            {% endfor %}
 
 
-    <form method="post">{% csrf_token %}
-    {{ form.as_p }}
-        <input type="submit" class="btn btn-primary" value="Create student">
-    </form>
+                                        </tbody>
+                                </table>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-<table class="table table-bordered">
-    <thead>
-      <tr>
-        <th>Firstname</th>
-        <th>Lastname</th>
-        <th>Email</th>
-        <th>Application text</th>
-      </tr>
-    </thead>
-    <tbody>
-
-    {% for student in school.school_students.all %}
-            <tr>
-                <td>{{ student.first_name }}</td>
-                <td>{{ student.last_name }}</td>
-                <td>{{ student.email }}</td>
-                <td>{{ student.application_text }}</td>
-            </tr>
-        {% endfor %}
+     </div>
 
 
-    </tbody>
-  </table>
-	</div>
+{#    <div class="container">#}
+{#	<div class="row">#}
+{#		<h2>School batch students</h2>#}
+{##}
+{##}
+{#    <form method="post">{% csrf_token %}#}
+{#    {{ form.as_p }}#}
+{#        <input type="submit" class="btn btn-primary" value="Create student">#}
+{#    </form>#}
+{##}
+{#<table class="table table-bordered">#}
+{#    <thead>#}
+{#      <tr>#}
+{#        <th>Firstname</th>#}
+{#        <th>Lastname</th>#}
+{#        <th>Gender</th>#}
+{#        <th>Email</th>#}
+{#        <th>Phone Number</th>#}
+{#      </tr>#}
+{#    </thead>#}
+{#    <tbody>#}
+{##}
+{#    {% for student in students %}#}
+{#            <tr>#}
+{#                <td>{{ student.first_name }}</td>#}
+{#                <td>{{ student.last_name }}</td>#}
+{#                <td>{{ student.gender }}</td>#}
+{#                <td>{{ student.email }}</td>#}
+{#                <td>{{ student.phone_number }}</td>#}
+{#            </tr>#}
+{#        {% endfor %}#}
+{##}
+{##}
+{#    </tbody>#}
+{#  </table>#}
+{#	</div>#}
 
 {% endblock content %}

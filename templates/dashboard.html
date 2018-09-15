@@ -1,24 +1,54 @@
 {% extends 'base.html' %}
+{% load  custom_tags %}
 
 {% block content %}
 
-<div class="row">
-{% if request.user.staff and request.user.staff.is_super_staff %}
-  <div class="col-sm-6">
-      <div class="card text-white bg-primary mb-3">
-          <a href="{% url 'staff' %}" class="card-body">
-            <h5 class="card-title">School staffs</h5>
-          </a>
-      </div>
-  </div>
-{% endif %}
-  <div class="col-sm-6">
-    <div class="card text-white bg-primary mb-3">
-          <a href="{% url 'student' %}" class="card-body">
-            <h5 class="card-title">School students</h5>
-          </a>
-      </div>
-  </div>
-</div>
+
+
+
+
+
+    <div class="row clearfix">
+                      {% if request.user.staff and request.user.staff.is_super_staff or request.user|has_group:"School" %}
+                                <a href="{% url 'staff' %}" class="col-md-3 column">
+                                    <div class="feature-box">
+                                        <span class="feature-icon"><i class="fa fa-users"></i></span>
+                                        <h4>School staffs</h4>
+                                    </div>
+                                </a>
+                      {% endif %}
+                      {% if request.user|has_group:"School" %}
+                                <a href="{% url 'batch' %}" class="col-md-3 column">
+                                    <div class="feature-box">
+                                        <span class="feature-icon"><i class="fa fa-list-alt"></i></span>
+                                        <h4>School batches</h4>
+                                    </div>
+                                </a>
+                      {% endif %}
+                      {% if request.user.staff %}
+                                <a href="{% url 'application-review' %}" class="col-md-3 column">
+                                    <div class="feature-box">
+                                        <span class="feature-icon"><i class="fa fa-eye"></i></span>
+                                        <h4>Review applications</h4>
+                                    </div>
+                                </a>
+                      {% endif %}
+                      {% if request.user.staff and request.user.staff.is_super_staff or request.user|has_group:"School" %}
+                                <a href="{% url 'application-upload' %}" class="col-md-3 column">
+                                    <div class="feature-box">
+                                        <span class="feature-icon"><i class="fa fa-cloud-upload"></i></span>
+                                        <h4>Upload applications</h4>
+                                    </div>
+                                </a>
+
+                                <a href="{% url 'applications' %}" class="col-md-3 column">
+                                    <div class="feature-box">
+                                        <span class="feature-icon"><i class="fa fa-file"></i></span>
+                                        <h4>All applications</h4>
+                                    </div>
+                                </a>
+                      {% endif %}
+
+                            </div>
 
 {% endblock content %}
