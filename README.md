@@ -1,10 +1,18 @@
 # Application-consensus
 Application designed to make screening school application quicker.
 
-# The intial desgn goals are:
-- Implement the School, Staff structure
-- Upload a list or create a list of student applicants with very basic profile (Application info)
-- Implement the Staff review proccess of the applications
+# Basic description and structure
+School accounts
+- Application school years/seasons/batch for example 18-19 for the 2018 - 2019 school year. Batches have a status or acrive or not.
+- A list of applicants for the school season
+
+School Staff
+- each staff can see and review(rate) all appplication for active batches
+- Staff are automaticly assigned a set number of students to review. _Need a setting the school season setup._
+
+Applications
+- each application gets reviewed by atleast the number of staff set in the season setting.
+- the average review is calculated.
 
 Dev server
 http://dev.application.heteroskedastic.com
