@@ -1,7 +1,7 @@
 # Application-consensus
 Application designed to make screening school application quicker.
 
-# Basic description and structure
+## Basic description and structure
 School accounts
 - Application school years/seasons/batch for example 18-19 for the 2018 - 2019 school year. Batches have a status or acrive or not.
 - A list of applicants for the school season
@@ -16,3 +16,20 @@ Applications
 
 Dev server
 http://dev.application.heteroskedastic.com
+
+
+## steps to run local backend
+
+1. pip install -r requirements.txt
+1. cd consensus
+1. python manage.py migrate --settings=consensus.settings.local
+1. python manage.py createsuperuser --settings=consensus.settings.local # create superuser to login
+1. python manage.py runserver --settings=consensus.settings.local
+
+
+## steps to run local frontend
+1. cd consensus/FRONTEND/consensus-ui
+1. sudo npm install -g @vue/cli # (skip this if you installed once)
+1. npm install # (skip this if you installed once)
+1. npm run serve
+
