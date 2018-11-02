@@ -13,7 +13,7 @@
                                 <div class="row">
                                     <div class="col-md-12 col-sm-12 col-xs-12">
                                         <div class="form-group">
-                                            <input type="email" class="form-control" id="inputEmail"
+                                            <input type="email" class="form-control" id="inputEmail" v-model="username"
                                                    placeholder="UserName or Email Address">
                                         </div>
                                     </div>
@@ -22,6 +22,7 @@
                                     <div class="col-md-12 col-sm-12 col-xs-12">
                                         <div class="form-group">
                                             <input type="password" class="form-control" id="inputPassword"
+                                                   v-model="password"
                                                    placeholder="Password">
                                         </div>
                                     </div>
@@ -29,7 +30,7 @@
                                 <div class="forgot">
                                     <a href="reset.html">Forgot password?</a>
                                 </div>
-                                <button type="submit" class="btn btn-block btn-success">
+                                <button type="submit" class="btn btn-block btn-success" v-on:click="submit">
                                     Sign in
                                 </button>
                                 <hr/>
@@ -56,11 +57,33 @@
 </template>
 
 <script>
+
+    import SessionApi from "@/endpoint/SessionApi"
+
     export default {
-        name: "SignIn"
+        name: "SignIn",
+        data: function () {
+            return {
+                username: '',
+                password: ''
+            }
+        },
+        methods:{
+            submit: function(){
+                if(this.username === '' && this.password === ''){
+                    return;
+                }
+
+                SessionApi.login(this.username, this.password).then(function(data){
+                    console.log(data);
+                }, function(data){
+                    console.log(data);
+                });
+
+            }
+        }
     };
 </script>
-
 
 <style scoped>
     .signIn {

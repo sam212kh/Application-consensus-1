@@ -16,7 +16,7 @@ export default new Vuex.Store({
     },
     actions: {
         isLogin: function (context) {
-            return SessionApi.login().then(
+            return SessionApi.getUser().then(
                 function (response) {
                     context.commit({type: 'currentUser', currentUser: response.data});
                 },
