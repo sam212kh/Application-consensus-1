@@ -20,18 +20,7 @@ axios.defaults.withCredentials = true; // allow to pass cookie in cross origin
 Vue.prototype.$http = axios;
 
 new Vue({
-  router,
-  store,
-  render: h => h(App),
-  created: function () {
-    let self = this;
-    this.$http.get("session").then(
-      function(response) {
-        self.$store.state.currentUser = response.data;
-      },
-      function(error) {
-
-      }
-    );
-  }
+    router,
+    store,
+    render: h => h(App)
 }).$mount("#app");
