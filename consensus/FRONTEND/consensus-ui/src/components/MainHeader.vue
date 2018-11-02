@@ -64,8 +64,14 @@
 </template>
 
 <script>
+
   export default {
-    name: "MainHeader"
+    name: "MainHeader",
+      computed:{
+        fullName: function() {
+          return this.$store.getters.state.currentUser.fullName;
+        }
+      }
   };
 </script>
 
