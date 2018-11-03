@@ -12,7 +12,7 @@ Vue.prototype.$eventsBus = new Vue();
  ****************** App *****************
  ****************************************/
 
-axios.defaults.baseURL = '/api/v1';
+axios.defaults.baseURL = "/api/v1";
 axios.defaults.xsrfCookieName = "csrftoken";
 axios.defaults.xsrfHeaderName = "X-CSRFToken";
 axios.defaults.withCredentials = true; // allow to pass cookie in cross origin
@@ -20,7 +20,7 @@ axios.defaults.withCredentials = true; // allow to pass cookie in cross origin
 Vue.prototype.$http = axios;
 
 new Vue({
-    router,
-    store,
-    render: h => h(App)
+  router,
+  store,
+  render: h => h(App)
 }).$mount("#app");
