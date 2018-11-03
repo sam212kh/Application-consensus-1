@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from consensus.apps.school import models
+from apps.school import models
 
 
 class SchoolSerializer(serializers.ModelSerializer):

@@ -41,8 +41,8 @@ INSTALLED_APPS = [
     'anymail',
     'rest_framework',
     'reversion',
-    'consensus.apps.user',
-    'consensus.apps.school',
+    'apps.user',
+    'apps.school',
 ]
 
 
@@ -58,9 +58,9 @@ MIDDLEWARE = [
 ]
 
 REST_FRAMEWORK = {
-    'EXCEPTION_HANDLER': 'consensus.consensus.helpers.utils.custom_rest_exception_handler',
+    'EXCEPTION_HANDLER': 'consensus.helpers.utils.custom_rest_exception_handler',
     'DEFAULT_PERMISSION_CLASSES': [
-        'consensus.consensus.helpers.utils.CustomDjangoModelPermissions'
+        'consensus.helpers.utils.CustomDjangoModelPermissions'
     ],
     'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.URLPathVersioning',
     'DEFAULT_VERSION': 'v1',
@@ -71,10 +71,10 @@ REST_FRAMEWORK = {
     'MAX_PAGE_SIZE_DEFAULT': 200,
     'ORDERING_PARAM': 'order_by',
     'TEST_REQUEST_DEFAULT_FORMAT': 'json',
-    'DEFAULT_PAGINATION_CLASS': 'consensus.consensus.helpers.utils.CustomPagination',
+    'DEFAULT_PAGINATION_CLASS': 'consensus.helpers.utils.CustomPagination',
     'DEFAULT_FILTER_BACKENDS': ('rest_framework_filters.backends.DjangoFilterBackend',
                                 'rest_framework.filters.SearchFilter',
-                                'consensus.consensus.helpers.utils.ExtendedOrderingFilterBackend'),
+                                'consensus.helpers.utils.ExtendedOrderingFilterBackend'),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
@@ -101,7 +101,7 @@ JWT_AUTH = {
     'JWT_AUTH_HEADER_PREFIX': 'Consensus',
 }
 
-ROOT_URLCONF = 'consensus.consensus.urls'
+ROOT_URLCONF = 'consensus.urls'
 
 TEMPLATES = [
     {
@@ -127,7 +127,7 @@ TEMPLATES = [
 
 BOOTSTRAP_ADMIN_SIDEBAR_MENU = True
 
-WSGI_APPLICATION = 'consensus.consensus.wsgi.application'
+WSGI_APPLICATION = 'consensus.wsgi.application'
 
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
@@ -236,7 +236,7 @@ ANYMAIL = {
 DEFAULT_EMAIL_FROM = '<DEFAULT_EMAIL_FROM>'
 
 # twilio sms setting
-SENDSMS_BACKEND = 'consensus.consensus.helpers.utils.SmsBackend'
+SENDSMS_BACKEND = 'consensus.helpers.utils.SmsBackend'
 SENDSMS_TWILIO_ACCOUNT_SID = 'SIDXXXXXXXXXXXXXXX'
 SENDSMS_TWILIO_AUTH_TOKEN = 'ATXXXXXXXXXXXXXXX'
 SMS_DEFAULT_FROM_PHONE = 'NNNNNNNNNN'
