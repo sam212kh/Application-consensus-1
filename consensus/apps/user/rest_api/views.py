@@ -2,6 +2,7 @@ from datetime import timedelta
 
 from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
+from django.core import signing
 from rest_framework import viewsets, permissions
 from rest_framework.response import Response
 from djoser.views import SetPasswordView as JoserSetPasswordView
@@ -21,6 +22,11 @@ class SessionView(viewsets.ViewSet):
 
     permission_classes = (SessionPermission,)
     serializer_class = SessionSerializer
+
+    def fresh_response(self, response, fresh_expiry):
+        fresh_singed = signing.dumps({'user_id': self.request.user.id}, salt=settings.FRESH_AUTH_SALT)
+        response.set_cookie(settings.FRESH_AUTH_KEY, fresh_singed, max_age=fresh_expiry)
+        return response
 
     def get(self, request, *args, **kwargs):
         """ api to get current session """

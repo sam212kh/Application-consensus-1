@@ -13,7 +13,7 @@
                                 <div class="row">
                                     <div class="col-md-12 col-sm-12 col-xs-12">
                                         <div class="form-group">
-                                            <input type="email" class="form-control" id="inputEmail" v-model="username"
+                                            <input class="form-control" id="inputEmail" v-model="username"
                                                    placeholder="UserName or Email Address">
                                         </div>
                                     </div>
@@ -70,12 +70,13 @@
         },
         methods:{
             submit: function(){
-                if(this.username === '' && this.password === ''){
+                if(this.username === '' || this.password === ''){
                     return;
                 }
 
+                let self =this;
                 SessionApi.login(this.username, this.password).then(function(data){
-                    console.log(data);
+                    self.$router.push('/');
                 }, function(data){
                     console.log(data);
                 });

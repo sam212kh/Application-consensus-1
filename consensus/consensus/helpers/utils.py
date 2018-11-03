@@ -20,6 +20,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.utils import timezone, six
 from django.utils.dateparse import parse_datetime
+from django.utils.deprecation import MiddlewareMixin
 from django.utils.timezone import is_aware, make_aware
 from rest_framework.exceptions import APIException
 from rest_framework.filters import OrderingFilter as OrderingFilterBackend, OrderingFilter
@@ -65,6 +66,12 @@ class PermissionRequiredMixin(DjangoPermissionRequiredMixin):
             return self.handle_no_permission()
         return super(PermissionRequiredMixin, self
                      ).dispatch(request, *args, **kwargs)
+
+
+class DisableCSRFOnDebug(MiddlewareMixin):
+    def process_request(self, request):
+        if settings.DEBUG:
+            setattr(request, '_dont_enforce_csrf_checks', True)
 
 
 def to_dict(obj, fields=None, fields_map=None, extra_fields=None):

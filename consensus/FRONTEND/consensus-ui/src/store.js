@@ -11,11 +11,11 @@ export default new Vuex.Store({
     },
     mutations: {
         currentUser: function (state, payload) {
-            state.currrentUser = payload.currentUser;
+            state.currentUser = payload.currentUser;
         }
     },
     actions: {
-        isLogin: function (context) {
+        checkSession: function (context) {
             return SessionApi.getUser().then(
                 function (response) {
                     context.commit({type: 'currentUser', currentUser: response.data});

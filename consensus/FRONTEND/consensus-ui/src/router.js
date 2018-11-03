@@ -14,7 +14,7 @@ export default new Router({
             path: "/",
             component: School,
             beforeEnter: (to, from, next) => {
-                store.dispatch('isLogin').then(
+                store.dispatch('checkSession').then(
                     function () {
                         if (store.getters.isLoadedUser) {
                             next();
