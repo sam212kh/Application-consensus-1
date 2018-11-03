@@ -245,6 +245,3 @@ SMS_DEFAULT_FROM_PHONE = 'NNNNNNNNNN'
 EMAIL_MOCK_SENDING = False
 SMS_MOCK_SENDING = False
 HOSTNAME = 'localhost'
-FRESH_AUTH_SALT='dl!i(5*2q7!$rx0h%$@=9yrck^enl_k5umbx*jy7%n)uli@8s&'
-FRESH_AUTH_EXPIRY = datetime.timedelta(minutes=60)
-FRESH_AUTH_KEY = '_freshauth'

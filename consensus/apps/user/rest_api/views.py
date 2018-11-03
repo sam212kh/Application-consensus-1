@@ -23,11 +23,6 @@ class SessionView(viewsets.ViewSet):
     permission_classes = (SessionPermission,)
     serializer_class = SessionSerializer
 
-    def fresh_response(self, response, fresh_expiry):
-        fresh_singed = signing.dumps({'user_id': self.request.user.id}, salt=settings.FRESH_AUTH_SALT)
-        response.set_cookie(settings.FRESH_AUTH_KEY, fresh_singed, max_age=fresh_expiry)
-        return response
-
     def get(self, request, *args, **kwargs):
         """ api to get current session """
 
@@ -44,11 +39,8 @@ class SessionView(viewsets.ViewSet):
             return Response({'reason': 'User is inactive'}, status=403)
 
         login(request, user)
-        fresh_expiry = settings.FRESH_AUTH_EXPIRY
-        if isinstance(fresh_expiry, timedelta):
-            fresh_expiry = fresh_expiry.total_seconds()
         response = Response(UserSessionSerializer(user, context={'request': request}).data)
-        return self.fresh_response(response, fresh_expiry)
+        return response
 
     def delete(self, request, *args, **kwargs):
         """ api to logout """
@@ -56,8 +48,6 @@ class SessionView(viewsets.ViewSet):
         user_id = request.user.id
         logout(request)
         response = Response({'id': user_id})
-        if settings.FRESH_AUTH_KEY in request.COOKIES:
-            response.delete_cookie(settings.FRESH_AUTH_KEY)
         return response
 
     create = post  # this is a trick to show this view in api-root
