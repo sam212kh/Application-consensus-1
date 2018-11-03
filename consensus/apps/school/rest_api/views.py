@@ -1,5 +1,5 @@
-from apps.school.models import School
-from apps.school.rest_api.serializers import SchoolSerializer
+from consensus.apps.school.models import School
+from consensus.apps.school.rest_api.serializers import SchoolSerializer
 from rest_framework import viewsets
 
 

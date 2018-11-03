@@ -18,7 +18,7 @@ from django.urls import path, re_path, include
 from django.views.static import serve
 from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token, verify_jwt_token
 
-from apps.user.views import LoginView, IndexView
+from consensus.apps.user.views import LoginView, IndexView
 
 from django.conf import settings
 
@@ -28,8 +28,8 @@ API_ENDPOINT = 'api/(?P<{}>v\d+)'.format(VERSION_PARAM)
 
 
 urlpatterns = [
-    re_path('^{}/'.format(API_ENDPOINT), include('apps.school.urls', namespace='school_rest_api')),
-    re_path('^{}/'.format(API_ENDPOINT), include('apps.user.urls', namespace='user_rest_api')),
+    re_path('^{}/'.format(API_ENDPOINT), include('consensus.apps.school.urls', namespace='school_rest_api')),
+    re_path('^{}/'.format(API_ENDPOINT), include('consensus.apps.user.urls', namespace='user_rest_api')),
     re_path(r'^admin/', admin.site.urls),
     re_path(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     re_path(r'^token/auth/', obtain_jwt_token),

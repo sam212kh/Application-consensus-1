@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from django.db import models
 from django.conf import settings
 
-from consensus.helpers.utils import get_random_upload_path
+from consensus.consensus.helpers.utils import get_random_upload_path
 
 User = get_user_model()
 
