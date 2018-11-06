@@ -1,4 +1,17 @@
 import axios from "axios";
+import EventBus from "../event-bus";
+
+axios.interceptors.response.use(
+  function(response) {
+    return response;
+  },
+  function(error) {
+    if (401 === error.response.status) {
+      EventBus.$emit("user:session-expired");
+    }
+    return Promise.reject(error);
+  }
+);
 
 export default axios.create({
   baseURL: "/api/v1",

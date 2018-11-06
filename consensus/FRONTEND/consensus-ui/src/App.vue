@@ -7,7 +7,25 @@
 <script>
 export default {
   name: "App",
-  props: []
+  props: [],
+  methods: {
+    onSessionExpired: function() {
+      this.$router.push({ name: "signIn" });
+    }
+  },
+  watch: {
+    "$store.state.currentUser": function() {
+      if (!this.$store.getters.isLoadedUser) {
+        this.onSessionExpired();
+      }
+    }
+  },
+  created: function() {
+    this.$eventsBus.$on("user:session-expired", this.onSessionExpired);
+  },
+  destroyed: function() {
+    this.$eventsBus.$off("user:session-expired", this.onSessionExpired);
+  }
 };
 </script>
 
