@@ -39,78 +39,39 @@
               <i class="fa fa-handshake-o color-gray"></i>
               <span class="font-weight-bold">Inrolled</span>
             </th>
+            <th class="text-center">
+              <i class="fa fa-mobile-phone color-gray"></i>
+              <span class="font-weight-bold">Phone number</span>
+            </th>
           </tr>
 
           </thead>
 
           <tbody>
-          <tr>
+          <tr v-for="school in schools" :key="school.id">
             <td class="text-left">
               <a href="#">
-                School num 1
+                {{ school.full_name }}
                 <i class="fa fa-angle-down margin-left-10"></i>
               </a>
             </td>
             <td class="text-center">
-              3
+
             </td>
             <td class="text-center">
-              25
+
             </td>
             <td class="text-center">
-              8
+
             </td>
             <td class="text-center">
-              14
+
             </td>
             <td class="text-center">
-              10
-            </td>
-          </tr>
-          <tr>
-            <td class="text-left">
-              <a href="#">
-                School num 2
-                <i class="fa fa-angle-down margin-left-10"></i>
-              </a>
+
             </td>
             <td class="text-center">
-              5
-            </td>
-            <td class="text-center">
-              18
-            </td>
-            <td class="text-center">
-              8
-            </td>
-            <td class="text-center">
-              10
-            </td>
-            <td class="text-center">
-              10
-            </td>
-          </tr>
-          <tr>
-            <td class="text-left">
-              <a href="#">
-                School num 3
-                <i class="fa fa-angle-down margin-left-10"></i>
-              </a>
-            </td>
-            <td class="text-center">
-              5
-            </td>
-            <td class="text-center">
-              18
-            </td>
-            <td class="text-center">
-              8
-            </td>
-            <td class="text-center">
-              10
-            </td>
-            <td class="text-center">
-              10
+              {{ school.phone_number }}
             </td>
           </tr>
           </tbody>
@@ -122,12 +83,25 @@
 </template>
 
 <script>
+import SchoolApi from "../../endpoint/SchoolApi";
+
 export default {
   name: "Home",
-  methods: {
-    changeRoute: function() {
-      this.$router.push({ name: "school.about" });
-    }
+  created: function() {
+    let self = this;
+    SchoolApi.getAll().then(
+      function(response) {
+        self.$data.schools = response.data.results;
+      },
+      function() {
+        self.$data.schools = [];
+      }
+    );
+  },
+  data: function() {
+    return {
+      schools: []
+    };
   }
 };
 </script>

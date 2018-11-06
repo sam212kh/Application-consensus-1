@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Home from "./components/Home.vue";
-import School from "./components/School.vue";
+import Home from "./components/school/Home.vue";
+import School from "./components/school/School.vue";
 import SignIn from "./components/SignIn.vue";
 import store from "./store.js";
 
