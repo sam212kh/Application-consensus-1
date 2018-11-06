@@ -123,6 +123,11 @@
 
 <script>
 export default {
-  name: "Home"
+  name: "Home",
+  methods: {
+    changeRoute: function() {
+      this.$router.push({ name: "school.about" });
+    }
+  }
 };
 </script>
