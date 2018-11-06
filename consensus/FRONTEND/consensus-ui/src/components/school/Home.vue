@@ -91,10 +91,10 @@ export default {
     let self = this;
     SchoolApi.getAll().then(
       function(response) {
-        self.$data.schools = response.data.results;
+        self.schools = response.data.results;
       },
       function() {
-        self.$data.schools = [];
+        self.schools = [];
       }
     );
   },
