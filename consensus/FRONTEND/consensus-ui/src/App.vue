@@ -16,7 +16,7 @@ export default {
   watch: {
     "$store.state.currentUser": function() {
       if (!this.$store.getters.isLoadedUser) {
-        this.onSessionExpired();
+        this.$eventsBus.$emit("user:session-expired");
       }
     }
   },
