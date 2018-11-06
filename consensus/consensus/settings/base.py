@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'anymail',
-    'django_filters',
     'rest_framework',
     'reversion',
     'apps.user',

@@ -15,15 +15,16 @@
             </a>
           </li>
           <li class="nav-item active">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="#" v-on:click="logout">
               <i class="fa fa-sign-out"></i>
               LogOut
             </a>
           </li>
           <li class="nav-item dropdown active">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+               data-toggle="dropdown"
                aria-haspopup="true" aria-expanded="false">
-              User Name
+              {{fullName}}
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
               <a class="dropdown-item" href="#">
@@ -64,9 +65,33 @@
 </template>
 
 <script>
-  export default {
-    name: "MainHeader"
-  };
+import SessionApi from "@/endpoint/SessionApi";
+
+export default {
+  name: "MainHeader",
+  computed: {
+    fullName: function() {
+      return (
+        this.$store.state.currentUser.first_name +
+        " " +
+        this.$store.state.currentUser.last_name
+      );
+    }
+  },
+  methods: {
+    logout: function() {
+      let self = this;
+      SessionApi.logout().then(
+        function() {
+          self.$router.push({ name: "signIn" });
+        },
+        function(data) {
+          console.log(data);
+        }
+      );
+    }
+  }
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

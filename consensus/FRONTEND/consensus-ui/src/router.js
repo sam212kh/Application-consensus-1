@@ -1,6 +1,9 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Home from "./views/Home.vue";
+import Home from "./components/school/Home.vue";
+import School from "./components/school/School.vue";
+import SignIn from "./components/SignIn.vue";
+import store from "./store.js";
 
 Vue.use(Router);
 
@@ -9,8 +12,26 @@ export default new Router({
   routes: [
     {
       path: "/",
-      name: "home",
-      component: Home
+      component: School,
+      beforeEnter: (to, from, next) => {
+        store.dispatch("checkSession").then(function() {
+          if (store.getters.isLoadedUser) {
+            next();
+          }
+        });
+        //TODO: should be handle dispatch promise failed
+      },
+      children: [
+        {
+          path: "",
+          component: Home
+        }
+      ]
+    },
+    {
+      path: "/singIn",
+      name: "signIn",
+      component: SignIn
     },
     {
       path: "/about",
@@ -19,7 +40,7 @@ export default new Router({
       // this generates a separate chunk (about.[hash].js) for this route
       // which is lazy-loaded when the route is visited.
       component: () =>
-        import(/* webpackChunkName: "about" */ "./views/About.vue")
+        import(/* webpackChunkName: "about" */ "./components/About.vue")
     }
   ]
 });

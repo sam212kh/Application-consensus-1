@@ -2,6 +2,7 @@ from datetime import timedelta
 
 from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
+from django.core import signing
 from rest_framework import viewsets, permissions
 from rest_framework.response import Response
 from djoser.views import SetPasswordView as JoserSetPasswordView
@@ -38,11 +39,8 @@ class SessionView(viewsets.ViewSet):
             return Response({'reason': 'User is inactive'}, status=403)
 
         login(request, user)
-        fresh_expiry = settings.FRESH_AUTH_EXPIRY
-        if isinstance(fresh_expiry, timedelta):
-            fresh_expiry = fresh_expiry.total_seconds()
         response = Response(UserSessionSerializer(user, context={'request': request}).data)
-        return self.fresh_response(response, fresh_expiry)
+        return response
 
     def delete(self, request, *args, **kwargs):
         """ api to logout """
@@ -50,8 +48,6 @@ class SessionView(viewsets.ViewSet):
         user_id = request.user.id
         logout(request)
         response = Response({'id': user_id})
-        if settings.FRESH_AUTH_KEY in request.COOKIES:
-            response.delete_cookie(settings.FRESH_AUTH_KEY)
         return response
 
     create = post  # this is a trick to show this view in api-root

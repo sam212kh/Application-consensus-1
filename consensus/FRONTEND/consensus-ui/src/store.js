@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import SessionApi from "@/endpoint/SessionApi";
 
 Vue.use(Vuex);
 
@@ -7,8 +8,23 @@ export default new Vuex.Store({
   state: {
     currentUser: {}
   },
-  mutations: {},
-  actions: {},
+  mutations: {
+    currentUser: function(state, payload) {
+      state.currentUser = payload.currentUser;
+    }
+  },
+  actions: {
+    checkSession: function(context) {
+      return SessionApi.getUser().then(
+        function(response) {
+          context.commit({ type: "currentUser", currentUser: response.data });
+        },
+        function() {
+          context.commit({ type: "currentUser", currentUser: {} });
+        }
+      );
+    }
+  },
   getters: {
     isStaffUser: function(state) {
       return true === state.currentUser.is_staff;

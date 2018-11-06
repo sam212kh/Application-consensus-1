@@ -1,18 +1,30 @@
 <template>
   <div id="app">
-    <main-header></main-header>
     <router-view/>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import MainHeader from "@/components/MainHeader";
-
 export default {
-  name: "home",
-  components: {
-    MainHeader
+  name: "App",
+  props: [],
+  methods: {
+    onSessionExpired: function() {
+      this.$router.push({ name: "signIn" });
+    }
+  },
+  watch: {
+    "$store.state.currentUser": function() {
+      if (!this.$store.getters.isLoadedUser) {
+        this.onSessionExpired();
+      }
+    }
+  },
+  created: function() {
+    this.$eventsBus.$on("user:session-expired", this.onSessionExpired);
+  },
+  destroyed: function() {
+    this.$eventsBus.$off("user:session-expired", this.onSessionExpired);
   }
 };
 </script>
@@ -25,6 +37,7 @@ export default {
   text-align: center;
   color: #2c3e50;
 }
+
 #nav {
   padding: 30px;
 }

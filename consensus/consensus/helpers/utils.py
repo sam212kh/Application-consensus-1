@@ -12,6 +12,7 @@ from django.contrib.auth.mixins import PermissionRequiredMixin as \
 from django.contrib.auth.views import redirect_to_login
 from django.core.exceptions import PermissionDenied
 from django.core.files.base import ContentFile
+from django.core.validators import EMPTY_VALUES
 from django.db import IntegrityError
 from django.db.models import ProtectedError
 from django.http import JsonResponse
@@ -19,10 +20,10 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.utils import timezone, six
 from django.utils.dateparse import parse_datetime
+from django.utils.deprecation import MiddlewareMixin
 from django.utils.timezone import is_aware, make_aware
-from django_filters.filters import EMPTY_VALUES, OrderingFilter
 from rest_framework.exceptions import APIException
-from rest_framework.filters import OrderingFilter as OrderingFilterBackend
+from rest_framework.filters import OrderingFilter as OrderingFilterBackend, OrderingFilter
 from rest_framework import status, serializers
 from rest_framework.pagination import PageNumberPagination, _positive_int
 from rest_framework.permissions import DjangoModelPermissions, BasePermission, IsAuthenticated
@@ -65,6 +66,12 @@ class PermissionRequiredMixin(DjangoPermissionRequiredMixin):
             return self.handle_no_permission()
         return super(PermissionRequiredMixin, self
                      ).dispatch(request, *args, **kwargs)
+
+
+class DisableCSRFOnDebug(MiddlewareMixin):
+    def process_request(self, request):
+        if settings.DEBUG:
+            setattr(request, '_dont_enforce_csrf_checks', True)
 
 
 def to_dict(obj, fields=None, fields_map=None, extra_fields=None):
