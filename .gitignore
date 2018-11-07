@@ -109,7 +109,7 @@ node_modules/
 
 # django
 */*/settings/external_config*.py
-#*/*/settings/local.py
+*/*/settings/local.py
 consensus/media/
 
 
