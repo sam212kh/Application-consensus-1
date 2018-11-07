@@ -107,3 +107,9 @@ node_modules/
 .idea/
 *.pyc
 
+# django
+*/*/settings/external_config*.py
+#*/*/settings/local.py
+consensus/media/
+
+
