@@ -17,7 +17,7 @@ export default axios.create({
   baseURL: "/api/v1",
   timeout: 5000,
   xsrfCookieName: "csrftoken",
-  xsrfHeaderName: "xsrfHeaderName",
+  xsrfHeaderName: "X-CSRFToken",
   withCredentials: true,
   headers: {
     "Content-Type": "application/json"

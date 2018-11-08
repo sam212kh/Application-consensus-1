@@ -70,7 +70,7 @@ class PermissionRequiredMixin(DjangoPermissionRequiredMixin):
 
 class DisableCSRFOnDebug(MiddlewareMixin):
     def process_request(self, request):
-        if settings.DEBUG:
+        if settings.DEBUG and getattr(settings, 'CSRF_DISABLED', False):
             setattr(request, '_dont_enforce_csrf_checks', True)
 
 
