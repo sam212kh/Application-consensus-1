@@ -84,17 +84,19 @@
 
 <script>
 import SchoolApi from "../../endpoint/SchoolApi";
+import UtilMixin from "@/mixins/UtilMixin";
 
 export default {
   name: "Home",
+  mixins: [UtilMixin],
   created: function() {
     let self = this;
     SchoolApi.getAll().then(
       function(response) {
         self.schools = response.data.results;
       },
-      function() {
-        self.schools = [];
+      function(error) {
+        self.notifyDefaultServerError(error);
       }
     );
   },

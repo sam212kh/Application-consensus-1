@@ -111,5 +111,5 @@ node_modules/
 */*/settings/external_config*.py
 */*/settings/local.py
 consensus/media/
-
+package-lock.json
 

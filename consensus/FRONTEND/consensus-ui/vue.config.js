@@ -4,8 +4,7 @@ module.exports = {
   runtimeCompiler: true,
   chainWebpack: config => {
     config.externals({
-      jquery: "jQuery",
-      moment: "moment"
+      jquery: "jQuery"
     });
   },
   devServer: {

@@ -58,9 +58,11 @@
 
 <script>
 import SessionApi from "@/endpoint/SessionApi";
+import UtilMixin from "@/mixins/UtilMixin";
 
 export default {
   name: "SignIn",
+  mixins: [UtilMixin],
   data: function() {
     return {
       username: "",
@@ -78,8 +80,8 @@ export default {
         function() {
           self.$router.push("/");
         },
-        function(data) {
-          console.log(data);
+        function(error) {
+          self.notifyDefaultServerError(error);
         }
       );
     }
