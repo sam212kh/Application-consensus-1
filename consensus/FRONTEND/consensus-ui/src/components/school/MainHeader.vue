@@ -26,7 +26,7 @@
                aria-haspopup="true" aria-expanded="false">
               {{fullName}}
             </a>
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
               <a class="dropdown-item" href="#">
                 <i class="fa fa-user color-lightPink"></i>
                 <span class="margin-left-10 color-gray">My Profile</span>
@@ -40,7 +40,7 @@
                 <span class="margin-left-10 color-gray">Messages</span>
               </a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#">
+              <a class="dropdown-item" href="#" v-on:click="logout">
                 <i class="fa fa-sign-out color-lightPink"></i>
                 <span class="margin-left-10 color-gray">LogOut</span>
               </a>
