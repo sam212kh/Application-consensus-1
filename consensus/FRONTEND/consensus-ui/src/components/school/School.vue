@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="school">
     <main-header></main-header>
     <router-view></router-view>
   </div>
@@ -17,3 +17,10 @@ export default {
   }
 };
 </script>
+
+
+<style scoped>
+.school {
+  height: 100%;
+}
+</style>

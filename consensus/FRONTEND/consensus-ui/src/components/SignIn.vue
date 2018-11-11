@@ -91,6 +91,7 @@ export default {
 
 <style scoped>
 .signIn {
+  height: 100%;
   background: -webkit-linear-gradient(left, #3931af, #00c6ff);
 }
 
