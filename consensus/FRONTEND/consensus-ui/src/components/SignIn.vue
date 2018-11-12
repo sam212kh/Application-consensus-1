@@ -6,24 +6,36 @@
           <div class="col-md-5 col-sm-5 col-xs-5 offset-3">
             <div class="main-div">
               <div class="panel">
-                <img id="profile-img" class="profile-img-card hidden-xs" src="images/avatar.png">
+                <img
+                  id="profile-img"
+                  class="profile-img-card hidden-xs"
+                  src="images/avatar.png"
+                />
                 <h2>Sign in by your account</h2>
               </div>
               <form id="Login" @submit.prevent="submit">
                 <div class="row">
                   <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="form-group">
-                      <input class="form-control" id="inputEmail" v-model="username"
-                             placeholder="UserName or Email Address">
+                      <input
+                        class="form-control"
+                        id="inputEmail"
+                        v-model="username"
+                        placeholder="UserName or Email Address"
+                      />
                     </div>
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="form-group">
-                      <input type="password" class="form-control" id="inputPassword"
-                             v-model="password"
-                             placeholder="Password">
+                      <input
+                        type="password"
+                        class="form-control"
+                        id="inputPassword"
+                        v-model="password"
+                        placeholder="Password"
+                      />
                     </div>
                   </div>
                 </div>
@@ -33,15 +45,14 @@
                 <button type="submit" class="btn btn-block btn-success">
                   Sign in
                 </button>
-                <hr/>
+                <hr />
                 <div class="panel">
                   <h2 class="margin-top-20">or sign in with Google account</h2>
                 </div>
                 <button type="submit" class="btn btn-block btn-primary">
-                  <i class="fa fa-google-plus"></i>
-                  Sign in with google
+                  <i class="fa fa-google-plus"></i> Sign in with google
                 </button>
-                <hr/>
+                <hr />
                 <div class="singup">
                   <span>Not have an account?</span>
                   <a href="SignUp.html">Create a new one</a>
@@ -53,7 +64,6 @@
       </div>
     </div>
   </div>
-
 </template>
 
 <script>
