@@ -14,9 +14,25 @@
           ref="vuetable"
           :api-url="tableUrl"
           :fields="tableFields"
-          :css="css"
+          :css="css.table"
+          :query-params="{
+            sort: 'order_by',
+            page: 'page',
+            perPage: 'page_size'
+          }"
           data-path="results"
+          pagination-path="pagination"
+          @vuetable:pagination-data="onPaginationData"
         ></vuetable>
+      </div>
+    </div>
+    <div class="row row-no-padding">
+      <div class="col">
+        <vuetable-pagination
+          ref="pagination"
+          :css="css.pagination"
+          @vuetable-pagination:change-page="onChangePage"
+        ></vuetable-pagination>
       </div>
     </div>
   </section>
@@ -25,12 +41,14 @@
 <script>
 import UtilMixin from "@/mixins/UtilMixin";
 import Vuetable from "vuetable-2/src/components/Vuetable";
+import VuetablePagination from "vuetable-2/src/components/VuetablePagination";
 
 export default {
   name: "Home",
   mixins: [UtilMixin],
   components: {
-    Vuetable
+    Vuetable,
+    VuetablePagination
   },
   created: function() {},
   data: function() {
@@ -51,13 +69,37 @@ export default {
         }
       ],
       css: {
-        tableClass: "table table-striped table-bordered",
-        ascendingIcon: "glyphicon glyphicon-chevron-up",
-        descendingIcon: "glyphicon glyphicon-chevron-down",
-        handleIcon: "glyphicon glyphicon-menu-hamburger"
+        table: {
+          tableClass: "table table-striped table-bordered",
+          ascendingIcon: "glyphicon glyphicon-chevron-up",
+          descendingIcon: "glyphicon glyphicon-chevron-down",
+          handleIcon: "glyphicon glyphicon-menu-hamburger"
+        },
+        pagination: {
+          infoClass: "pull-left",
+          wrapperClass: "vuetable-pagination pull-right",
+          activeClass: "btn-primary",
+          disabledClass: "disabled",
+          pageClass: "btn btn-border",
+          linkClass: "btn btn-border",
+          icons: {
+            first: "",
+            prev: "",
+            next: "",
+            last: ""
+          }
+        }
       },
       schools: []
     };
+  },
+  methods: {
+    onPaginationData(paginationData) {
+      this.$refs.pagination.setPaginationData(paginationData);
+    },
+    onChangePage(page) {
+      this.$refs.vuetable.changePage(page);
+    }
   }
 };
 </script>
