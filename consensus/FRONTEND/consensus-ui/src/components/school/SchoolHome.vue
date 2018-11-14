@@ -3,7 +3,7 @@
     <div class="row row-no-padding">
       <div class="col-md-9 col-sm-9 col-xs-9"></div>
       <div class="col-md-3 col-sm-3 col-xs-3">
-        <button class="btn btn-block btn-info">
+        <button class="btn btn-block btn-info" v-on:click="goToAddSchool">
           <i class="fa fa-plus"></i> Add a new School
         </button>
       </div>
@@ -72,6 +72,10 @@ export default {
       schools: []
     };
   },
-  methods: {}
+  methods: {
+    goToAddSchool: function() {
+      this.$router.push({ name: "school.add" });
+    }
+  }
 };
 </script>
