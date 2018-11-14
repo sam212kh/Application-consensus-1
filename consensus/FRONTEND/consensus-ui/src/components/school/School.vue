@@ -5,7 +5,6 @@
   </div>
 </template>
 
-
 <script>
 // @ is an alias to /src
 import MainHeader from "./MainHeader";
@@ -17,7 +16,6 @@ export default {
   }
 };
 </script>
-
 
 <style scoped>
 .school {

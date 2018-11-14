@@ -1,109 +1,77 @@
 <template>
   <section class="container-fluid">
     <div class="row row-no-padding">
-      <div class="col-md-9 col-sm-9 col-xs-9">
-      </div>
+      <div class="col-md-9 col-sm-9 col-xs-9"></div>
       <div class="col-md-3 col-sm-3 col-xs-3">
         <button class="btn btn-block btn-info">
-          <i class="fa fa-plus"></i>
-          Add a new School
+          <i class="fa fa-plus"></i> Add a new School
         </button>
       </div>
     </div>
     <div class="row row-no-padding">
-      <div class="col-md-12 col-sm-12 col-xs-12">
-        <table class="table table-hover text-right background-white box-shadow cursor-pointer">
-          <thead>
-          <tr>
-            <th class="text-center">
-              <i class="fa fa-book color-gray"></i>
-              <span class="font-weight-bold">School</span>
-            </th>
-            <th class="text-center">
-              <i class="fa fa-calendar color-gray"></i>
-              <span class="font-weight-bold">Seasons</span>
-            </th>
-            <th class="text-center">
-              <i class="fa fa-send color-gray"></i>
-              <span class="font-weight-bold">Applications</span>
-            </th>
-            <th class="text-center">
-              <i class="fa fa-users color-gray"></i>
-              <span class="font-weight-bold">Staffs</span>
-            </th>
-            <th class="text-center">
-              <i class="fa fa-eye color-gray"></i>
-              <span class="font-weight-bold">Reviewed</span>
-            </th>
-            <th class="text-center">
-              <i class="fa fa-handshake-o color-gray"></i>
-              <span class="font-weight-bold">Inrolled</span>
-            </th>
-            <th class="text-center">
-              <i class="fa fa-mobile-phone color-gray"></i>
-              <span class="font-weight-bold">Phone number</span>
-            </th>
-          </tr>
-
-          </thead>
-
-          <tbody>
-          <tr v-for="school in schools" :key="school.id">
-            <td class="text-left">
-              <a href="#">
-                {{ school.full_name }}
-                <i class="fa fa-angle-down margin-left-10"></i>
-              </a>
-            </td>
-            <td class="text-center">
-
-            </td>
-            <td class="text-center">
-
-            </td>
-            <td class="text-center">
-
-            </td>
-            <td class="text-center">
-
-            </td>
-            <td class="text-center">
-
-            </td>
-            <td class="text-center">
-              {{ school.phone_number }}
-            </td>
-          </tr>
-          </tbody>
-
-        </table>
+      <div class="col">
+        <vuetable
+          ref="vuetable"
+          :api-url="tableUrl"
+          :fields="tableFields"
+          :css="css.table"
+          :query-params="{
+            sort: 'order_by',
+            page: 'page',
+            perPage: 'page_size'
+          }"
+          data-path="results"
+          pagination-path="pagination"
+          @vuetable:pagination-data="onPaginationData"
+        ></vuetable>
+      </div>
+    </div>
+    <div class="row row-no-padding">
+      <div class="col">
+        <vuetable-pagination
+          ref="pagination"
+          :css="css.pagination"
+          @vuetable-pagination:change-page="onChangePage"
+        ></vuetable-pagination>
       </div>
     </div>
   </section>
 </template>
 
 <script>
-import SchoolApi from "../../endpoint/SchoolApi";
 import UtilMixin from "@/mixins/UtilMixin";
+import Vuetable from "vuetable-2/src/components/Vuetable";
+import VuetablePagination from "vuetable-2/src/components/VuetablePagination";
+import VuetableBootstrapMixin from "../../mixins/VuetableBootstrapMixin";
 
 export default {
   name: "Home",
-  mixins: [UtilMixin],
-  created: function() {
-    let self = this;
-    SchoolApi.getAll().then(
-      function(response) {
-        self.schools = response.data.results;
-      },
-      function(error) {
-        self.notifyDefaultServerError(error);
-      }
-    );
+  mixins: [UtilMixin, VuetableBootstrapMixin],
+  components: {
+    Vuetable,
+    VuetablePagination
   },
+  created: function() {},
   data: function() {
     return {
+      tableUrl: "api/v1/school",
+      tableFields: [
+        {
+          sortField: "full_name",
+          name: "full_name",
+          titleClass: "text-left",
+          dataClass: "text-left"
+        },
+        {
+          sortField: "phone_number",
+          name: "phone_number",
+          titleClass: "text-left",
+          dataClass: "text-left"
+        }
+      ],
       schools: []
     };
-  }
+  },
+  methods: {}
 };
 </script>
