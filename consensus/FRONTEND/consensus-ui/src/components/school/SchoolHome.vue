@@ -23,7 +23,24 @@
           data-path="results"
           pagination-path="pagination"
           @vuetable:pagination-data="onPaginationData"
-        ></vuetable>
+        >
+          <template slot="actions" scope="props">
+            <div class="table-button-container">
+              <button
+                class="btn btn-warning btn-sm"
+                @click="editRow(props.rowData);"
+              >
+                <span class="glyphicon glyphicon-pencil"></span> Edit</button
+              >&nbsp;&nbsp;
+              <button
+                class="btn btn-danger btn-sm"
+                @click="deleteRow(props.rowData);"
+              >
+                <span class="glyphicon glyphicon-trash"></span> Delete</button
+              >&nbsp;&nbsp;
+            </div>
+          </template>
+        </vuetable>
       </div>
     </div>
     <div class="row row-no-padding">
@@ -43,6 +60,7 @@ import UtilMixin from "@/mixins/UtilMixin";
 import Vuetable from "vuetable-2/src/components/Vuetable";
 import VuetablePagination from "vuetable-2/src/components/VuetablePagination";
 import VuetableBootstrapMixin from "../../mixins/VuetableBootstrapMixin";
+import SchoolApi from "@/endpoint/SchoolApi";
 
 export default {
   name: "Home",
@@ -67,7 +85,8 @@ export default {
           name: "phone_number",
           titleClass: "text-left",
           dataClass: "text-left"
-        }
+        },
+        "__slot:actions"
       ],
       schools: []
     };
@@ -75,6 +94,20 @@ export default {
   methods: {
     goToAddSchool: function() {
       this.$router.push({ name: "school.add" });
+    },
+    deleteRow: function(school) {
+      let self = this;
+      SchoolApi.delete(school).then(
+        function() {
+          self.$refs.vuetable.refresh();
+          self.notifySuccess("The school deleted");
+        },
+        function() {
+          self.notifyError(
+            "Some error happened when trying to delete the school"
+          );
+        }
+      );
     }
   }
 };
