@@ -93,7 +93,8 @@ export default {
   },
   methods: {
     goToAddSchool: function() {
-      this.$router.push({ name: "school.add" });
+      this.$store.commit("currentSchool", {});
+      this.$router.push({ name: "school.submit" });
     },
     deleteRow: function(school) {
       let self = this;
@@ -108,6 +109,10 @@ export default {
           );
         }
       );
+    },
+    editRow: function(school) {
+      this.$store.commit("currentSchool", school);
+      this.$router.push({ name: "school.submit" });
     }
   }
 };

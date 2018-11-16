@@ -14,7 +14,7 @@
                     type="text"
                     class="form-control"
                     placeholder="pic a name"
-                    v-model="school.full_name"
+                    v-model="fullName"
                   />
                 </div>
               </div>
@@ -37,7 +37,7 @@
                     type="text"
                     class="form-control"
                     placeholder="put your school phone number"
-                    v-model="school.phone_number"
+                    v-model="phoneNumber"
                   />
                 </div>
               </div>
@@ -111,7 +111,7 @@
                 <button
                   type="button"
                   class="btn btn-success btn-block"
-                  v-on:click="addSchool"
+                  v-on:click="submitSchool"
                 >
                   <i class="glyphicon glyphicon-ok"></i> Submit School
                 </button>
@@ -137,22 +137,53 @@
 <script>
 import UtilMixin from "@/mixins/UtilMixin";
 import SchoolApi from "../../endpoint/SchoolApi";
+import { mapState } from "vuex";
 
 export default {
-  name: "AddSchool",
+  name: "SubmitSchool",
   mixins: [UtilMixin],
   components: {},
+  computed: {
+    ...mapState(["currentSchool"]),
+    fullName: {
+      set(fullName) {
+        this.currentSchool.full_name = fullName;
+        this.$store.commit("currentSchool", this.currentSchool);
+      },
+      get() {
+        return this.currentSchool.full_name;
+      }
+    },
+    phoneNumber: {
+      set(phoneNumber) {
+        this.currentSchool.phone_number = phoneNumber;
+        this.$store.commit("currentSchool", this.currentSchool);
+      },
+      get() {
+        return this.currentSchool.phone_number;
+      }
+    }
+  },
   created: function() {},
-  data: function() {
-    return {
-      school: {}
-    };
+  destroyed: function() {
+    console.log("destroy");
   },
   methods: {
-    addSchool: function() {
+    submitSchool: function() {
+      // If current school should be edit
+      let school = this.$store.getters.currentSchool;
+      let request;
+      if (school.id && school.id > 0) {
+        request = SchoolApi.put(school);
+      } else {
+        request = SchoolApi.add(school);
+      }
+
+      // Use the same actions for both(add/edit) responses
       let self = this;
-      SchoolApi.add(this.school).then(
+      request.then(
         function() {
+          self.notifyDefaultServerSuccess({});
           self.$router.back();
         },
         function(error) {

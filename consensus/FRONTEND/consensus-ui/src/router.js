@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Router from "vue-router";
 import SchoolHome from "./components/school/SchoolHome.vue";
-import SchoolAdd from "./components/school/SchoolAdd.vue";
+import SchoolSubmit from "./components/school/SchoolSubmit.vue";
 import School from "./components/school/School.vue";
 import SignIn from "./components/SignIn.vue";
 import store from "./store.js";
@@ -34,9 +34,9 @@ export default new Router({
           component: SchoolHome
         },
         {
-          path: "add",
-          name: "school.add",
-          component: SchoolAdd
+          path: "submit",
+          name: "school.submit",
+          component: SchoolSubmit
         }
       ]
     },
