@@ -12,9 +12,6 @@ export default new Vuex.Store({
   mutations: {
     currentUser: function(state, payload) {
       state.currentUser = payload.currentUser;
-    },
-    currentSchool: function(state, payload) {
-      state.currentSchool = payload;
     }
   },
   actions: {
@@ -43,9 +40,6 @@ export default new Vuex.Store({
     },
     isLoadedUser: function(state) {
       return !!state.currentUser.id;
-    },
-    currentSchool: function(state) {
-      return state.currentSchool;
     }
   }
 });
