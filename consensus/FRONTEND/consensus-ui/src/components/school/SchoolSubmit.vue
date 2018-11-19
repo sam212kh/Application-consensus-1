@@ -144,9 +144,7 @@ export default {
   components: {},
   data: function() {
     return {
-      school: {
-        full_name: ""
-      }
+      school: {}
     };
   },
   created: function() {
@@ -155,7 +153,7 @@ export default {
       let self = this;
       SchoolApi.get(this.$route.params.id).then(
         function(response) {
-          self.school = Object.assign(self.school, response.data);
+          self.school = response.data;
         },
         function(error) {
           self.notifyDefaultServerError(error);
