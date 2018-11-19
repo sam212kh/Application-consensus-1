@@ -34,8 +34,13 @@ export default new Router({
           component: SchoolHome
         },
         {
-          path: "submit",
-          name: "school.submit",
+          path: "add",
+          name: "school.add",
+          component: SchoolSubmit
+        },
+        {
+          path: ":id/edit",
+          name: "school.edit",
           component: SchoolSubmit
         }
       ]

@@ -14,7 +14,7 @@
                     type="text"
                     class="form-control"
                     placeholder="pic a name"
-                    v-model="fullName"
+                    v-model="school.full_name"
                   />
                 </div>
               </div>
@@ -37,7 +37,7 @@
                     type="text"
                     class="form-control"
                     placeholder="put your school phone number"
-                    v-model="phoneNumber"
+                    v-model="school.phone_number"
                   />
                 </div>
               </div>
@@ -137,46 +137,43 @@
 <script>
 import UtilMixin from "@/mixins/UtilMixin";
 import SchoolApi from "../../endpoint/SchoolApi";
-import { mapState } from "vuex";
 
 export default {
   name: "SubmitSchool",
   mixins: [UtilMixin],
   components: {},
-  computed: {
-    ...mapState(["currentSchool"]),
-    fullName: {
-      set(fullName) {
-        this.currentSchool.full_name = fullName;
-        this.$store.commit("currentSchool", this.currentSchool);
-      },
-      get() {
-        return this.currentSchool.full_name;
+  data: function() {
+    return {
+      school: {
+        full_name: ""
       }
-    },
-    phoneNumber: {
-      set(phoneNumber) {
-        this.currentSchool.phone_number = phoneNumber;
-        this.$store.commit("currentSchool", this.currentSchool);
-      },
-      get() {
-        return this.currentSchool.phone_number;
-      }
+    };
+  },
+  created: function() {
+    if (this.$route.params.id) {
+      // Retrieve current school when the school's id passed
+      let self = this;
+      SchoolApi.get(this.$route.params.id).then(
+        function(response) {
+          self.school = Object.assign(self.school, response.data);
+        },
+        function(error) {
+          self.notifyDefaultServerError(error);
+          // Lets back if the current school could not be retrieved
+          self.$router.back();
+        }
+      );
     }
   },
-  created: function() {},
-  destroyed: function() {
-    console.log("destroy");
-  },
+  destroyed: function() {},
   methods: {
     submitSchool: function() {
       // If current school should be edit
-      let school = this.$store.getters.currentSchool;
       let request;
-      if (school.id && school.id > 0) {
-        request = SchoolApi.put(school);
+      if (this.school.id && this.school.id > 0) {
+        request = SchoolApi.put(this.school);
       } else {
-        request = SchoolApi.add(school);
+        request = SchoolApi.add(this.school);
       }
 
       // Use the same actions for both(add/edit) responses

@@ -15,6 +15,7 @@
           :api-url="tableUrl"
           :fields="tableFields"
           :css="css.table"
+          class="school-table"
           :query-params="{
             sort: 'order_by',
             page: 'page',
@@ -93,8 +94,7 @@ export default {
   },
   methods: {
     goToAddSchool: function() {
-      this.$store.commit("currentSchool", {});
-      this.$router.push({ name: "school.submit" });
+      this.$router.push({ name: "school.add" });
     },
     deleteRow: function(school) {
       let self = this;
@@ -111,9 +111,15 @@ export default {
       );
     },
     editRow: function(school) {
-      this.$store.commit("currentSchool", school);
-      this.$router.push({ name: "school.submit" });
+      this.$router.push({ name: "school.edit", params: { id: school.id } });
     }
   }
 };
 </script>
+
+<style>
+.school-table .vuetable-th-slot-actions {
+  width: 200px;
+  min-width: 200px;
+}
+</style>

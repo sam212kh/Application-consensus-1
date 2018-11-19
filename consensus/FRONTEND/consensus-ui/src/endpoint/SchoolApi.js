@@ -4,6 +4,9 @@ export default {
   getAll() {
     return Api.get("school");
   },
+  get(id) {
+    return Api.get("school/" + id);
+  },
   add(school) {
     return Api.post("school", school);
   },
