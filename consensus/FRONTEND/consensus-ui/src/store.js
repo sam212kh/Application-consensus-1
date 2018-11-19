@@ -6,7 +6,8 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    currentUser: {}
+    currentUser: {},
+    currentSchool: {}
   },
   mutations: {
     currentUser: function(state, payload) {
