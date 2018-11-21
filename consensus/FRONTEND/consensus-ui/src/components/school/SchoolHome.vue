@@ -73,7 +73,7 @@ export default {
   created: function() {},
   data: function() {
     return {
-      tableUrl: "api/v1/school",
+      tableUrl: "/api/v1/school",
       tableFields: [
         {
           sortField: "full_name",
