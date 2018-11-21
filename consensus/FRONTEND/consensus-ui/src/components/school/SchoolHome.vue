@@ -35,7 +35,7 @@
               >&nbsp;&nbsp;
               <button
                 class="btn btn-danger btn-sm"
-                @click="deleteRow(props.rowData);"
+                @click="showConfirmDeleteModal(props.rowData);"
               >
                 <span class="glyphicon glyphicon-trash"></span> Delete</button
               >&nbsp;&nbsp;
@@ -53,6 +53,19 @@
         ></vuetable-pagination>
       </div>
     </div>
+    <b-modal centered ref="confirmDeleteModalRef" id="confirmDeleteModal" :hide-header="true">
+      <p class="text-danger h6">Are you sure to delete this record?</p>
+      <div slot="modal-footer" class="w-100">
+          <button type="button" class="btn btn-secondary float-left" @click="$refs.confirmDeleteModalRef.hide()">
+            <i class="la la-close"></i> Cancel
+          </button>
+          <button type="button" class="btn btn-danger float-right" :disabled="deletingRecord" @click="deleteSchool()">
+            <i :class="deletingRecord? 'la la-spin la-spinner':'la la-trash'"></i>
+            <span v-show="!deletingRecord">Delete</span>
+            <span v-show="deletingRecord">Deleting</span>
+          </button>
+       </div>
+    </b-modal>
   </section>
 </template>
 
@@ -62,13 +75,15 @@ import Vuetable from "vuetable-2/src/components/Vuetable";
 import VuetablePagination from "vuetable-2/src/components/VuetablePagination";
 import VuetableBootstrapMixin from "../../mixins/VuetableBootstrapMixin";
 import SchoolApi from "@/endpoint/SchoolApi";
+import bModal from 'bootstrap-vue/es/components/modal/modal'
 
 export default {
   name: "Home",
   mixins: [UtilMixin, VuetableBootstrapMixin],
   components: {
     Vuetable,
-    VuetablePagination
+    VuetablePagination,
+    'b-modal': bModal
   },
   created: function() {},
   data: function() {
@@ -89,21 +104,31 @@ export default {
         },
         "__slot:actions"
       ],
-      schools: []
+      schools: [],
+      selectedSchoolForDelete: null,
+      deletingRecord: false,
     };
   },
   methods: {
     goToAddSchool: function() {
       this.$router.push({ name: "school.add" });
     },
-    deleteRow: function(school) {
+    showConfirmDeleteModal: function (school) {
+      this.selectedSchoolForDelete = school;
+      this.$refs.confirmDeleteModalRef.show();
+    },
+    deleteSchool: function() {
       let self = this;
-      SchoolApi.delete(school).then(
+      self.deletingRecord = true;
+      SchoolApi.delete(self.selectedSchoolForDelete).then(
         function() {
           self.$refs.vuetable.refresh();
+          self.deletingRecord = false;
+          self.$refs.confirmDeleteModalRef.hide();
           self.notifySuccess("The school deleted");
         },
         function() {
+          self.deletingRecord = false;
           self.notifyError(
             "Some error happened when trying to delete the school"
           );
