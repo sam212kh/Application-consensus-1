@@ -3,6 +3,7 @@ import EventBus from "./event-bus";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
+import SchoolDetailHome from "./components/school/SchoolDetailHome";
 
 Vue.config.productionTip = false;
 Vue.prototype.$eventsBus = EventBus;
@@ -11,6 +12,7 @@ Vue.prototype.$eventsBus = EventBus;
  ****************** App *****************
  ****************************************/
 
+Vue.component("school-detail-home", SchoolDetailHome);
 new Vue({
   router,
   store,

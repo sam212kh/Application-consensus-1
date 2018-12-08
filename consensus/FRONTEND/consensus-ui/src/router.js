@@ -1,7 +1,8 @@
 import Vue from "vue";
 import Router from "vue-router";
-import SchoolHome from "./components/school/SchoolHome.vue";
-import SchoolSubmit from "./components/school/SchoolSubmit.vue";
+import SchoolHome from "./components/school/SchoolHome";
+import SchoolSubmit from "./components/school/SchoolSubmit";
+import SchoolSeason from "./components/school/SchoolSeason";
 import School from "./components/school/School.vue";
 import SignIn from "./components/SignIn.vue";
 import store from "./store.js";
@@ -42,6 +43,11 @@ export default new Router({
           path: ":id/edit",
           name: "school.edit",
           component: SchoolSubmit
+        },
+        {
+          path: ":school_id/season/:season_id",
+          name: "school.season",
+          component: SchoolSeason
         }
       ]
     },
