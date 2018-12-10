@@ -46,6 +46,41 @@ export default {
             enrolled: 3
           }
         ]
+      },
+      {
+        id: 13,
+        full_name: "school_100",
+        total_season_count: 1,
+        total_application_count: 11,
+        total_staff_count: 4,
+        total_score_count: 17,
+        total_enrolled_count: 10,
+        seasons: [
+          {
+            id: 18,
+            full_name: "season_11",
+            application: 2,
+            staff: 3,
+            score: 4,
+            enrolled: 2
+          },
+          {
+            id: 12,
+            full_name: "season_12",
+            application: 5,
+            staff: 1,
+            score: 2,
+            enrolled: 6
+          },
+          {
+            id: 31,
+            full_name: "season_13",
+            application: 8,
+            staff: 4,
+            score: 1,
+            enrolled: 3
+          }
+        ]
       }
     ]
   },

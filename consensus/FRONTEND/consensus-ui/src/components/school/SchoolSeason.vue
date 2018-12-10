@@ -1,12 +1,6 @@
 <template>
   <section class="container-fluid">
-    <div class="row row-no-padding">
-      <div class="col-md-3 col-sm-3 col-xs-3"></div>
-      <div class="col-md-3 col-sm-3 col-xs-3">
-        <button class="btn btn-block btn-info">
-          <i class="fa fa-plus"></i> Add a new Season
-        </button>
-      </div>
+    <div class="row row-no-padding justify-content-end">
       <div class="col-md-3 col-sm-3 col-xs-3">
         <button class="btn btn-block btn-success">
           <i class="glyphicon glyphicon-ok"></i> Submit a new application

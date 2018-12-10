@@ -44,4 +44,9 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.clickable {
+  color: #2185d0;
+  cursor: pointer;
+}
+</style>

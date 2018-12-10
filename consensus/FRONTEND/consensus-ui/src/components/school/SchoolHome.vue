@@ -6,6 +6,11 @@
           <i class="fa fa-plus"></i> Add a new School
         </button>
       </div>
+      <div class="col-3">
+        <button class="btn btn-block btn-primary" v-on:click="goToAddSeason">
+          <i class="fa fa-plus"></i> Add a new Season
+        </button>
+      </div>
     </div>
     <div class="row row-no-padding">
       <div class="col">
@@ -16,9 +21,10 @@
           :api-url="tableUrl"
           :fields="tableFields"
           :css="css.table"
+          :row-class="onRowClass"
           class="school-table"
           detail-row-component="school-detail-home"
-          @vuetable:cell-clicked="onCellClicked"
+          @vuetable:row-clicked="onRowClicked"
           :query-params="{
             sort: 'order_by',
             page: 'page',
@@ -109,6 +115,7 @@ export default {
   },
   data: function() {
     return {
+      selectedId: -1,
       localData: {},
       tableUrl: "/api/v1/school",
       tableFields: [
@@ -117,7 +124,7 @@ export default {
           name: "full_name",
           title: `<span class="icon is-small orange"><i class="fa fa-book color-gray"></i></span> School`,
           titleClass: "text-left",
-          dataClass: "text-left clickable"
+          dataClass: "text-left"
         },
         {
           name: "total_staff_count",
@@ -185,9 +192,17 @@ export default {
     editRow: function(school) {
       this.$router.push({ name: "school.edit", params: { id: school.id } });
     },
-    onCellClicked: function(data) {
+    onRowClicked: function(data) {
+      this.selectedId = data.id;
       this.$refs.vuetable.toggleDetailRow(data.id);
-    }
+    },
+    onRowClass: function(dataItem) {
+      if (this.selectedId !== dataItem.id) {
+        return "clickable";
+      }
+      return "bg-info text-light clickable";
+    },
+    goToAddSeason: function() {}
   }
 };
 </script>
@@ -197,8 +212,8 @@ export default {
   width: 200px;
   min-width: 200px;
 }
+
 .clickable {
-  color: #2185d0;
   cursor: pointer;
 }
 </style>
