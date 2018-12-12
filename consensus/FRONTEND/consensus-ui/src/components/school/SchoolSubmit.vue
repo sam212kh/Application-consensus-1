@@ -148,7 +148,9 @@ export default {
     };
   },
   created: function() {
+    this.$eventsBus.$emit("header:title", "Add school");
     if (this.$route.params.id) {
+      this.$eventsBus.$emit("header:title", "Edit school");
       // Retrieve current school when the school's id passed
       let self = this;
       SchoolApi.get(this.$route.params.id).then(

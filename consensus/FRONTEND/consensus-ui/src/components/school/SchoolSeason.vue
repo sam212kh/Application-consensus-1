@@ -56,7 +56,9 @@ export default {
   name: "SchoolSeason",
   mixins: [],
   components: {},
-  created: function() {},
+  created: function() {
+    this.$eventsBus.$emit("header:title", "School's season");
+  },
   data: function() {
     return {};
   },

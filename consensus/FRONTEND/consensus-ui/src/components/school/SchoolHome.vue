@@ -111,6 +111,7 @@ export default {
     "b-modal": bModal
   },
   created: function() {
+    this.$eventsBus.$emit("header:title", "Schools");
     this.localData = SchoolApi.getAll();
   },
   data: function() {
