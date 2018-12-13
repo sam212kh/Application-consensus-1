@@ -4,7 +4,7 @@
       <tr>
         <th>Name</th>
         <th>Application</th>
-        <th>Enrolled</th>
+        <th>score</th>
         <th>Enrolled</th>
       </tr>
     </thead>
@@ -14,7 +14,7 @@
           {{ season.full_name }}
         </td>
         <td>{{ season.application }}</td>
-        <td>{{ season.score }}</td>
+        <td>{{ season.scored }}</td>
         <td>{{ season.enrolled }}</td>
       </tr>
     </tbody>
@@ -23,7 +23,7 @@
 
 <script>
 export default {
-  name: "SchoolDetailHome",
+  name: "SchoolSeasons",
   props: {
     rowData: {
       type: Object,
@@ -36,7 +36,7 @@ export default {
   methods: {
     gotoSeasonHome: function(season) {
       this.$router.push({
-        name: "school.season",
+        name: "school.detail",
         params: { school_id: this.rowData.id, season_id: season.id }
       });
     }

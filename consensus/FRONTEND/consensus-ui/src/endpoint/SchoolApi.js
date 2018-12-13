@@ -23,26 +23,23 @@ export default {
         seasons: [
           {
             id: 18,
-            full_name: "season_1",
-            application: 2,
-            staff: 3,
-            score: 4,
+            full_name: "season_11",
+            application: 7,
+            scored: 4,
             enrolled: 2
           },
           {
             id: 12,
-            full_name: "season_2",
-            application: 5,
-            staff: 1,
-            score: 2,
+            full_name: "season_12",
+            application: 9,
+            scored: 2,
             enrolled: 6
           },
           {
             id: 31,
-            full_name: "season_3",
-            application: 8,
-            staff: 4,
-            score: 1,
+            full_name: "season_13",
+            application: 6,
+            scored: 1,
             enrolled: 3
           }
         ]
@@ -57,27 +54,24 @@ export default {
         total_enrolled_count: 10,
         seasons: [
           {
-            id: 18,
+            id: 118,
             full_name: "season_11",
-            application: 2,
-            staff: 3,
-            score: 4,
+            application: 7,
+            scored: 4,
             enrolled: 2
           },
           {
-            id: 12,
+            id: 112,
             full_name: "season_12",
-            application: 5,
-            staff: 1,
-            score: 2,
+            application: 9,
+            scored: 2,
             enrolled: 6
           },
           {
-            id: 31,
+            id: 311,
             full_name: "season_13",
-            application: 8,
-            staff: 4,
-            score: 1,
+            application: 6,
+            scored: 1,
             enrolled: 3
           }
         ]
@@ -90,7 +84,7 @@ export default {
   },
   get(id) {
     for (let i = 0; i < this.mockSchool.results.length; i++) {
-      if (this.mockSchool.results[i].id === id) {
+      if (this.mockSchool.results[i].id === +id) {
         return Promise.resolve({
           status: 200,
           data: this.mockSchool.results[i]

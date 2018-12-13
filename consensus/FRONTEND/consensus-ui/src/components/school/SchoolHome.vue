@@ -23,7 +23,7 @@
           :css="css.table"
           :row-class="onRowClass"
           class="school-table"
-          detail-row-component="school-detail-home"
+          detail-row-component="school-seasons"
           @vuetable:row-clicked="onRowClicked"
           :query-params="{
             sort: 'order_by',
