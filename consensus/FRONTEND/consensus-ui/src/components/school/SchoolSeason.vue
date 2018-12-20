@@ -1,7 +1,7 @@
 <template>
   <section class="container-fluid">
     <div class="row row-no-padding justify-content-end">
-      <div class="col-md-3 col-sm-3 col-xs-3">
+      <div class="col-md-4 col-sm-4 col-xs-4">
         <button
             class="btn btn-block btn-success"
             @click="showNewSeasonModal();"
@@ -31,19 +31,68 @@
           <h4>enrolled</h4>
           <div class="info">
             <div class="left">
-              <h6>Student enrolled : {{ season.enrolled }}</h6>
+              <h6>Student enrolled : {{ season.enrolled || 0}}</h6>
             </div>
             <div class="right">{{ season.new_enrolled || 0 }} new</div>
           </div>
         </div>
       </div>
     </div>
+    <div class="row row-no-padding" v-if="applicationShown">
+      <vuetable
+          ref="vuetable"
+          :api-mode="false"
+          :data="localData"
+          :api-url="applicationUrl"
+          :fields="tableApplicationFields"
+          :css="css.table"
+          class="application-table"
+          :query-params="{
+            sort: 'order_by',
+            page: 'page',
+            perPage: 'page_size'
+          }"
+          data-path="results"
+          pagination-path="pagination"
+          @vuetable:pagination-data="onPaginationData"
+      >
+        <template slot="review_actions" scope="props">
+          <div class="table-button-container">
+            <button
+                class="btn btn-warning btn-sm"
+                @click="reviewApplication(props.rowData);"
+            >
+              <span class="glyphicon glyphicon-pencil"></span> Review
+            </button
+            >&nbsp;&nbsp;
+          </div>
+        </template>
+        <template slot="decision_actions" scope="props">
+          <div class="table-button-container">
+            <button
+                class="btn btn-success btn-sm"
+                @click="acceptApplication(props.rowData);"
+            >
+              <span class="glyphicon glyphicon-pencil"></span> Accept
+            </button
+            >&nbsp;&nbsp;
+            <button
+                class="btn btn-outline-success btn-sm"
+                @click="rejectAppliction(props.rowData);"
+            >
+              <span class="glyphicon glyphicon-trash"></span> Reject
+            </button
+            >&nbsp;&nbsp;
+          </div>
+        </template>
+      </vuetable>
+    </div>
     <b-modal
         size="lg"
         centered
         ref="newSeasonModalRef"
         id="newSeasonModal"
-        title="Register a new Season"
+        title="Add a new application"
         :header-bg-variant="'modal-header padding-10 background-light-silver'"
         :footer-bg-variant="'modal-footer padding-10 background-light-silver border-bottom-right-radius-10 border-bottom-left-radius-10'"
         :aria-required="false"
@@ -161,23 +210,23 @@
         </div>
       </div>
       <div slot="modal-footer" class="w-100">
-            <div class="row row-no-padding width-full">
-              <div class="col-md-4 col-sm-4 col-xs-12">
-                <button type="button" class="btn btn-success btn-block">
-                  <i class="glyphicon glyphicon-ok"></i> Submit Season
-                </button>
-              </div>
-              <div class="col-md-3 col-sm-3 col-xs-12">
-                <button
-                    type="button"
-                    class="btn btn-danger btn-block"
-                    data-dismiss="modal"
-                >
-                  <i class="fa fa-close"></i> Cancel
-                </button>
-              </div>
-            </div>
+        <div class="row row-no-padding width-full">
+          <div class="col-md-4 col-sm-4 col-xs-12">
+            <button type="button" class="btn btn-success btn-block">
+              <i class="glyphicon glyphicon-ok"></i> Submit Season
+            </button>
           </div>
+          <div class="col-md-3 col-sm-3 col-xs-12">
+            <button
+                type="button"
+                class="btn btn-danger btn-block"
+                data-dismiss="modal"
+            >
+              <i class="fa fa-close"></i> Cancel
+            </button>
+          </div>
+        </div>
+      </div>
     </b-modal>
   </section>
 </template>
@@ -217,7 +266,77 @@
         },
         data: function () {
             return {
-                season: {}
+                season: {},
+                applicationShown: false,
+                selectedForDelete: null,
+                deletingRecord: false,
+                LocalData: {},
+                applicationUrl: "/api/v1/application",
+                tableFields: [
+                    {
+                        sortField: "first_name",
+                        name: "first_name",
+                        title: `<span class="icon is-small orange"><i class="fa fa-book color-gray"></i></span> First Name`,
+                        titleClass: "text-left",
+                        dataClass: "text-left"
+                    },
+                    {
+                        name: "last_name",
+                        title: `<span class="icon is-small orange"><i class="fa fa-users color-gray"></i></span> Last Name`,
+                        titleClass: "text-left",
+                        dataClass: "text-left"
+                    },
+                    {
+                        name: "date_of_birth",
+                        title: `<span class="icon is-small orange"><i class="fa fa-calendar color-gray"></i></span> Date of birth`,
+                        titleClass: "text-left",
+                        dataClass: "text-left"
+                    },
+                    {
+                        name: "gender",
+                        title: `<span class="icon is-small orange"><i class="fa fa-send color-gray"></i></span> Gender`,
+                        titleClass: "text-left",
+                        dataClass: "text-left"
+                    },
+                    {
+                        name: "email",
+                        title: `<span class="icon is-small orange"><i class="fa fa-calendar color-gray"></i></span> Email`,
+                        titleClass: "text-left",
+                        dataClass: "text-left"
+                    },
+                    {
+                        name: "phone_number",
+                        title: `<span class="icon is-small orange"><i class="fa fa-calendar color-gray"></i></span> Phone number`,
+                        titleClass: "text-left",
+                        dataClass: "text-left"
+                    },
+                    {
+                        name: "application_info",
+                        title: `<span class="icon is-small orange"><i class="fa fa-calendar color-gray"></i></span> Application Info`,
+                        titleClass: "text-left",
+                        dataClass: "text-left"
+                    },
+                    {
+                        name: "educational_Info",
+                        title: `<span class="icon is-small orange"><i class="fa fa-calendar color-gray"></i></span> Educational Info`,
+                        titleClass: "text-left",
+                        dataClass: "text-left"
+                    },
+                    {
+                        name: "application_score",
+                        title: `<span class="icon is-small orange"><i class="fa fa-calendar color-gray"></i></span> Application Score`,
+                        titleClass: "text-left",
+                        dataClass: "text-left"
+                    },
+                    {
+                        name: "Status",
+                        title: `<span class="icon is-small orange"><i class="fa fa-calendar color-gray"></i></span> Status`,
+                        titleClass: "text-left",
+                        dataClass: "text-left"
+                    },
+                    "__slot:review_actions",
+                    "__slot:decision_actions"
+                ],
             };
         },
         methods: {
@@ -228,4 +347,11 @@
     };
 </script>
 
-<style></style>
+<style>
+  .application-table {
+    margin-top: 15px;
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+
+</style>

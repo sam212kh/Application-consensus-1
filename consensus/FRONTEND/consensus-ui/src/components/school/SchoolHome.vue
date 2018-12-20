@@ -100,7 +100,7 @@ import Vuetable from "vuetable-2/src/components/Vuetable";
 import VuetablePagination from "vuetable-2/src/components/VuetablePagination";
 import VuetableBootstrapMixin from "../../mixins/VuetableBootstrapMixin";
 import bModal from "bootstrap-vue/es/components/modal/modal";
-import SchoolApi from "@/endpoint/SchoolApi";
+import schoolApi from "@/endpoint/SchoolApi";
 
 export default {
   name: "SchoolHome",
@@ -112,7 +112,7 @@ export default {
   },
   created: function() {
     this.$eventsBus.$emit("header:title", "Schools");
-    this.localData = SchoolApi.getAll();
+    this.localData = schoolApi.getAll();
   },
   data: function() {
     return {
@@ -123,7 +123,7 @@ export default {
         {
           sortField: "full_name",
           name: "full_name",
-          title: `<span class="icon is-small orange"><i class="fa fa-book color-gray"></i></span> School`,
+          title: `<span class="icon is-small orange"><i class="fa fa-book color-gray"></i></span> Full Name`,
           titleClass: "text-left",
           dataClass: "text-left"
         },
@@ -175,7 +175,7 @@ export default {
     deleteSchool: function() {
       let self = this;
       self.deletingRecord = true;
-      SchoolApi.delete(self.selectedSchoolForDelete).then(
+      schoolApi.delete(self.selectedSchoolForDelete).then(
         function() {
           self.$refs.vuetable.refresh();
           self.deletingRecord = false;

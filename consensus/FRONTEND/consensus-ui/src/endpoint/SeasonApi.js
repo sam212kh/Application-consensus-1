@@ -40,6 +40,10 @@ export default {
         });
       }
     }
+     return Promise.resolve({
+          status: 200,
+          data: this.mockSeason[0]
+        });
   },
   add(season) {
     season.id = Math.random() * 10000 + 1;
