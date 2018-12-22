@@ -2,6 +2,7 @@ export default {
   mockSeason: [
     {
       id: 18,
+      school_id: 12,
       full_name: "season_11",
       application: 7,
       scored: 4,
@@ -11,6 +12,7 @@ export default {
     },
     {
       id: 12,
+      school_id: 12,
       full_name: "season_12",
       application: 9,
       scored: 2,
@@ -20,6 +22,7 @@ export default {
     },
     {
       id: 31,
+      school_id: 13,
       full_name: "season_13",
       application: 6,
       scored: 1,
@@ -31,19 +34,19 @@ export default {
   getAll() {
     return this.mockSeason;
   },
-  get(id) {
+  get(seasonId) {
     for (let i = 0; i < this.mockSeason.length; i++) {
-      if (this.mockSeason[i].id === +id) {
+      if (this.mockSeason[i].id === +seasonId) {
         return Promise.resolve({
           status: 200,
           data: this.mockSeason[i]
         });
       }
     }
-     return Promise.resolve({
-          status: 200,
-          data: this.mockSeason[0]
-        });
+    return Promise.resolve({
+      status: 200,
+      data: this.mockSeason[0]
+    });
   },
   add(season) {
     season.id = Math.random() * 10000 + 1;
