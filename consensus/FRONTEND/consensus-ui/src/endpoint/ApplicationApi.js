@@ -24,8 +24,8 @@ export default {
         info: "my info",
         educational_info: "my education",
         score: 4,
-        created_date: "2018-12-22",
-        status: "Scored"
+        created_date: "2018-12-24",
+        status: "scored"
       },
       {
         id: 13,
@@ -39,8 +39,8 @@ export default {
         info: "my info",
         educational_info: "my education",
         score: 2,
-        created_date: "2018-12-22",
-        status: "Scored"
+        created_date: "2018-12-24",
+        status: "scored"
       },
       {
         id: 15,
@@ -55,7 +55,7 @@ export default {
         educational_info: "my education",
         score: 5,
         created_date: "2018-12-22",
-        status: "Scored"
+        status: "scored"
       },
       {
         id: 16,
@@ -70,7 +70,22 @@ export default {
         educational_info: "my education",
         score: 0,
         created_date: "2018-12-22",
-        status: "Pending"
+        status: "pending"
+      },
+      {
+        id: 17,
+        school_id: 11,
+        first_name: "application_17",
+        last_name: "13",
+        date_of_birth: "2000-10-22",
+        gender: "Male",
+        email: "application_17@gmail.com",
+        phone_number: "0171717171717",
+        info: "my info",
+        educational_info: "my education",
+        score: 5,
+        created_date: "2018-12-24",
+        status: "enrolled"
       }
     ]
   },

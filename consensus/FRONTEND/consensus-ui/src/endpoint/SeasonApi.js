@@ -6,9 +6,7 @@ export default {
       full_name: "season_11",
       application: 7,
       scored: 4,
-      enrolled: 2,
-      new_application: 1,
-      new_enrolled: 2
+      enrolled: 2
     },
     {
       id: 12,
@@ -16,9 +14,7 @@ export default {
       full_name: "season_12",
       application: 9,
       scored: 2,
-      enrolled: 6,
-      new_application: 1,
-      new_enrolled: 2
+      enrolled: 6
     },
     {
       id: 31,
@@ -26,9 +22,7 @@ export default {
       full_name: "season_13",
       application: 6,
       scored: 1,
-      enrolled: 3,
-      new_application: 1,
-      new_enrolled: 2
+      enrolled: 3
     }
   ],
   getAll() {
