@@ -14,10 +14,7 @@
       <div class="col-md-4 col-sm-4 col-xs-12">
         <div
           class="boxing"
-          v-on:click="
-            applicationShown = !applicationShown;
-            enrolledShown = false;
-          "
+          v-on:click="onApplicationBoxClick"
           v-bind:class="{ active: applicationShown }"
         >
           <i class="fa fa-eye"></i>
@@ -35,10 +32,7 @@
       <div class="col-md-4 col-sm-4 col-xs-12">
         <div
           class="boxing"
-          v-on:click="
-            enrolledShown = !enrolledShown;
-            applicationShown = false;
-          "
+          v-on:click="onEnrolledBoxClick"
           v-bind:class="{ active: enrolledShown }"
         >
           <i class="fa fa-handshake-o"></i>
@@ -75,7 +69,7 @@
               class="btn btn-warning btn-sm"
               @click="reviewApplication(props.rowData);"
             >
-              <span class="glyphicon glyphicon-pencil"></span> Review</button
+              <span class="glyphicon glyphicon-pencil"></span></button
             >&nbsp;&nbsp;
           </div>
         </template>
@@ -85,13 +79,13 @@
               class="btn btn-success btn-sm"
               @click="acceptApplication(props.rowData);"
             >
-              <span class="glyphicon glyphicon-check"></span> Accept</button
+              <span class="glyphicon glyphicon-check"></span></button
             >&nbsp;&nbsp;
             <button
-              class="btn btn-outline-success btn-sm"
+              class="btn btn-outline-danger btn-sm"
               @click="rejectAppliction(props.rowData);"
             >
-              <span class="glyphicon glyphicon-trash"></span> Reject</button
+              <span class="glyphicon glyphicon-trash"></span></button
             >&nbsp;&nbsp;
           </div>
         </template>
@@ -216,6 +210,17 @@ import vuetableBootstrapMixin from "../../mixins/VuetableBootstrapMixin";
 import applicationApi from "../../endpoint/ApplicationApi";
 import ApplicationStatus from "./model/ApplicationStatus";
 
+let reviewActionField = {
+  name: "__slot:review_actions",
+  title: "review",
+  titleClass: "text-left"
+};
+let decisionActionField = {
+  name: "__slot:decision_actions",
+  title: "decision",
+  titleClass: "text-left"
+};
+
 export default {
   name: "SchoolSeason",
   mixins: [utilMixin, vuetableBootstrapMixin],
@@ -250,9 +255,9 @@ export default {
       },
       applicationShown: false,
       enrolledShown: false,
-      selectedForDelete: null,
-      deletingRecord: false,
       localData: {},
+      reviewActionField: reviewActionField,
+      decisionActionField: decisionActionField,
       tableFields: [
         {
           sortField: "first_name",
@@ -315,8 +320,8 @@ export default {
           titleClass: "text-left",
           dataClass: "text-left"
         },
-        "__slot:review_actions",
-        "__slot:decision_actions"
+        reviewActionField,
+        decisionActionField
       ]
     };
   },
@@ -355,6 +360,18 @@ export default {
           }
         }
       });
+    },
+    onEnrolledBoxClick: function() {
+      this.enrolledShown = !this.enrolledShown;
+      this.applicationShown = false;
+      this.decisionActionField.visible = !this.enrolledShown;
+      this.$refs.vuetable && this.$refs.vuetable.normalizeFields();
+    },
+    onApplicationBoxClick: function() {
+      this.applicationShown = !this.applicationShown;
+      this.enrolledShown = false;
+      this.decisionActionField.visible = this.applicationShown;
+      this.$refs.vuetable && this.$refs.vuetable.normalizeFields();
     }
   }
 };
