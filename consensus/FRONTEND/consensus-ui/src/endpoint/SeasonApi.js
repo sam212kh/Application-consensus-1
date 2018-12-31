@@ -42,10 +42,11 @@ export default {
       data: this.mockSeason[0]
     });
   },
-  add(season) {
+  add(schoolId, season) {
     season.id = Math.random() * 10000 + 1;
+    season.school_id = schoolId;
     this.mockSeason.push(season);
-    return Promise.resolve({ status: 200 });
+    return Promise.resolve({ status: 200, data: season });
   },
   put(season) {
     Object.assign(this.get(season.id), season);

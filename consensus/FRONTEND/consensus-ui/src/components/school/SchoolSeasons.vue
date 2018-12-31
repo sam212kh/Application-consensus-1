@@ -13,9 +13,9 @@
         <td class="clickable" v-on:click="gotoSeasonHome(season);">
           {{ season.full_name }}
         </td>
-        <td>{{ season.application }}</td>
-        <td>{{ season.scored }}</td>
-        <td>{{ season.enrolled }}</td>
+        <td>{{ season.application || 0 }}</td>
+        <td>{{ season.scored || 0 }}</td>
+        <td>{{ season.enrolled || 0 }}</td>
       </tr>
     </tbody>
   </table>

@@ -115,6 +115,7 @@
                       type="text"
                       class="form-control"
                       placeholder="pick a name"
+                      v-model="newSeason.full_name"
                     />
                   </div>
                 </div>
@@ -125,6 +126,7 @@
                       type="text"
                       class="form-control"
                       placeholder="pick a name"
+                      v-model="newSeason.kind"
                     />
                   </div>
                 </div>
@@ -137,6 +139,7 @@
                       class="form-control"
                       data-date-format="dd/mm/yyyy"
                       id="startDate"
+                      v-model="newSeason.start_date"
                     />
                   </div>
                 </div>
@@ -147,6 +150,7 @@
                       class="form-control"
                       data-date-format="dd/mm/yyyy"
                       id="endDate"
+                      v-model="newSeason.end_date"
                     />
                   </div>
                 </div>
@@ -161,6 +165,7 @@
                       class="form-control"
                       data-date-format="dd/mm/yyyy"
                       id="appStartDate"
+                      v-model="newSeason.acceptance_start_date"
                     />
                   </div>
                 </div>
@@ -173,6 +178,7 @@
                       class="form-control"
                       data-date-format="dd/mm/yyyy"
                       id="appEndDate"
+                      v-model="newSeason.acceptance_end_date"
                     />
                   </div>
                 </div>
@@ -181,7 +187,7 @@
                 <div class="col-md-6 col-sm-6 col-xs-6">
                   <div class="form-group">
                     <label class="pull-left"
-                      >School (amonge of registered schools)</label
+                      >School (among of registered schools)</label
                     >
                     <select class="form-control select">
                       <option>School num1</option>
@@ -193,8 +199,11 @@
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-6">
                   <div class="form-group">
-                    <label class="pull-left">max size (1-200)</label>
-                    <select class="form-control select">
+                    <label class="pull-left">max size (1-250)</label>
+                    <select
+                      class="form-control select"
+                      v-model="newSeason.max_size"
+                    >
                       <option>20</option>
                       <option>30</option>
                       <option>150</option>
@@ -207,7 +216,11 @@
                 <div class="col-md-12 col-sm-12 col-xs-12">
                   <div class="form-group">
                     <label class="pull-left">More Info</label>
-                    <input type="text" class="form-control" />
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="newSeason.more_info"
+                    />
                   </div>
                 </div>
               </div>
@@ -218,7 +231,11 @@
       <div slot="modal-footer" class="w-100">
         <div class="row row-no-padding width-full">
           <div class="col-md-4 col-sm-4 col-xs-12">
-            <button type="button" class="btn btn-success btn-block">
+            <button
+              type="button"
+              class="btn btn-success btn-block"
+              v-on:click="submitSeason"
+            >
               <i class="glyphicon glyphicon-ok"></i> Submit Season
             </button>
           </div>
@@ -227,6 +244,7 @@
               type="button"
               class="btn btn-danger btn-block"
               data-dismiss="modal"
+              v-on:click="$refs.newSeasonModalRef.hide();"
             >
               <i class="fa fa-close"></i> Cancel
             </button>
@@ -244,6 +262,7 @@ import VuetablePagination from "vuetable-2/src/components/VuetablePagination";
 import VuetableBootstrapMixin from "../../mixins/VuetableBootstrapMixin";
 import bModal from "bootstrap-vue/es/components/modal/modal";
 import schoolApi from "@/endpoint/SchoolApi";
+import seasonApi from "@/endpoint/SeasonApi";
 
 export default {
   name: "SchoolHome",
@@ -259,7 +278,7 @@ export default {
   },
   data: function() {
     return {
-      selectedId: -1,
+      selectedSchoolId: -1,
       localData: {},
       tableUrl: "/api/v1/school",
       tableFields: [
@@ -303,6 +322,7 @@ export default {
         "__slot:actions"
       ],
       schools: [],
+      newSeason: {},
       selectedSchoolForDelete: null,
       deletingRecord: false
     };
@@ -337,17 +357,40 @@ export default {
       this.$router.push({ name: "school.edit", params: { id: school.id } });
     },
     onRowClicked: function(data) {
-      this.selectedId = data.id;
+      this.selectedSchoolId = data.id;
       this.$refs.vuetable.toggleDetailRow(data.id);
     },
     onRowClass: function(dataItem) {
-      if (this.selectedId !== dataItem.id) {
+      if (this.selectedSchoolId !== dataItem.id) {
         return "clickable";
       }
       return "bg-info text-light clickable";
     },
     goToAddSeason: function() {
+      if (this.selectedSchoolId === -1) {
+        this.notifyError("Please select a school to add it's new season");
+        return;
+      }
       this.$refs.newSeasonModalRef.show();
+    },
+    submitSeason: function() {
+      let self = this;
+      seasonApi.add(this.selectedSchoolId, this.newSeason).then(
+        function(resp) {
+          self.notifySuccess("The season inserted");
+          self.$refs.newSeasonModalRef.hide();
+          self.localData.results.forEach(function(school) {
+            if (school.id === self.selectedSchoolId) {
+              school.seasons.push(resp.data);
+            }
+          });
+        },
+        function() {
+          self.notifyError(
+            "Some error happened when trying to add the new school"
+          );
+        }
+      );
     }
   }
 };
