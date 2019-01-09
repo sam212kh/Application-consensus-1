@@ -83,7 +83,7 @@
             >&nbsp;&nbsp;
             <button
               class="btn btn-outline-danger btn-sm"
-              @click="rejectAppliction(props.rowData);"
+              @click="rejectConfirmation(props.rowData);"
             >
               <span class="glyphicon glyphicon-trash"></span></button
             >&nbsp;&nbsp;
@@ -111,44 +111,70 @@
                 <div class="col-md-6 col-sm-6 col-xs-6">
                   <div class="form-group">
                     <label class="pull-left">First Name</label>
-                    <input type="text" class="form-control" />
+                    <input type="text" class="form-control"
+                    v-model="newApp.first_name"
+                    />
                   </div>
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-6">
                   <div class="form-group">
                     <label class="pull-left">Last Name</label>
-                    <input type="text" class="form-control" />
+                    <input type="text" class="form-control"
+                    v-model="newApp.last_name" />
                   </div>
                 </div>
               </div>
               <div class="row">
                 <div class="col-md-6 col-sm-6 col-xs-6">
                   <div class="form-group">
-                    <label class="pull-left">User Name</label>
-                    <input type="text" class="form-control" />
+                    <label class="pull-left">Birthday</label>
+                    <input type="date" class="form-control"
+                    v-model="newApp.date_of_birth" />
                   </div>
                 </div>
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                  <div class="form-group">
+                    <label class="pull-left">Gender</label>
+                    <select class="form-control"  v-model="newApp.gender">
+                        <option>Male</option>
+                        <option>Female</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
                 <div class="col-md-6 col-sm-6 col-xs-6">
                   <div class="form-group">
                     <label class="pull-left">Email</label>
-                    <input type="email" class="form-control" />
+                    <input type="email" class="form-control"
+                    v-model="newApp.email" />
+                  </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                  <div class="form-group">
+                    <label class="pull-left">Phone Number</label>
+                    <input type="text" class="form-control"
+                    v-model="newApp.phone_number" />
                   </div>
                 </div>
               </div>
               <div class="row">
                 <div class="col-md-6 col-sm-6 col-xs-6">
                   <div class="form-group">
-                    <label class="pull-left">Phone Number</label>
-                    <input type="text" class="form-control" />
+                    <label class="pull-left">Info</label>
+                    <textarea class="form-control"
+                    v-model="newApp.info" ></textarea>
                   </div>
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-6">
                   <div class="form-group">
-                    <label class="pull-left">Password</label>
-                    <input type="email" class="form-control" />
+                    <label class="pull-left">Educational Info</label>
+                    <textarea class="form-control"
+                    v-model="newApp.educational_info" ></textarea>
                   </div>
                 </div>
               </div>
+
               <hr />
               <div class="row">
                 <div class="col-md-6 col-sm-6 col-xs-6">
@@ -181,7 +207,9 @@
       <div slot="modal-footer" class="w-100">
         <div class="row row-no-padding width-full">
           <div class="col-md-4 col-sm-4 col-xs-12">
-            <button type="button" class="btn btn-success btn-block">
+            <button
+            v-on:click="submitApplication"
+            type="button" class="btn btn-success btn-block">
               <i class="glyphicon glyphicon-ok"></i> Add Staff
             </button>
           </div>
@@ -198,6 +226,32 @@
         </div>
       </div>
     </b-modal>
+
+    <b-modal
+      centered
+      ref="confirmRejectModalRef"
+      id="confirmRejectModal"
+      :hide-header="true"
+    >
+      <p class="text-danger h6">Are you sure to Reject this record?</p>
+      <div slot="modal-footer" class="w-100">
+        <button
+          type="button"
+          class="btn btn-secondary float-left"
+          @click="$refs.confirmRejectModalRef.hide();"
+        >
+          <i class="la la-close"></i> Cancel
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger float-right"
+          @click="rejectAppliction();"
+        >
+          <span v-show="rejectAppliction">reject</span>
+        </button>
+      </div>
+    </b-modal>
+
   </section>
 </template>
 
@@ -253,6 +307,8 @@ export default {
         newEnrolled: 0,
         newApplication: 0
       },
+      newApp: {},
+      selectedApplication : {},
       applicationShown: false,
       enrolledShown: false,
       localData: {},
@@ -297,7 +353,7 @@ export default {
           dataClass: "text-left"
         },
         {
-          name: "application_info",
+          name: "info",
           title: "Info",
           titleClass: "text-left",
           dataClass: "text-left"
@@ -372,6 +428,47 @@ export default {
       this.enrolledShown = false;
       this.decisionActionField.visible = this.applicationShown;
       this.$refs.vuetable && this.$refs.vuetable.normalizeFields();
+    },
+    submitApplication: function() {
+      let self = this;
+      self.newApp.score  = 0;
+      self.newApp.status = 'pending';
+      applicationApi.add(self.newApp).then(
+        function(resp) {
+          self.notifySuccess("The application inserted");
+          self.$refs.newApplicationModalRef.hide();
+        },
+        function() {
+          self.notifyError(
+            "Some error happened when trying to add the new application"
+          );
+        }
+      );
+    },
+    rejectConfirmation: function(application) {
+        this.selectedApplication = application;
+        this.$refs.confirmRejectModalRef.show();
+    },
+    rejectAppliction: function() {
+      
+      let self = this;
+      this.selectedApplication.status = 'reject';
+      applicationApi.put(this.selectedApplication).then(
+        function(resp) {
+          self.notifySuccess("The application rejected");
+          self.$refs.confirmRejectModalRef.hide();
+        },
+        function() {
+          self.notifyError(
+            "Some error happened when trying to reject the application"
+          );
+        }
+      );
+
+    },
+    editRow: function(application) {
+      alert(application.id);
+
     }
   }
 };

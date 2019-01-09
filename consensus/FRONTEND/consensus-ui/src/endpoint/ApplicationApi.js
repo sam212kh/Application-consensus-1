@@ -108,7 +108,7 @@ export default {
   },
   add(season) {
     season.id = Math.random() * 10000 + 1;
-    this.mockApplication.push(season);
+    this.mockApplication.results.push(season);
     return Promise.resolve({ status: 200 });
   },
   put(season) {
