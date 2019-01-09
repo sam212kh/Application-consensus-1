@@ -77,7 +77,7 @@
           <div class="table-button-container">
             <button
               class="btn btn-success btn-sm"
-              @click="acceptApplication(props.rowData);"
+              @click="acceptConfirmation(props.rowData);"
             >
               <span class="glyphicon glyphicon-check"></span></button
             >&nbsp;&nbsp;
@@ -233,7 +233,7 @@
       id="confirmRejectModal"
       :hide-header="true"
     >
-      <p class="text-danger h6">Are you sure to Reject this record?</p>
+      <p class="text-danger h6">Are you sure to reject this application?</p>
       <div slot="modal-footer" class="w-100">
         <button
           type="button"
@@ -248,6 +248,31 @@
           @click="rejectAppliction();"
         >
           <span v-show="rejectAppliction">reject</span>
+        </button>
+      </div>
+    </b-modal>
+
+    <b-modal
+      centered
+      ref="confirmAcceptModalRef"
+      id="confirmAcceptModal"
+      :hide-header="true"
+    >
+      <p class="text-danger h6">Are you sure to accept this application?</p>
+      <div slot="modal-footer" class="w-100">
+        <button
+          type="button"
+          class="btn btn-secondary float-left"
+          @click="$refs.confirmAcceptModalRef.hide();"
+        >
+          <i class="la la-close"></i> Cancel
+        </button>
+        <button
+          type="button"
+          class="btn btn-success float-right"
+          @click="acceptAppliction();"
+        >
+          <span v-show="acceptAppliction">Accept</span>
         </button>
       </div>
     </b-modal>
@@ -449,8 +474,26 @@ export default {
         this.selectedApplication = application;
         this.$refs.confirmRejectModalRef.show();
     },
+    acceptConfirmation: function(application) {
+        this.selectedApplication = application;
+        this.$refs.confirmAcceptModalRef.show();
+    },
+    acceptAppliction: function(){
+      let self = this;
+      this.selectedApplication.status = 'accept';
+      applicationApi.put(this.selectedApplication).then(
+        function(resp) {
+          self.notifySuccess("The application accepted");
+          self.$refs.confirmAcceptModalRef.hide();
+        },
+        function() {
+          self.notifyError(
+            "Some error happened when trying to accepting the application"
+          );
+        }
+      );
+    },
     rejectAppliction: function() {
-      
       let self = this;
       this.selectedApplication.status = 'reject';
       applicationApi.put(this.selectedApplication).then(
@@ -460,7 +503,7 @@ export default {
         },
         function() {
           self.notifyError(
-            "Some error happened when trying to reject the application"
+            "Some error happened when trying to rejecting the application"
           );
         }
       );
