@@ -419,6 +419,7 @@ export default {
     deleteStaff: function() {
       let self = this;
       self.deletingRecord = true;
+
       staffApi.delete(self.selectedStaffForDelete).then(
         function() {
           self.$refs.vuetable.refresh();

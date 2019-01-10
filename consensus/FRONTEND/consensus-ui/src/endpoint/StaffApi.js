@@ -54,7 +54,7 @@ export default {
         });
       }
     }
-    // return Api.get("staff/" + schoolId);
+    // return Api.get("staff/" + schoolshowConfirmDeleteModalshowConfirmDeleteModalshowConfirmDeleteModalshowConfirmDeleteModalId);
   },
   add(staff) {
     staff.id = Math.random() * 10000 + 1;
@@ -69,10 +69,13 @@ export default {
   },
   delete(staff) {
     let persistedStaff = this.get(staff.id);
-    this.mockStaff.results.splice(
-      this.mockStaff.results.indexOf(persistedStaff),
-      1
-    );
+    var indexof = -1;
+    for (let i = 0; i < this.mockStaff.results.length; i++) {
+      if (this.mockStaff.results[i].id === staff.id) {
+          indexof = i;
+      }
+    }
+    this.mockStaff.results.splice(indexof,1);
     return Promise.resolve({ status: 200 });
     // return Api.delete("staff/" + staff.id);
   }

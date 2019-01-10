@@ -67,7 +67,7 @@
           <div class="table-button-container">
             <button
               class="btn btn-warning btn-sm"
-              @click="reviewApplication(props.rowData);"
+              @click="enrolledReview(props.rowData);"
             >
               <span class="glyphicon glyphicon-pencil"></span></button
             >&nbsp;&nbsp;
@@ -278,8 +278,6 @@
     </b-modal>
 
     <!-- review model -->
-
-
     <b-modal
       size="lg"
       centered
@@ -429,6 +427,148 @@
     <!-- end review model -->
 
 
+        <!-- review model -->
+        <b-modal
+          size="lg"
+          centered
+          ref="enrolledReviewAppModalRef"
+          id="enrolledReviewAppModal"
+          title="Review application"
+          :header-bg-variant="'modal-header padding-10 background-light-silver'"
+          :footer-bg-variant="
+            'modal-footer padding-10 background-light-silver border-bottom-right-radius-10 border-bottom-left-radius-10'
+          "
+          :aria-required="false"
+        >
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-body">
+                <form>
+                  <div class="row">
+                    <div class="col-md-6 col-sm-6 col-xs-6">
+                      <div class="form-group">
+                        <label class="pull-left">First Name</label>
+                        <input type="text" class="form-control"
+                        v-model="review.first_name"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-6">
+                      <div class="form-group">
+                        <label class="pull-left">Last Name</label>
+                        <input type="text" class="form-control"
+                        v-model="review.last_name" />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                      <div class="col-md-6 col-sm-6 col-xs-6">
+                          <div class="form-group">
+                              <label class="pull-left">Phone number</label>
+                              <input type="text" class="form-control"
+                              v-model="review.phone_number"
+                              />
+                          </div>
+                      </div>
+                      <div class="col-md-6 col-sm-6 col-xs-6">
+                          <div class="form-group">
+                              <label class="pull-left">Email</label>
+                              <input type="text" class="form-control"
+                              v-model="review.email"
+                              />
+                          </div>
+                      </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-6 col-sm-6 col-xs-6">
+                      <div class="form-group">
+                        <label class="pull-left">Birthday</label>
+                        <input type="date" class="form-control"
+                        v-model="review.date_of_birth" />
+                      </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-6">
+                      <div class="form-group">
+                        <label class="pull-left">Gender</label>
+                        <select class="form-control"  v-model="review.gender">
+                            <option>Male</option>
+                            <option>Female</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-6 col-sm-6 col-xs-6">
+                      <div class="form-group">
+                        <label class="pull-left">Info</label>
+                        <textarea class="form-control"
+                        v-model="newApp.info" ></textarea>
+                      </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-6">
+                      <div class="form-group">
+                        <label class="pull-left">Educational Info</label>
+                        <textarea class="form-control"
+                        v-model="newApp.educational_info" ></textarea>
+                      </div>
+                    </div>
+                  </div>
+                  <hr />
+                  <div class="row">
+                    <div class="col-md-4 col-sm-4 col-xs-4">
+                      <div class="form-group">
+                        <label class="pull-left">Do score this Application</label>
+                        <select class="form-control select"
+                        v-model="review.score"
+                        >
+                          <option>1</option>
+                          <option>2</option>
+                          <option>3</option>
+                          <option>4</option>
+                          <option>5</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-6">
+                    </div>
+                  </div>
+                  <hr />
+                  <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                      <div class="form-group">
+                        <label class="pull-left">Comment</label>
+                        <input type="text" class="form-control"
+                        v-model="review.comment"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                </form>
+              </div>
+            </div>
+          </div>
+          <div slot="modal-footer" class="w-100">
+            <div class="row row-no-padding width-full">
+              <div class="col-md-3 col-sm-3 col-xs-12">
+                <button
+                  type="button"
+                  class="btn btn-danger btn-block"
+                  data-dismiss="modal"
+                  @click="show = false;"
+                >
+                  <i class="fa fa-close"></i> Cancel
+                </button>
+              </div>
+            </div>
+          </div>
+        </b-modal>
+
+        <!-- end enrolledReview model -->
+
 
   </section>
 </template>
@@ -473,6 +613,7 @@ export default {
   },
   created: function() {
     this.localData = applicationApi.getAll(this.schoolId);
+
 
     this.fragmentationApplication(this.localData.results);
   },
@@ -576,6 +717,7 @@ export default {
         }
 
         // Count enrolled applications
+
         if (application.status === ApplicationStatus.Enrolled) {
           self.season.applicationEnrolled++;
         }
@@ -598,12 +740,34 @@ export default {
       });
     },
     onEnrolledBoxClick: function() {
+      this.localData = applicationApi.getAll(this.schoolId);
+      let returnData = [];
+      this.season.applicationEnrolled = 0;
+      for (let i = 0; i < this.localData.results.length; i++) {
+        if ( this.localData.results[i].status === 'enrolled') {
+          var id = this.localData.results[i].id;
+          if (this.localData.results[i].status === ApplicationStatus.Enrolled) {
+            this.season.applicationEnrolled++;
+          }
+          returnData.push( this.localData.results[i] );
+        }
+      }
+      this.localData = returnData;
       this.enrolledShown = !this.enrolledShown;
       this.applicationShown = false;
       this.decisionActionField.visible = !this.enrolledShown;
       this.$refs.vuetable && this.$refs.vuetable.normalizeFields();
     },
     onApplicationBoxClick: function() {
+      this.localData = applicationApi.getAll(this.schoolId);
+      let returnData = [];
+      for (let i = 0; i < this.localData.results.length; i++) {
+        if ( this.localData.results[i].status != 'enrolled') {
+          var id = this.localData.results[i].id;
+          returnData.push( this.localData.results[i] );
+        }
+      }
+      this.localData = returnData;
       this.applicationShown = !this.applicationShown;
       this.enrolledShown = false;
       this.decisionActionField.visible = this.applicationShown;
@@ -635,7 +799,7 @@ export default {
     },
     acceptAppliction: function(){
       let self = this;
-      this.selectedApplication.status = 'accept';
+      this.selectedApplication.status = 'enrolled';
       applicationApi.put(this.selectedApplication).then(
         function(resp) {
           self.notifySuccess("The application accepted");
@@ -668,6 +832,11 @@ export default {
       this.review = application;
       this.selectedReview = application;
       this.$refs.reviewAppModalRef.show();
+    },
+    enrolledReview: function(application) {
+      this.review = application;
+      this.selectedReview = application;
+      this.$refs.enrolledReviewAppModalRef.show();
     },
     updateReview: function(review){
       let self = this;
