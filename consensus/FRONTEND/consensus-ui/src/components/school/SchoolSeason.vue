@@ -256,7 +256,7 @@
               type="button"
               class="btn btn-danger btn-block"
               data-dismiss="modal"
-              @click="show = false;"
+              @click="$refs.newApplicationModalRef.hide();"
             >
               <i class="fa fa-close"></i> Cancel
             </button>
@@ -267,45 +267,30 @@
 
     <b-modal
       centered
-      ref="confirmRejectModalRef"
-      id="confirmRejectModal"
+      ref="confirmModalRef"
+      id="confirmModal"
       :hide-header="true"
     >
-      <p class="text-danger h6">Are you sure to reject this application?</p>
+      <p v-if="rejectConfirm" class="text-danger h6">Are you sure to reject this application?</p>
+      <p v-if="acceptConfirm" class="text-danger h6">Are you sure to accept this application?</p>
       <div slot="modal-footer" class="w-100">
         <button
           type="button"
           class="btn btn-secondary float-left"
-          @click="$refs.confirmRejectModalRef.hide();"
+          @click="$refs.confirmModalRef.hide();"
         >
           <i class="la la-close"></i> Cancel
         </button>
         <button
+          v-if="rejectConfirm"
           type="button"
           class="btn btn-danger float-right"
           @click="rejectAppliction();"
         >
           <span v-show="rejectAppliction">reject</span>
         </button>
-      </div>
-    </b-modal>
-
-    <b-modal
-      centered
-      ref="confirmAcceptModalRef"
-      id="confirmAcceptModal"
-      :hide-header="true"
-    >
-      <p class="text-danger h6">Are you sure to accept this application?</p>
-      <div slot="modal-footer" class="w-100">
         <button
-          type="button"
-          class="btn btn-secondary float-left"
-          @click="$refs.confirmAcceptModalRef.hide();"
-        >
-          <i class="la la-close"></i> Cancel
-        </button>
-        <button
+          v-if="acceptConfirm"
           type="button"
           class="btn btn-success float-right"
           @click="acceptAppliction();"
@@ -314,6 +299,7 @@
         </button>
       </div>
     </b-modal>
+
 
     <!-- review model -->
     <b-modal
@@ -453,7 +439,7 @@
               type="button"
               class="btn btn-danger btn-block"
               data-dismiss="modal"
-              @click="show = false;"
+              @click="$refs.reviewAppModalRef.hide();"
             >
               <i class="fa fa-close"></i> Cancel
             </button>
@@ -526,6 +512,8 @@ export default {
       selectedReview: null,
       applicationShown: false,
       enrolledShown: false,
+      rejectConfirm: false,
+      acceptConfirm: false,
       localData: {},
       enrolledData: {},
       reviewData: {},
@@ -689,12 +677,18 @@ export default {
       );
     },
     rejectConfirmation: function(application) {
+        this.rejectConfirm = true;
+        this.acceptConfirm = false;
+
         this.selectedApplication = application;
-        this.$refs.confirmRejectModalRef.show();
+        this.$refs.confirmModalRef.show();
     },
     acceptConfirmation: function(application) {
+        this.acceptConfirm = true;
+        this.rejectConfirm = false;
+
         this.selectedApplication = application;
-        this.$refs.confirmAcceptModalRef.show();
+        this.$refs.confirmModalRef.show();
     },
     acceptAppliction: function(){
       let self = this;
@@ -702,7 +696,7 @@ export default {
       applicationApi.put(this.selectedApplication).then(
         function(resp) {
           self.notifySuccess("The application accepted");
-          self.$refs.confirmAcceptModalRef.hide();
+          self.$refs.confirmModalRef.hide();
           self.reAssignData();
         },
         function() {
@@ -718,7 +712,7 @@ export default {
       applicationApi.put(this.selectedApplication).then(
         function(resp) {
           self.notifySuccess("The application rejected");
-          self.$refs.confirmRejectModalRef.hide();
+          self.$refs.confirmModalRef.hide();
         },
         function() {
           self.notifyError(

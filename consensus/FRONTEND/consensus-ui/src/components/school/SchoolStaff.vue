@@ -175,7 +175,7 @@
               type="button"
               class="btn btn-danger btn-block"
               data-dismiss="modal"
-              @click="show = false;"
+              @click="$refs.newStaffModalRef.hide();"
             >
               <i class="fa fa-close"></i> Cancel
             </button>
@@ -295,7 +295,7 @@
               type="button"
               class="btn btn-danger btn-block"
               data-dismiss="modal"
-              @click="show = false;"
+              @click="$refs.editStaffModalRef.hide();"
             >
               <i class="fa fa-close"></i> Cancel
             </button>
