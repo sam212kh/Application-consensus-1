@@ -22,9 +22,9 @@ http://dev.application.heteroskedastic.com
 
 1. pip install -r requirements.txt
 1. cd consensus
-1. python manage.py migrate --settings=consensus.settings.local
-1. python manage.py createsuperuser --settings=consensus.settings.local # create superuser to login
-1. python manage.py runserver --settings=consensus.settings.local
+1. python manage.py migrate --settings=consensus.settings.base
+1. python manage.py createsuperuser --settings=consensus.settings.base # create superuser to login
+1. python manage.py runserver --settings=consensus.settings.base
 
 
 ## steps to run local frontend

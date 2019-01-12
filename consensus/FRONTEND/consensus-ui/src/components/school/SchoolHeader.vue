@@ -1,7 +1,7 @@
 <template>
   <header>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-      <a class="navbar-brand" href="#">Your Title</a>
+      <a class="navbar-brand" href="#">{{ title }}</a>
       <button
         class="navbar-toggler"
         type="button"
@@ -86,6 +86,14 @@ import UtilMixin from "@/mixins/UtilMixin";
 export default {
   name: "MainHeader",
   mixins: [UtilMixin],
+  created: function() {
+    this.$eventsBus.$on("header:title", this.onTitleChanged);
+  },
+  data: function() {
+    return {
+      title: "Home"
+    };
+  },
   computed: {
     fullName: function() {
       return (
@@ -106,6 +114,9 @@ export default {
           self.notifyDefaultServerError(error);
         }
       );
+    },
+    onTitleChanged: function(title) {
+      this.title = title;
     }
   }
 };

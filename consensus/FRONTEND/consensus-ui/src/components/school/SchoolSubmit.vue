@@ -144,18 +144,18 @@ export default {
   components: {},
   data: function() {
     return {
-      school: {
-        full_name: ""
-      }
+      school: {}
     };
   },
   created: function() {
+    this.$eventsBus.$emit("header:title", "Add school");
     if (this.$route.params.id) {
+      this.$eventsBus.$emit("header:title", "Edit school");
       // Retrieve current school when the school's id passed
       let self = this;
       SchoolApi.get(this.$route.params.id).then(
         function(response) {
-          self.school = Object.assign(self.school, response.data);
+          self.school = response.data;
         },
         function(error) {
           self.notifyDefaultServerError(error);
