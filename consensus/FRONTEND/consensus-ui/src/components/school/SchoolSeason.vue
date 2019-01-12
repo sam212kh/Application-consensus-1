@@ -3,8 +3,8 @@
     <div class="row row-no-padding justify-content-end">
       <div class="col-md-4 col-sm-4 col-xs-4">
         <button
-          class="btn btn-block btn-success"
-          @click="showNewApplicationModal();"
+            class="btn btn-block btn-success"
+            @click="showNewApplicationModal();"
         >
           <i class="glyphicon glyphicon-ok"></i> Submit a new application
         </button>
@@ -13,13 +13,13 @@
     <div class="row row-no-padding">
       <div class="col-md-4 col-sm-4 col-xs-12">
         <div
-          class="boxing"
-          v-on:click="onApplicationBoxClick"
-          v-bind:class="{ active: applicationShown }"
+            class="boxing"
+            v-on:click="onApplicationBoxClick"
+            v-bind:class="{ active: applicationShown }"
         >
           <i class="fa fa-eye"></i>
           <h5>Applications Review</h5>
-          <br />
+          <br/>
           <div class="info">
             <div class="left">
               <h6>Received : {{ season.application }}</h6>
@@ -31,9 +31,9 @@
       </div>
       <div class="col-md-4 col-sm-4 col-xs-12">
         <div
-          class="boxing"
-          v-on:click="onEnrolledBoxClick"
-          v-bind:class="{ active: enrolledShown }"
+            class="boxing"
+            v-on:click="onEnrolledBoxClick"
+            v-bind:class="{ active: enrolledShown }"
         >
           <i class="fa fa-handshake-o"></i>
           <h4>enrolled</h4>
@@ -46,28 +46,31 @@
         </div>
       </div>
     </div>
-    <div class="row row-no-padding" v-if="applicationShown || enrolledShown">
+
+
+    <!-- Review Application -->
+    <div class="row row-no-padding" v-if="applicationShown">
       <vuetable
-        ref="vuetable"
-        :api-mode="false"
-        :data="localData"
-        :fields="tableFields"
-        :css="css.table"
-        class="application-table"
-        :query-params="{
+          ref="vuetable"
+          :api-mode="false"
+          :data="reviewData"
+          :fields="tableFields"
+          :css="css.table"
+          class="application-table"
+          :query-params="{
           sort: 'order_by',
           page: 'page',
           perPage: 'page_size'
         }"
-        data-path="results"
-        pagination-path="pagination"
-        @vuetable:pagination-data="onPaginationData"
+          data-path="results"
+          pagination-path="pagination"
+          @vuetable:pagination-data="onPaginationData"
       >
         <template slot="review_actions" scope="props">
           <div class="table-button-container">
             <button
-              class="btn btn-warning btn-sm"
-              @click="reviewApplication(props.rowData);"
+                class="btn btn-warning btn-sm"
+                @click="reviewApplication(props.rowData);"
             >
               <span class="glyphicon glyphicon-pencil"></span></button
             >&nbsp;&nbsp;
@@ -76,14 +79,14 @@
         <template slot="decision_actions" scope="props">
           <div class="table-button-container">
             <button
-              class="btn btn-success btn-sm"
-              @click="acceptApplication(props.rowData);"
+                class="btn btn-success btn-sm"
+                @click="acceptConfirmation(props.rowData);"
             >
               <span class="glyphicon glyphicon-check"></span></button
             >&nbsp;&nbsp;
             <button
-              class="btn btn-outline-danger btn-sm"
-              @click="rejectAppliction(props.rowData);"
+                class="btn btn-outline-danger btn-sm"
+                @click="rejectConfirmation(props.rowData);"
             >
               <span class="glyphicon glyphicon-trash"></span></button
             >&nbsp;&nbsp;
@@ -91,17 +94,43 @@
         </template>
       </vuetable>
     </div>
+    <!-- End Review Application -->
+
+
+    <!-- Enrolled Application -->
+    <div class="row row-no-padding" v-if="enrolledShown">
+      <vuetable
+          ref="vuetable"
+          :api-mode="false"
+          :data="enrolledData"
+          :fields="tableFields"
+          :css="css.table"
+          class="application-table"
+          :query-params="{
+          sort: 'order_by',
+          page: 'page',
+          perPage: 'page_size'
+        }"
+          data-path="results"
+          pagination-path="pagination"
+          @vuetable:pagination-data="onPaginationData"
+      >
+
+      </vuetable>
+    </div>
+    <!-- End Enrolled Application -->
+
     <b-modal
-      size="lg"
-      centered
-      ref="newApplicationModalRef"
-      id="newAModal"
-      title="Add a new application"
-      :header-bg-variant="'modal-header padding-10 background-light-silver'"
-      :footer-bg-variant="
+        size="lg"
+        centered
+        ref="newApplicationModalRef"
+        id="newAModal"
+        title="Add a new application"
+        :header-bg-variant="'modal-header padding-10 background-light-silver'"
+        :footer-bg-variant="
         'modal-footer padding-10 background-light-silver border-bottom-right-radius-10 border-bottom-left-radius-10'
       "
-      :aria-required="false"
+        :aria-required="false"
     >
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -111,45 +140,71 @@
                 <div class="col-md-6 col-sm-6 col-xs-6">
                   <div class="form-group">
                     <label class="pull-left">First Name</label>
-                    <input type="text" class="form-control" />
+                    <input type="text" class="form-control"
+                           v-model="newApp.first_name"
+                    />
                   </div>
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-6">
                   <div class="form-group">
                     <label class="pull-left">Last Name</label>
-                    <input type="text" class="form-control" />
+                    <input type="text" class="form-control"
+                           v-model="newApp.last_name"/>
                   </div>
                 </div>
               </div>
               <div class="row">
                 <div class="col-md-6 col-sm-6 col-xs-6">
                   <div class="form-group">
-                    <label class="pull-left">User Name</label>
-                    <input type="text" class="form-control" />
+                    <label class="pull-left">Birthday</label>
+                    <input type="date" class="form-control"
+                           v-model="newApp.date_of_birth"/>
                   </div>
                 </div>
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                  <div class="form-group">
+                    <label class="pull-left">Gender</label>
+                    <select class="form-control" v-model="newApp.gender">
+                      <option>Male</option>
+                      <option>Female</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
                 <div class="col-md-6 col-sm-6 col-xs-6">
                   <div class="form-group">
                     <label class="pull-left">Email</label>
-                    <input type="email" class="form-control" />
+                    <input type="email" class="form-control"
+                           v-model="newApp.email"/>
+                  </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                  <div class="form-group">
+                    <label class="pull-left">Phone Number</label>
+                    <input type="text" class="form-control"
+                           v-model="newApp.phone_number"/>
                   </div>
                 </div>
               </div>
               <div class="row">
                 <div class="col-md-6 col-sm-6 col-xs-6">
                   <div class="form-group">
-                    <label class="pull-left">Phone Number</label>
-                    <input type="text" class="form-control" />
+                    <label class="pull-left">Info</label>
+                    <textarea class="form-control"
+                              v-model="newApp.info"></textarea>
                   </div>
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-6">
                   <div class="form-group">
-                    <label class="pull-left">Password</label>
-                    <input type="email" class="form-control" />
+                    <label class="pull-left">Educational Info</label>
+                    <textarea class="form-control"
+                              v-model="newApp.educational_info"></textarea>
                   </div>
                 </div>
               </div>
-              <hr />
+
+              <hr/>
               <div class="row">
                 <div class="col-md-6 col-sm-6 col-xs-6">
                   <label> Or search and add by username</label>
@@ -159,7 +214,7 @@
                         <i class="fa fa-search"></i>
                       </div>
                     </div>
-                    <input type="text" class="form-control" />
+                    <input type="text" class="form-control"/>
                   </div>
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-6">
@@ -170,7 +225,7 @@
                         <i class="fa fa-search"></i>
                       </div>
                     </div>
-                    <input type="text" class="form-control" />
+                    <input type="text" class="form-control"/>
                   </div>
                 </div>
               </div>
@@ -181,16 +236,18 @@
       <div slot="modal-footer" class="w-100">
         <div class="row row-no-padding width-full">
           <div class="col-md-4 col-sm-4 col-xs-12">
-            <button type="button" class="btn btn-success btn-block">
+            <button
+                v-on:click="submitApplication"
+                type="button" class="btn btn-success btn-block">
               <i class="glyphicon glyphicon-ok"></i> Add Staff
             </button>
           </div>
           <div class="col-md-3 col-sm-3 col-xs-12">
             <button
-              type="button"
-              class="btn btn-danger btn-block"
-              data-dismiss="modal"
-              @click="show = false;"
+                type="button"
+                class="btn btn-danger btn-block"
+                data-dismiss="modal"
+                @click="$refs.newApplicationModalRef.hide();"
             >
               <i class="fa fa-close"></i> Cancel
             </button>
@@ -198,189 +255,478 @@
         </div>
       </div>
     </b-modal>
+
+    <b-modal
+        centered
+        ref="confirmModalRef"
+        id="confirmModal"
+        :hide-header="true"
+    >
+      <p v-if="rejectConfirm" class="text-danger h6">Are you sure to reject this application?</p>
+      <p v-if="acceptConfirm" class="text-danger h6">Are you sure to accept this application?</p>
+      <div slot="modal-footer" class="w-100">
+        <button
+            type="button"
+            class="btn btn-secondary float-left"
+            @click="$refs.confirmModalRef.hide();"
+        >
+          <i class="la la-close"></i> Cancel
+        </button>
+        <button
+            v-if="rejectConfirm"
+            type="button"
+            class="btn btn-danger float-right"
+            @click="rejectAppliction();"
+        >
+          <span v-show="rejectAppliction">reject</span>
+        </button>
+        <button
+            v-if="acceptConfirm"
+            type="button"
+            class="btn btn-success float-right"
+            @click="acceptAppliction();"
+        >
+          <span v-show="acceptAppliction">Accept</span>
+        </button>
+      </div>
+    </b-modal>
+
+
+    <!-- review model -->
+    <b-modal
+        size="lg"
+        centered
+        ref="reviewAppModalRef"
+        id="reviewAppModal"
+        title="Review application"
+        :header-bg-variant="'modal-header padding-10 background-light-silver'"
+        :footer-bg-variant="
+        'modal-footer padding-10 background-light-silver border-bottom-right-radius-10 border-bottom-left-radius-10'
+      "
+        :aria-required="false"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-body">
+            <form>
+              <div class="row">
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                  <div class="form-group">
+                    <label class="pull-left">First Name</label>
+                    <input type="text" class="form-control"
+                           v-model="review.first_name"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                  <div class="form-group">
+                    <label class="pull-left">Last Name</label>
+                    <input type="text" class="form-control"
+                           v-model="review.last_name"/>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                  <div class="form-group">
+                    <label class="pull-left">Phone number</label>
+                    <input type="text" class="form-control"
+                           v-model="review.phone_number"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                  <div class="form-group">
+                    <label class="pull-left">Email</label>
+                    <input type="text" class="form-control"
+                           v-model="review.email"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                  <div class="form-group">
+                    <label class="pull-left">Birthday</label>
+                    <input type="date" class="form-control"
+                           v-model="review.date_of_birth"/>
+                  </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                  <div class="form-group">
+                    <label class="pull-left">Gender</label>
+                    <select class="form-control" v-model="review.gender">
+                      <option>Male</option>
+                      <option>Female</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                  <div class="form-group">
+                    <label class="pull-left">Info</label>
+                    <textarea class="form-control"
+                              v-model="newApp.info"></textarea>
+                  </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                  <div class="form-group">
+                    <label class="pull-left">Educational Info</label>
+                    <textarea class="form-control"
+                              v-model="newApp.educational_info"></textarea>
+                  </div>
+                </div>
+              </div>
+              <hr/>
+              <div class="row">
+                <div class="col-md-4 col-sm-4 col-xs-4">
+                  <div class="form-group">
+                    <label class="pull-left">Do score this Application</label>
+                    <select class="form-control select"
+                            v-model="review.score"
+                    >
+                      <option>1</option>
+                      <option>2</option>
+                      <option>3</option>
+                      <option>4</option>
+                      <option>5</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                </div>
+              </div>
+              <hr/>
+              <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                  <div class="form-group">
+                    <label class="pull-left">Comment</label>
+                    <input type="text" class="form-control"
+                           v-model="review.comment"
+                    />
+                  </div>
+                </div>
+              </div>
+
+            </form>
+          </div>
+        </div>
+      </div>
+      <div slot="modal-footer" class="w-100">
+        <div class="row row-no-padding width-full">
+          <div v-if="!enrolledShown" class="col-md-4 col-sm-4 col-xs-12">
+            <button
+                v-on:click="updateReview"
+                type="button" class="btn btn-success btn-block">
+              <i class="glyphicon glyphicon-ok"></i> Rate
+            </button>
+          </div>
+          <div class="col-md-3 col-sm-3 col-xs-12">
+            <button
+                type="button"
+                class="btn btn-danger btn-block"
+                data-dismiss="modal"
+                @click="$refs.reviewAppModalRef.hide();"
+            >
+              <i class="fa fa-close"></i> Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </b-modal>
+
+    <!-- end review model -->
+
+
   </section>
 </template>
 
 <script>
-import Vuetable from "vuetable-2/src/components/Vuetable";
-import VuetablePagination from "vuetable-2/src/components/VuetablePagination";
-import bModal from "bootstrap-vue/es/components/modal/modal";
-import utilMixin from "@/mixins/UtilMixin";
-import vuetableBootstrapMixin from "../../mixins/VuetableBootstrapMixin";
-import applicationApi from "../../endpoint/ApplicationApi";
-import ApplicationStatus from "./model/ApplicationStatus";
+    import Vuetable from "vuetable-2/src/components/Vuetable";
+    import VuetablePagination from "vuetable-2/src/components/VuetablePagination";
+    import bModal from "bootstrap-vue/es/components/modal/modal";
+    import utilMixin from "@/mixins/UtilMixin";
+    import vuetableBootstrapMixin from "../../mixins/VuetableBootstrapMixin";
+    import applicationApi from "../../endpoint/ApplicationApi";
+    import ApplicationStatus from "./model/ApplicationStatus";
 
-let reviewActionField = {
-  name: "__slot:review_actions",
-  title: "review",
-  titleClass: "text-left"
-};
-let decisionActionField = {
-  name: "__slot:decision_actions",
-  title: "decision",
-  titleClass: "text-left"
-};
-
-export default {
-  name: "SchoolSeason",
-  mixins: [utilMixin, vuetableBootstrapMixin],
-  components: {
-    Vuetable,
-    VuetablePagination,
-    "b-modal": bModal
-  },
-  props: {
-    schoolId: {
-      type: Number,
-      required: true
-    },
-    seasonId: {
-      type: Number,
-      required: true
-    }
-  },
-  created: function() {
-    this.localData = applicationApi.getAll(this.schoolId);
-
-    this.fragmentationApplication(this.localData.results);
-  },
-  data: function() {
-    return {
-      season: {
-        application: 0,
-        applicationScored: 0,
-        applicationEnrolled: 0,
-        newEnrolled: 0,
-        newApplication: 0
-      },
-      applicationShown: false,
-      enrolledShown: false,
-      localData: {},
-      reviewActionField: reviewActionField,
-      decisionActionField: decisionActionField,
-      tableFields: [
-        {
-          sortField: "first_name",
-          name: "first_name",
-          title: "First Name",
-          titleClass: "text-left",
-          dataClass: "text-left"
-        },
-        {
-          name: "last_name",
-          title: "Last Name",
-          titleClass: "text-left",
-          dataClass: "text-left"
-        },
-        {
-          name: "date_of_birth",
-          title: "Date of birth",
-          titleClass: "text-left",
-          dataClass: "text-left"
-        },
-        {
-          name: "gender",
-          title: "Gender",
-          titleClass: "text-left",
-          dataClass: "text-left"
-        },
-        {
-          name: "email",
-          title: "Email",
-          titleClass: "text-left",
-          dataClass: "text-left"
-        },
-        {
-          name: "phone_number",
-          title: "Phone number",
-          titleClass: "text-left",
-          dataClass: "text-left"
-        },
-        {
-          name: "application_info",
-          title: "Info",
-          titleClass: "text-left",
-          dataClass: "text-left"
-        },
-        {
-          name: "educational_info",
-          title: "Educational Info",
-          titleClass: "text-left",
-          dataClass: "text-left"
-        },
-        {
-          name: "score",
-          title: "Score",
-          titleClass: "text-left",
-          dataClass: "text-left"
-        },
-        {
-          name: "status",
-          title: "Status",
-          titleClass: "text-left",
-          dataClass: "text-left"
-        },
-        reviewActionField,
-        decisionActionField
-      ]
+    let reviewActionField = {
+        name: "__slot:review_actions",
+        title: "review",
+        titleClass: "text-left"
     };
-  },
-  methods: {
-    showNewApplicationModal: function() {
-      this.$refs.newApplicationModalRef.show();
-    },
-    fragmentationApplication: function(applications) {
-      let self = this;
-      this.season.application = applications.length;
-      self.season.applicationScored = self.season.applicationScored || 0;
-      applications.forEach(function(application) {
-        // Count scored applications
-        if (application.score > 0) {
-          self.season.applicationScored++;
-        }
+    let decisionActionField = {
+        name: "__slot:decision_actions",
+        title: "decision",
+        titleClass: "text-left"
+    };
 
-        // Count enrolled applications
-        if (application.status === ApplicationStatus.Enrolled) {
-          self.season.applicationEnrolled++;
-        }
+    export default {
+        name: "SchoolSeason",
+        mixins: [utilMixin, vuetableBootstrapMixin],
+        components: {
+            Vuetable,
+            VuetablePagination,
+            "b-modal": bModal
+        },
+        props: {
+            schoolId: {
+                type: Number,
+                required: true
+            },
+            seasonId: {
+                type: Number,
+                required: true
+            }
+        },
+        created: function () {
+            this.reAssignData();
+        },
+        data: function () {
+            return {
+                season: {
+                    application: 0,
+                    applicationScored: 0,
+                    applicationEnrolled: 0,
+                    newEnrolled: 0,
+                    newApplication: 0
+                },
+                newApp: {},
+                review: {},
+                selectedApplication: {},
+                selectedReview: null,
+                applicationShown: false,
+                enrolledShown: false,
+                rejectConfirm: false,
+                acceptConfirm: false,
+                localData: {},
+                enrolledData: {},
+                reviewData: {},
+                reviewActionField: reviewActionField,
+                decisionActionField: decisionActionField,
+                tableFields: [
+                    {
+                        sortField: "first_name",
+                        name: "first_name",
+                        title: "First Name",
+                        titleClass: "text-left",
+                        dataClass: "text-left"
+                    },
+                    {
+                        name: "last_name",
+                        title: "Last Name",
+                        titleClass: "text-left",
+                        dataClass: "text-left"
+                    },
+                    {
+                        name: "date_of_birth",
+                        title: "Date of birth",
+                        titleClass: "text-left",
+                        dataClass: "text-left"
+                    },
+                    {
+                        name: "gender",
+                        title: "Gender",
+                        titleClass: "text-left",
+                        dataClass: "text-left"
+                    },
+                    {
+                        name: "email",
+                        title: "Email",
+                        titleClass: "text-left",
+                        dataClass: "text-left"
+                    },
+                    {
+                        name: "phone_number",
+                        title: "Phone number",
+                        titleClass: "text-left",
+                        dataClass: "text-left"
+                    },
+                    {
+                        name: "info",
+                        title: "Info",
+                        titleClass: "text-left",
+                        dataClass: "text-left"
+                    },
+                    {
+                        name: "educational_info",
+                        title: "Educational Info",
+                        titleClass: "text-left",
+                        dataClass: "text-left"
+                    },
+                    {
+                        name: "score",
+                        title: "Score",
+                        titleClass: "text-left",
+                        dataClass: "text-left"
+                    },
+                    {
+                        name: "status",
+                        title: "Status",
+                        titleClass: "text-left",
+                        dataClass: "text-left"
+                    },
+                    reviewActionField,
+                    decisionActionField
+                ]
+            };
+        },
+        methods: {
+            showNewApplicationModal: function () {
+                this.$refs.newApplicationModalRef.show();
+            },
+            reAssignData: function () {
+                this.localData = applicationApi.getAll(this.schoolId);
+                this.reviewData = [];
+                this.enrolledData = [];
+                this.season.applicationScored = 0;
+                this.season.applicationEnrolled = 0;
+                this.fragmentationApplication(this.localData.results);
+            },
+            fragmentationApplication: function (applications) {
+                let self = this;
+                this.season.application = applications.length;
+                self.season.applicationScored = self.season.applicationScored || 0;
+                applications.forEach(function (application) {
+                    // Count scored applications
+                    if (application.score > 0) {
+                        self.season.applicationScored++;
+                    }
 
-        // Count new(today) applications
-        if (
-          self.formatDate(application.created_date, "YYYY/MM/DD") ===
-          self.formatDate(new Date(), "YYYY/MM/DD")
-        ) {
-          switch (application.status) {
-            case ApplicationStatus.Enrolled:
-              self.season.newEnrolled++;
-              break;
-            case ApplicationStatus.Scored:
-            case ApplicationStatus.Pending:
-              self.season.newApplication++;
-              break;
-          }
+                    // Count enrolled applications
+
+                    if (application.status === ApplicationStatus.Enrolled) {
+                        self.season.applicationEnrolled++;
+                        self.enrolledData.push(application);
+                    }else{
+                        self.reviewData.push(application);
+                    }
+
+                    // Count new(today) applications
+                    if (
+                        self.formatDate(application.created_date, "YYYY/MM/DD") ===
+                        self.formatDate(new Date(), "YYYY/MM/DD")
+                    ) {
+                        switch (application.status) {
+                            case ApplicationStatus.Enrolled:
+                                self.season.newEnrolled++;
+                                break;
+                            case ApplicationStatus.Scored:
+                            case ApplicationStatus.Pending:
+                                self.season.newApplication++;
+                                break;
+                        }
+                    }
+                });
+            },
+            onEnrolledBoxClick: function () {
+                this.enrolledShown = !this.enrolledShown;
+                this.applicationShown = false;
+                this.decisionActionField.visible = !this.enrolledShown;
+                this.$refs.vuetable && this.$refs.vuetable.normalizeFields();
+            },
+            onApplicationBoxClick: function () {
+                this.applicationShown = !this.applicationShown;
+                this.enrolledShown = false;
+                this.decisionActionField.visible = this.applicationShown;
+                this.$refs.vuetable && this.$refs.vuetable.normalizeFields();
+            },
+            submitApplication: function () {
+                let self = this;
+                self.newApp.score = 0;
+                self.newApp.status = 'pending';
+                self.newApp.created_date = new Date().toJSON().slice(0, 10).replace(/-/g, '-');
+                applicationApi.add(self.newApp).then(
+                    function (resp) {
+                        self.notifySuccess("The application inserted");
+                        self.$refs.newApplicationModalRef.hide();
+                        self.reAssignData();
+                    },
+                    function () {
+                        self.notifyError(
+                            "Some error happened when trying to add the new application"
+                        );
+                    }
+                );
+            },
+            rejectConfirmation: function (application) {
+                this.rejectConfirm = true;
+                this.acceptConfirm = false;
+
+                this.selectedApplication = application;
+                this.$refs.confirmModalRef.show();
+            },
+            acceptConfirmation: function (application) {
+                this.acceptConfirm = true;
+                this.rejectConfirm = false;
+
+                this.selectedApplication = application;
+                this.$refs.confirmModalRef.show();
+            },
+            acceptAppliction: function () {
+                let self = this;
+                this.selectedApplication.status = 'enrolled';
+                applicationApi.put(this.selectedApplication).then(
+                    function (resp) {
+                        self.notifySuccess("The application accepted");
+                        self.$refs.confirmModalRef.hide();
+                        self.reAssignData();
+                    },
+                    function () {
+                        self.notifyError(
+                            "Some error happened when trying to accepting the application"
+                        );
+                    }
+                );
+            },
+            rejectAppliction: function () {
+                let self = this;
+                this.selectedApplication.status = 'reject';
+                applicationApi.put(this.selectedApplication).then(
+                    function (resp) {
+                        self.notifySuccess("The application rejected");
+                        self.$refs.confirmModalRef.hide();
+                    },
+                    function () {
+                        self.notifyError(
+                            "Some error happened when trying to rejecting the application"
+                        );
+                    }
+                );
+
+            },
+            reviewApplication: function (application) {
+                this.review = application;
+                this.selectedReview = application;
+                this.$refs.reviewAppModalRef.show();
+            },
+            updateReview: function (review) {
+                let self = this;
+                this.selectedReview.status = 'scored';
+                applicationApi.put(this.selectedReview).then(
+                    function (resp) {
+                        self.notifySuccess("The application reviewed");
+                        self.$refs.reviewAppModalRef.hide();
+                    },
+                    function () {
+                        self.notifyError(
+                            "Some error happened when trying to review the application"
+                        );
+                    }
+                );
+            }
         }
-      });
-    },
-    onEnrolledBoxClick: function() {
-      this.enrolledShown = !this.enrolledShown;
-      this.applicationShown = false;
-      this.decisionActionField.visible = !this.enrolledShown;
-      this.$refs.vuetable && this.$refs.vuetable.normalizeFields();
-    },
-    onApplicationBoxClick: function() {
-      this.applicationShown = !this.applicationShown;
-      this.enrolledShown = false;
-      this.decisionActionField.visible = this.applicationShown;
-      this.$refs.vuetable && this.$refs.vuetable.normalizeFields();
-    }
-  }
-};
+    };
 </script>
 
 <style>
-.application-table {
-  margin-top: 15px;
-  margin-left: 15px;
-  margin-right: 15px;
-}
+  .application-table {
+    margin-top: 15px;
+    margin-left: 15px;
+    margin-right: 15px;
+  }
 </style>
