@@ -57,26 +57,27 @@ export default {
     // return Api.get("staff/" + schoolshowConfirmDeleteModalshowConfirmDeleteModalshowConfirmDeleteModalshowConfirmDeleteModalId);
   },
   add(staff) {
-    staff.id = Math.random() * 10000 + 1;
+    staff.id = Math.floor(Math.random() * 10000 + 1);
     this.mockStaff.results.push(staff);
     return Promise.resolve({ status: 200 });
     // return Api.post("staff", staff);
   },
   put(staff) {
-    Object.assign(this.get(staff.id), staff);
-    return Promise.resolve({ status: 200 });
+    return this.get(staff.id).then(function(persistedStaff) {
+      Object.assign(this.get(persistedStaff.data.id), staff);
+      return Promise.resolve({ status: 200 });
+    });
     // return Api.put("staff/" + staff.id, staff);
   },
   delete(staff) {
-    let persistedStaff = this.get(staff.id);
-    var indexof = -1;
-    for (let i = 0; i < this.mockStaff.results.length; i++) {
-      if (this.mockStaff.results[i].id === staff.id) {
-          indexof = i;
-      }
-    }
-    this.mockStaff.results.splice(indexof,1);
-    return Promise.resolve({ status: 200 });
+    let self = this;
+    return this.get(staff.id).then(function(persistedStaff) {
+      self.mockStaff.results.splice(
+        self.mockStaff.results.indexOf(persistedStaff.data),
+        1
+      );
+      return Promise.resolve({ status: 200 });
+    });
     // return Api.delete("staff/" + staff.id);
   }
 };

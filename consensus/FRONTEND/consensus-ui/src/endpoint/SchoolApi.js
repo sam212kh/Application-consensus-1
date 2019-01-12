@@ -94,23 +94,28 @@ export default {
     // return Api.get("school/" + id);
   },
   add(school) {
-    school.id = Math.random() * 10000 + 1;
+    school.id = Math.floor(Math.random() * 10000 + 1);
     this.mockSchool.results.push(school);
     return Promise.resolve({ status: 200 });
     // return Api.post("school", school);
   },
   put(school) {
-    Object.assign(this.get(school.id), school);
-    return Promise.resolve({ status: 200 });
+    return this.get(school.id).then(function(persistedSchool) {
+      Object.assign(persistedSchool, school);
+      return Promise.resolve({ status: 200 });
+    });
     // return Api.put("school/" + school.id, school);
   },
   delete(school) {
-    let persistedSchool = this.get(school.id);
-    this.mockSchool.results.splice(
-      this.mockSchool.results.indexOf(persistedSchool),
-      1
-    );
-    return Promise.resolve({ status: 200 });
+    let self = this;
+    return this.get(school.id).then(function(persistedSchool) {
+      self.mockSchool.results.splice(
+        self.mockSchool.results.indexOf(persistedSchool),
+        1
+      );
+      return Promise.resolve({ status: 200 });
+    });
+
     // return Api.delete("school/" + school.id);
   }
 };

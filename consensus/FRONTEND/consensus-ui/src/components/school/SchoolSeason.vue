@@ -47,62 +47,12 @@
       </div>
     </div>
 
-
     <!-- Review Application -->
     <div class="row row-no-padding" v-if="applicationShown">
       <vuetable
         ref="vuetable"
         :api-mode="false"
         :data="reviewData"
-        :fields="tableFields"
-        :css="css.table"
-        class="application-table"
-        :query-params="{
-          sort: 'order_by',
-          page: 'page',
-          perPage: 'page_size'
-        }"
-        data-path="results"
-        pagination-path="pagination"
-        @vuetable:pagination-data="onPaginationData"
-      >
-      <template slot="review_actions" scope="props">
-        <div class="table-button-container">
-          <button
-            class="btn btn-warning btn-sm"
-            @click="reviewApplication(props.rowData);"
-          >
-            <span class="glyphicon glyphicon-pencil"></span></button
-          >&nbsp;&nbsp;
-        </div>
-      </template>
-        <template slot="decision_actions" scope="props">
-          <div class="table-button-container">
-            <button
-              class="btn btn-success btn-sm"
-              @click="acceptConfirmation(props.rowData);"
-            >
-              <span class="glyphicon glyphicon-check"></span></button
-            >&nbsp;&nbsp;
-            <button
-              class="btn btn-outline-danger btn-sm"
-              @click="rejectConfirmation(props.rowData);"
-            >
-              <span class="glyphicon glyphicon-trash"></span></button
-            >&nbsp;&nbsp;
-          </div>
-        </template>
-      </vuetable>
-    </div>
-    <!-- End Review Application -->
-
-
-    <!-- Enrolled Application -->
-    <div class="row row-no-padding" v-if="enrolledShown">
-      <vuetable
-        ref="vuetable"
-        :api-mode="false"
-        :data="enrolledData"
         :fields="tableFields"
         :css="css.table"
         class="application-table"
@@ -125,6 +75,55 @@
             >&nbsp;&nbsp;
           </div>
         </template>
+        <template slot="decision_actions" scope="props">
+          <div class="table-button-container">
+            <button
+              class="btn btn-success btn-sm"
+              @click="acceptConfirmation(props.rowData);"
+            >
+              <span class="glyphicon glyphicon-check"></span></button
+            >&nbsp;&nbsp;
+            <button
+              class="btn btn-outline-danger btn-sm"
+              @click="rejectConfirmation(props.rowData);"
+            >
+              <span class="glyphicon glyphicon-trash"></span></button
+            >&nbsp;&nbsp;
+          </div>
+        </template>
+      </vuetable>
+    </div>
+    <!-- End Review Application -->
+
+    <!-- Enrolled Application -->
+    <div class="row row-no-padding" v-if="enrolledShown">
+      <vuetable
+        ref="vuetable"
+        :api-mode="false"
+        :data="enrolledData"
+        :fields="tableFields"
+        :css="css.table"
+        class="application-table"
+        :query-params="{
+          sort: 'order_by',
+          page: 'page',
+          perPage: 'page_size'
+        }"
+        data-path="results"
+        pagination-path="pagination"
+        @vuetable:pagination-data="onPaginationData"
+      >
+      <template slot="review_actions" scope="props">
+        <div class="table-button-container">
+          <button
+            class="btn btn-warning btn-sm"
+            @click="scoreBoxClick(props.rowData);"
+          >
+            <span class="fa fa-eye"></span></button
+          >&nbsp;&nbsp;
+        </div>
+      </template>
+
       </vuetable>
     </div>
     <!-- End Enrolled Application -->
@@ -149,16 +148,21 @@
                 <div class="col-md-6 col-sm-6 col-xs-6">
                   <div class="form-group">
                     <label class="pull-left">First Name</label>
-                    <input type="text" class="form-control"
-                    v-model="newApp.first_name"
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="newApp.first_name"
                     />
                   </div>
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-6">
                   <div class="form-group">
                     <label class="pull-left">Last Name</label>
-                    <input type="text" class="form-control"
-                    v-model="newApp.last_name" />
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="newApp.last_name"
+                    />
                   </div>
                 </div>
               </div>
@@ -166,16 +170,19 @@
                 <div class="col-md-6 col-sm-6 col-xs-6">
                   <div class="form-group">
                     <label class="pull-left">Birthday</label>
-                    <input type="date" class="form-control"
-                    v-model="newApp.date_of_birth" />
+                    <input
+                      type="date"
+                      class="form-control"
+                      v-model="newApp.date_of_birth"
+                    />
                   </div>
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-6">
                   <div class="form-group">
                     <label class="pull-left">Gender</label>
-                    <select class="form-control"  v-model="newApp.gender">
-                        <option>Male</option>
-                        <option>Female</option>
+                    <select class="form-control" v-model="newApp.gender">
+                      <option>Male</option>
+                      <option>Female</option>
                     </select>
                   </div>
                 </div>
@@ -184,15 +191,21 @@
                 <div class="col-md-6 col-sm-6 col-xs-6">
                   <div class="form-group">
                     <label class="pull-left">Email</label>
-                    <input type="email" class="form-control"
-                    v-model="newApp.email" />
+                    <input
+                      type="email"
+                      class="form-control"
+                      v-model="newApp.email"
+                    />
                   </div>
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-6">
                   <div class="form-group">
                     <label class="pull-left">Phone Number</label>
-                    <input type="text" class="form-control"
-                    v-model="newApp.phone_number" />
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="newApp.phone_number"
+                    />
                   </div>
                 </div>
               </div>
@@ -200,15 +213,19 @@
                 <div class="col-md-6 col-sm-6 col-xs-6">
                   <div class="form-group">
                     <label class="pull-left">Info</label>
-                    <textarea class="form-control"
-                    v-model="newApp.info" ></textarea>
+                    <textarea
+                      class="form-control"
+                      v-model="newApp.info"
+                    ></textarea>
                   </div>
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-6">
                   <div class="form-group">
                     <label class="pull-left">Educational Info</label>
-                    <textarea class="form-control"
-                    v-model="newApp.educational_info" ></textarea>
+                    <textarea
+                      class="form-control"
+                      v-model="newApp.educational_info"
+                    ></textarea>
                   </div>
                 </div>
               </div>
@@ -246,9 +263,11 @@
         <div class="row row-no-padding width-full">
           <div class="col-md-4 col-sm-4 col-xs-12">
             <button
-            v-on:click="submitApplication"
-            type="button" class="btn btn-success btn-block">
-              <i class="glyphicon glyphicon-ok"></i> Add Staff
+              v-on:click="submitApplication"
+              type="button"
+              class="btn btn-success btn-block"
+            >
+              <i class="glyphicon glyphicon-ok"></i> Add Application
             </button>
           </div>
           <div class="col-md-3 col-sm-3 col-xs-12">
@@ -271,8 +290,12 @@
       id="confirmModal"
       :hide-header="true"
     >
-      <p v-if="rejectConfirm" class="text-danger h6">Are you sure to reject this application?</p>
-      <p v-if="acceptConfirm" class="text-danger h6">Are you sure to accept this application?</p>
+      <p v-if="rejectConfirm" class="text-danger h6">
+        Are you sure to reject this application?
+      </p>
+      <p v-if="acceptConfirm" class="text-danger h6">
+        Are you sure to accept this application?
+      </p>
       <div slot="modal-footer" class="w-100">
         <button
           type="button"
@@ -285,21 +308,20 @@
           v-if="rejectConfirm"
           type="button"
           class="btn btn-danger float-right"
-          @click="rejectAppliction();"
+          @click="rejectApplication();"
         >
-          <span v-show="rejectAppliction">reject</span>
+          <span v-show="rejectApplication">reject</span>
         </button>
         <button
           v-if="acceptConfirm"
           type="button"
           class="btn btn-success float-right"
-          @click="acceptAppliction();"
+          @click="acceptApplication();"
         >
-          <span v-show="acceptAppliction">Accept</span>
+          <span v-show="acceptApplication">Accept</span>
         </button>
       </div>
     </b-modal>
-
 
     <!-- review model -->
     <b-modal
@@ -322,53 +344,65 @@
                 <div class="col-md-6 col-sm-6 col-xs-6">
                   <div class="form-group">
                     <label class="pull-left">First Name</label>
-                    <input type="text" class="form-control"
-                    v-model="review.first_name"
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="review.first_name"
                     />
                   </div>
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-6">
                   <div class="form-group">
                     <label class="pull-left">Last Name</label>
-                    <input type="text" class="form-control"
-                    v-model="review.last_name" />
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="review.last_name"
+                    />
                   </div>
                 </div>
               </div>
 
               <div class="row">
-                  <div class="col-md-6 col-sm-6 col-xs-6">
-                      <div class="form-group">
-                          <label class="pull-left">Phone number</label>
-                          <input type="text" class="form-control"
-                          v-model="review.phone_number"
-                          />
-                      </div>
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                  <div class="form-group">
+                    <label class="pull-left">Phone number</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="review.phone_number"
+                    />
                   </div>
-                  <div class="col-md-6 col-sm-6 col-xs-6">
-                      <div class="form-group">
-                          <label class="pull-left">Email</label>
-                          <input type="text" class="form-control"
-                          v-model="review.email"
-                          />
-                      </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                  <div class="form-group">
+                    <label class="pull-left">Email</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="review.email"
+                    />
                   </div>
+                </div>
               </div>
 
               <div class="row">
                 <div class="col-md-6 col-sm-6 col-xs-6">
                   <div class="form-group">
                     <label class="pull-left">Birthday</label>
-                    <input type="date" class="form-control"
-                    v-model="review.date_of_birth" />
+                    <input
+                      type="date"
+                      class="form-control"
+                      v-model="review.date_of_birth"
+                    />
                   </div>
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-6">
                   <div class="form-group">
                     <label class="pull-left">Gender</label>
-                    <select class="form-control"  v-model="review.gender">
-                        <option>Male</option>
-                        <option>Female</option>
+                    <select class="form-control" v-model="review.gender">
+                      <option>Male</option>
+                      <option>Female</option>
                     </select>
                   </div>
                 </div>
@@ -378,15 +412,19 @@
                 <div class="col-md-6 col-sm-6 col-xs-6">
                   <div class="form-group">
                     <label class="pull-left">Info</label>
-                    <textarea class="form-control"
-                    v-model="newApp.info" ></textarea>
+                    <textarea
+                      class="form-control"
+                      v-model="newApp.info"
+                    ></textarea>
                   </div>
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-6">
                   <div class="form-group">
                     <label class="pull-left">Educational Info</label>
-                    <textarea class="form-control"
-                    v-model="newApp.educational_info" ></textarea>
+                    <textarea
+                      class="form-control"
+                      v-model="newApp.educational_info"
+                    ></textarea>
                   </div>
                 </div>
               </div>
@@ -395,9 +433,7 @@
                 <div class="col-md-4 col-sm-4 col-xs-4">
                   <div class="form-group">
                     <label class="pull-left">Do score this Application</label>
-                    <select class="form-control select"
-                    v-model="review.score"
-                    >
+                    <select class="form-control select" v-model="review.score">
                       <option>1</option>
                       <option>2</option>
                       <option>3</option>
@@ -406,21 +442,21 @@
                     </select>
                   </div>
                 </div>
-                <div class="col-md-6 col-sm-6 col-xs-6">
-                </div>
+                <div class="col-md-6 col-sm-6 col-xs-6"></div>
               </div>
               <hr />
               <div class="row">
                 <div class="col-md-12 col-sm-12 col-xs-12">
                   <div class="form-group">
                     <label class="pull-left">Comment</label>
-                    <input type="text" class="form-control"
-                    v-model="review.comment"
+                    <input
+                      type="text"
+                      class="form-control"
+                      v-model="review.comment"
                     />
                   </div>
                 </div>
               </div>
-
             </form>
           </div>
         </div>
@@ -429,8 +465,10 @@
         <div class="row row-no-padding width-full">
           <div v-if="!enrolledShown" class="col-md-4 col-sm-4 col-xs-12">
             <button
-            v-on:click="updateReview"
-            type="button" class="btn btn-success btn-block">
+              v-on:click="updateReview"
+              type="button"
+              class="btn btn-success btn-block"
+            >
               <i class="glyphicon glyphicon-ok"></i> Rate
             </button>
           </div>
@@ -447,12 +485,42 @@
         </div>
       </div>
     </b-modal>
-
     <!-- end review model -->
 
 
+    <!-- scores modal -->
+    <b-modal
+      centered
+      ref="scoreModalRef"
+      id="scoreModal"
+      :hide-header="true"
+    >
 
+    <!-- Scores -->
+    <div class="row row-no-padding">
+      <vuetable
+        ref="vuetable"
+        :api-mode="false"
+        :data="scoreData"
+        :fields="scoreTableFields"
+        :css="css.table"
+        class="application-table"
+        :query-params="{
+          sort: 'order_by',
+          page: 'page',
+          perPage: 'page_size'
+        }"
+        data-path="results"
+        pagination-path="pagination"
+        @vuetable:pagination-data="onPaginationData"
+      >
+      </vuetable>
+    </div>
+    <!-- End Scores -->
 
+    </b-modal>
+
+    <!-- end scores modal -->
   </section>
 </template>
 
@@ -464,6 +532,8 @@ import utilMixin from "@/mixins/UtilMixin";
 import vuetableBootstrapMixin from "../../mixins/VuetableBootstrapMixin";
 import applicationApi from "../../endpoint/ApplicationApi";
 import ApplicationStatus from "./model/ApplicationStatus";
+import SessionApi from "@/endpoint/SessionApi";
+import ScoresApi from "@/endpoint/ScoresApi";
 
 let reviewActionField = {
   name: "__slot:review_actions",
@@ -496,6 +566,8 @@ export default {
   },
   created: function() {
     this.reAssignData();
+    var user = SessionApi.getUser();
+
   },
   data: function() {
     return {
@@ -508,17 +580,40 @@ export default {
       },
       newApp: {},
       review: {},
-      selectedApplication : {},
+      selectedApplication: {},
       selectedReview: null,
+      selectedScore: null,
       applicationShown: false,
       enrolledShown: false,
       rejectConfirm: false,
       acceptConfirm: false,
       localData: {},
+      scoreData: {},
       enrolledData: {},
       reviewData: {},
       reviewActionField: reviewActionField,
       decisionActionField: decisionActionField,
+      scoreTableFields: [
+        {
+          sortField: "first_name",
+          name: "first_name",
+          title: "First Name",
+          titleClass: "text-left",
+          dataClass: "text-left"
+        },
+        {
+          name: "last_name",
+          title: "Last Name",
+          titleClass: "text-left",
+          dataClass: "text-left"
+        },
+        {
+          name: "score",
+          title: "score",
+          titleClass: "text-left",
+          dataClass: "text-left"
+        },
+      ],
       tableFields: [
         {
           sortField: "first_name",
@@ -590,25 +685,10 @@ export default {
     showNewApplicationModal: function() {
       this.$refs.newApplicationModalRef.show();
     },
-    reAssignData: function(){
+    reAssignData: function() {
       this.localData = applicationApi.getAll(this.schoolId);
-      let reviewData = [];
-      let enrolledData = [];
-      this.season.applicationEnrolled = 0;
-      for (let i = 0; i < this.localData.results.length; i++) {
-        if ( this.localData.results[i].status === 'enrolled') {
-          var id = this.localData.results[i].id;
-          if (this.localData.results[i].status === ApplicationStatus.Enrolled) {
-            this.season.applicationEnrolled++;
-          }
-          enrolledData.push( this.localData.results[i] );
-        }
-        else{
-          reviewData.push( this.localData.results[i] );
-        }
-      }
-      this.reviewData = reviewData;
-      this.enrolledData = enrolledData;
+      this.reviewData = [];
+      this.enrolledData = [];
       this.season.applicationScored = 0;
       this.season.applicationEnrolled = 0;
       this.fragmentationApplication(this.localData.results);
@@ -627,6 +707,9 @@ export default {
 
         if (application.status === ApplicationStatus.Enrolled) {
           self.season.applicationEnrolled++;
+          self.enrolledData.push(application);
+        } else {
+          self.reviewData.push(application);
         }
 
         // Count new(today) applications
@@ -652,7 +735,13 @@ export default {
       this.decisionActionField.visible = !this.enrolledShown;
       this.$refs.vuetable && this.$refs.vuetable.normalizeFields();
     },
+    scoreBoxClick : function(enrolled) {
+      var applicationId = enrolled.id;
+      this.scoreData = ScoresApi.getAll();
+      this.$refs.scoreModalRef.show();
+    },
     onApplicationBoxClick: function() {
+
       this.applicationShown = !this.applicationShown;
       this.enrolledShown = false;
       this.decisionActionField.visible = this.applicationShown;
@@ -660,11 +749,14 @@ export default {
     },
     submitApplication: function() {
       let self = this;
-      self.newApp.score  = 0;
-      self.newApp.status = 'pending';
-      self.newApp.created_date = new Date().toJSON().slice(0,10).replace(/-/g,'-');
+      self.newApp.score = 0;
+      self.newApp.status = "pending";
+      self.newApp.created_date = new Date()
+        .toJSON()
+        .slice(0, 10)
+        .replace(/-/g, "-");
       applicationApi.add(self.newApp).then(
-        function(resp) {
+        function() {
           self.notifySuccess("The application inserted");
           self.$refs.newApplicationModalRef.hide();
           self.reAssignData();
@@ -677,24 +769,24 @@ export default {
       );
     },
     rejectConfirmation: function(application) {
-        this.rejectConfirm = true;
-        this.acceptConfirm = false;
+      this.rejectConfirm = true;
+      this.acceptConfirm = false;
 
-        this.selectedApplication = application;
-        this.$refs.confirmModalRef.show();
+      this.selectedApplication = application;
+      this.$refs.confirmModalRef.show();
     },
     acceptConfirmation: function(application) {
-        this.acceptConfirm = true;
-        this.rejectConfirm = false;
+      this.acceptConfirm = true;
+      this.rejectConfirm = false;
 
-        this.selectedApplication = application;
-        this.$refs.confirmModalRef.show();
+      this.selectedApplication = application;
+      this.$refs.confirmModalRef.show();
     },
-    acceptAppliction: function(){
+    acceptApplication: function() {
       let self = this;
-      this.selectedApplication.status = 'enrolled';
+      this.selectedApplication.status = "enrolled";
       applicationApi.put(this.selectedApplication).then(
-        function(resp) {
+        function() {
           self.notifySuccess("The application accepted");
           self.$refs.confirmModalRef.hide();
           self.reAssignData();
@@ -706,11 +798,11 @@ export default {
         }
       );
     },
-    rejectAppliction: function() {
+    rejectApplication: function() {
       let self = this;
-      this.selectedApplication.status = 'reject';
+      this.selectedApplication.status = "reject";
       applicationApi.put(this.selectedApplication).then(
-        function(resp) {
+        function() {
           self.notifySuccess("The application rejected");
           self.$refs.confirmModalRef.hide();
         },
@@ -720,18 +812,17 @@ export default {
           );
         }
       );
-
     },
     reviewApplication: function(application) {
       this.review = application;
       this.selectedReview = application;
       this.$refs.reviewAppModalRef.show();
     },
-    updateReview: function(review){
+    updateReview: function() {
       let self = this;
-      this.selectedReview.status = 'scored';
+      this.selectedReview.status = "scored";
       applicationApi.put(this.selectedReview).then(
-        function(resp) {
+        function() {
           self.notifySuccess("The application reviewed");
           self.$refs.reviewAppModalRef.hide();
         },

@@ -29,32 +29,36 @@ export default {
     return this.mockSeason;
   },
   get(seasonId) {
-    for (let i = 0; i < this.mockSeason.length; i++) {
-      if (this.mockSeason[i].id === +seasonId) {
+    for (let i = 0; i < this.mockSeason.results.length; i++) {
+      if (this.mockSeason.results[i].id === +seasonId) {
         return Promise.resolve({
           status: 200,
-          data: this.mockSeason[i]
+          data: this.mockSeason.results[i]
         });
       }
     }
     return Promise.resolve({
       status: 200,
-      data: this.mockSeason[0]
+      data: this.mockSeason.results[0]
     });
   },
   add(schoolId, season) {
-    season.id = Math.random() * 10000 + 1;
+    season.id = Math.floor(Math.random() * 10000 + 1);
     season.school_id = schoolId;
-    this.mockSeason.push(season);
+    this.mockSeason.results.push(season);
     return Promise.resolve({ status: 200, data: season });
   },
   put(season) {
-    Object.assign(this.get(season.id), season);
-    return Promise.resolve({ status: 200 });
+    return this.get(season.id).then(function(persistedSeason) {
+      Object.assign(persistedSeason, season);
+      return Promise.resolve({ status: 200 });
+    });
   },
   delete(season) {
-    let persistedSeason = this.get(season.id);
-    this.mockSeason.splice(this.mockSeason.indexOf(persistedSeason), 1);
-    return Promise.resolve({ status: 200 });
+    let self = this;
+    return this.get(season.id).then(function(persistedSeason) {
+      self.mockSeason.results.splice(self.mockSeason.indexOf(persistedSeason), 1);
+      return Promise.resolve({ status: 200 });
+    });
   }
 };

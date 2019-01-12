@@ -93,34 +93,38 @@ export default {
     return this.mockApplication;
   },
   get(schoolId) {
-    for (let i = 0; i < this.mockApplication.length; i++) {
-      if (this.mockApplication[i].school_id === +schoolId) {
+    for (let i = 0; i < this.mockApplication.results.length; i++) {
+      if (this.mockApplication.results[i].id === +schoolId) {
         return Promise.resolve({
           status: 200,
-          data: this.mockApplication[i]
+          data: this.mockApplication.results[i]
         });
       }
     }
     return Promise.resolve({
       status: 200,
-      data: this.mockApplication[0]
+      data: this.mockApplication.results[0]
     });
   },
-  add(season) {
-    season.id = Math.random() * 10000 + 1;
-    this.mockApplication.results.push(season);
+  add(application) {
+    application.id = Math.floor(Math.random() * 10000 + 1);
+    this.mockApplication.results.push(application);
     return Promise.resolve({ status: 200 });
   },
-  put(season) {
-    Object.assign(this.get(season.id), season);
-    return Promise.resolve({ status: 200 });
+  put(application) {
+    return this.get(application.id).then(function(persistedApplication) {
+      Object.assign(persistedApplication.data, application);
+      return Promise.resolve({ status: 200 });
+    });
   },
-  delete(season) {
-    let persistedSeason = this.get(season.id);
-    this.mockApplication.splice(
-      this.mockApplication.indexOf(persistedSeason),
-      1
-    );
-    return Promise.resolve({ status: 200 });
+  delete(application) {
+    let self = this;
+    return this.get(application.id).then(function(persistedApplication) {
+      self.mockApplication.results.splice(
+        self.mockApplication.results.indexOf(persistedApplication.data),
+        1
+      );
+      return Promise.resolve({ status: 200 });
+    });
   }
 };
