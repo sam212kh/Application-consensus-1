@@ -57,7 +57,10 @@ export default {
   delete(season) {
     let self = this;
     return this.get(season.id).then(function(persistedSeason) {
-      self.mockSeason.results.splice(self.mockSeason.indexOf(persistedSeason), 1);
+      self.mockSeason.results.splice(
+        self.mockSeason.indexOf(persistedSeason),
+        1
+      );
       return Promise.resolve({ status: 200 });
     });
   }
