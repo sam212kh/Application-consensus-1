@@ -113,6 +113,17 @@
         pagination-path="pagination"
         @vuetable:pagination-data="onPaginationData"
       >
+      <template slot="review_actions" scope="props">
+        <div class="table-button-container">
+          <button
+            class="btn btn-warning btn-sm"
+            @click="scoreBoxClick(props.rowData);"
+          >
+            <span class="fa fa-eye"></span></button
+          >&nbsp;&nbsp;
+        </div>
+      </template>
+
       </vuetable>
     </div>
     <!-- End Enrolled Application -->
@@ -474,8 +485,42 @@
         </div>
       </div>
     </b-modal>
-
     <!-- end review model -->
+
+
+    <!-- scores modal -->
+    <b-modal
+      centered
+      ref="scoreModalRef"
+      id="scoreModal"
+      :hide-header="true"
+    >
+
+    <!-- Scores -->
+    <div class="row row-no-padding">
+      <vuetable
+        ref="vuetable"
+        :api-mode="false"
+        :data="scoreData"
+        :fields="scoreTableFields"
+        :css="css.table"
+        class="application-table"
+        :query-params="{
+          sort: 'order_by',
+          page: 'page',
+          perPage: 'page_size'
+        }"
+        data-path="results"
+        pagination-path="pagination"
+        @vuetable:pagination-data="onPaginationData"
+      >
+      </vuetable>
+    </div>
+    <!-- End Scores -->
+
+    </b-modal>
+
+    <!-- end scores modal -->
   </section>
 </template>
 
@@ -487,6 +532,8 @@ import utilMixin from "@/mixins/UtilMixin";
 import vuetableBootstrapMixin from "../../mixins/VuetableBootstrapMixin";
 import applicationApi from "../../endpoint/ApplicationApi";
 import ApplicationStatus from "./model/ApplicationStatus";
+import SessionApi from "@/endpoint/SessionApi";
+import ScoresApi from "@/endpoint/ScoresApi";
 
 let reviewActionField = {
   name: "__slot:review_actions",
@@ -519,6 +566,8 @@ export default {
   },
   created: function() {
     this.reAssignData();
+    var user = SessionApi.getUser();
+
   },
   data: function() {
     return {
@@ -533,15 +582,38 @@ export default {
       review: {},
       selectedApplication: {},
       selectedReview: null,
+      selectedScore: null,
       applicationShown: false,
       enrolledShown: false,
       rejectConfirm: false,
       acceptConfirm: false,
       localData: {},
+      scoreData: {},
       enrolledData: {},
       reviewData: {},
       reviewActionField: reviewActionField,
       decisionActionField: decisionActionField,
+      scoreTableFields: [
+        {
+          sortField: "first_name",
+          name: "first_name",
+          title: "First Name",
+          titleClass: "text-left",
+          dataClass: "text-left"
+        },
+        {
+          name: "last_name",
+          title: "Last Name",
+          titleClass: "text-left",
+          dataClass: "text-left"
+        },
+        {
+          name: "score",
+          title: "score",
+          titleClass: "text-left",
+          dataClass: "text-left"
+        },
+      ],
       tableFields: [
         {
           sortField: "first_name",
@@ -662,6 +734,11 @@ export default {
       this.applicationShown = false;
       this.decisionActionField.visible = !this.enrolledShown;
       this.$refs.vuetable && this.$refs.vuetable.normalizeFields();
+    },
+    scoreBoxClick : function(enrolled) {
+      var applicationId = enrolled.id;
+      this.scoreData = ScoresApi.getAll();
+      this.$refs.scoreModalRef.show();
     },
     onApplicationBoxClick: function() {
       this.applicationShown = !this.applicationShown;
