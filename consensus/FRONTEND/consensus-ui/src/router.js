@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Router from "vue-router";
+import Home from "./components/school/Home";
 import SchoolHome from "./components/school/SchoolHome";
 import SchoolSubmit from "./components/school/SchoolSubmit";
 import SchoolDetail from "./components/school/SchoolDetail";
@@ -14,7 +15,27 @@ export default new Router({
   routes: [
     {
       path: "/",
-      redirect: "/school"
+      redirect: "/home"
+    },
+    {
+      path: "/",
+      component: School,
+      beforeEnter: (to, from, next) => {
+        store.dispatch("checkSession").then(function() {
+          if (store.getters.isLoadedUser) {
+            next();
+          }
+        });
+        //TODO: should be handle dispatch promise failed
+      },
+      children: [
+        { path: "/" },
+        {
+          path: "home",
+          name: "home",
+          component: Home
+        },
+      ]
     },
     {
       path: "/school",
@@ -28,10 +49,10 @@ export default new Router({
         //TODO: should be handle dispatch promise failed
       },
       children: [
-        { path: "", redirect: "home" },
+        { path: "/school/", redirect: "home" },
         {
-          path: "home",
-          name: "school.home",
+          path: ":id/view",
+          name: "school.view",
           component: SchoolHome
         },
         {
