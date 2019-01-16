@@ -64,7 +64,7 @@ export default {
   },
   put(staff) {
     return this.get(staff.id).then(function(persistedStaff) {
-      Object.assign(this.get(persistedStaff.data.id), staff);
+      Object.assign(persistedStaff, staff);
       return Promise.resolve({ status: 200 });
     });
     // return Api.put("staff/" + staff.id, staff);

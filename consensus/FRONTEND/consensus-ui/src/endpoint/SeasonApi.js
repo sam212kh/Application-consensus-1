@@ -1,5 +1,17 @@
 export default {
-  mockSeason: [
+  mockSeason: {
+    pagination: {
+      next_url: null,
+      previous_url: null,
+      current_page: 1,
+      next_page: null,
+      previous_page: null,
+      first_page: 1,
+      last_page: 1,
+      page_size: 10,
+      total: 1
+    },
+    results: [
     {
       id: 18,
       school_id: 12,
@@ -24,7 +36,8 @@ export default {
       scored: 1,
       enrolled: 3
     }
-  ],
+    ]
+  },
   getAll() {
     return this.mockSeason;
   },

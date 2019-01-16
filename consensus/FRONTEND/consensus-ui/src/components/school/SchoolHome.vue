@@ -2,14 +2,14 @@
   <section class="container">
     <div class="row row-no-padding justify-content-end">
       <div class="col-3">
-        <button class="btn btn-block btn-info" v-on:click="goToAddSchool">
-          <i class="fa fa-plus"></i> Add a new School
-        </button>
-      </div>
-      <div class="col-3">
         <button class="btn btn-block btn-primary" v-on:click="goToAddSeason">
           <i class="fa fa-plus"></i> Add a new Season
         </button>
+      </div>
+    </div>
+    <div class="row row-no-padding">
+      <div class="col">
+        <school-staff v-bind:schoolId="schoolId"></school-staff>
       </div>
     </div>
     <div class="row row-no-padding">
@@ -18,13 +18,10 @@
           ref="vuetable"
           :api-mode="false"
           :data="localData"
-          :api-url="tableUrl"
           :fields="tableFields"
           :css="css.table"
           :row-class="onRowClass"
           class="school-table"
-          detail-row-component="school-seasons"
-          @vuetable:row-clicked="onRowClicked"
           :query-params="{
             sort: 'order_by',
             page: 'page',
@@ -40,14 +37,24 @@
                 class="btn btn-warning btn-sm"
                 @click="editRow(props.rowData);"
               >
-                <span class="glyphicon glyphicon-pencil"></span> Edit</button
-              >&nbsp;&nbsp;
+                <span class="glyphicon glyphicon-pencil"></span>Edit</button
+              >&nbsp;
               <button
                 class="btn btn-danger btn-sm"
                 @click="showConfirmDeleteModal(props.rowData);"
               >
-                <span class="glyphicon glyphicon-trash"></span> Delete</button
-              >&nbsp;&nbsp;
+                <span class="glyphicon glyphicon-trash"></span>Delete</button
+              >&nbsp;
+            </div>
+          </template>
+          <template slot="view" scope="props">
+            <div class="table-button-container">
+              <button
+                class="btn btn-info btn-sm"
+                @click="gotoSeasonHome(props.rowData);"
+              >
+                <span class="fa fa-eye"></span></button
+              >
             </div>
           </template>
         </vuetable>
@@ -136,6 +143,7 @@
                   <div class="form-group">
                     <label class="pull-left">Start Date</label>
                     <input
+                      type="date"
                       class="form-control"
                       data-date-format="dd/mm/yyyy"
                       id="startDate"
@@ -147,6 +155,7 @@
                   <div class="form-group">
                     <label class="pull-left">End Date</label>
                     <input
+                      type="date"
                       class="form-control"
                       data-date-format="dd/mm/yyyy"
                       id="endDate"
@@ -162,6 +171,7 @@
                       >Application acceptance Start Date</label
                     >
                     <input
+                      type="date"
                       class="form-control"
                       data-date-format="dd/mm/yyyy"
                       id="appStartDate"
@@ -175,6 +185,7 @@
                       >Application acceptance End Date</label
                     >
                     <input
+                      type="date"
                       class="form-control"
                       data-date-format="dd/mm/yyyy"
                       id="appEndDate"
@@ -263,82 +274,72 @@ import VuetableBootstrapMixin from "../../mixins/VuetableBootstrapMixin";
 import bModal from "bootstrap-vue/es/components/modal/modal";
 import schoolApi from "@/endpoint/SchoolApi";
 import seasonApi from "@/endpoint/SeasonApi";
+import SchoolStaff from "./SchoolStaff";
 
 export default {
   name: "SchoolHome",
   mixins: [UtilMixin, VuetableBootstrapMixin],
   components: {
     Vuetable,
+    SchoolStaff,
     VuetablePagination,
     "b-modal": bModal
   },
   created: function() {
-    this.$eventsBus.$emit("header:title", "Schools");
-    this.localData = schoolApi.getAll();
+    this.$eventsBus.$emit("header:title", "School ");
+    this.localData = seasonApi.getAll();
+    this.schoolData = schoolApi.get(this.$route.params.id);
   },
   data: function() {
     return {
-      selectedSchoolId: -1,
+      selectedSchoolId: this.$route.params.id,
       localData: {},
-      tableUrl: "/api/v1/school",
+      schoolData: {},
       tableFields: [
+        "__slot:view",
         {
-          sortField: "full_name",
+          sortField: "Name",
           name: "full_name",
-          title: `<span class="icon is-small orange"><i class="fa fa-book color-gray"></i></span> Full Name`,
+          title: `<span class="icon is-small orange"><i class="fa fa-book color-gray"></i></span> Name`,
           titleClass: "text-left",
           dataClass: "text-left"
         },
         {
-          name: "total_staff_count",
-          title: `<span class="icon is-small orange"><i class="fa fa-users color-gray"></i></span> Staff`,
-          titleClass: "text-left",
-          dataClass: "text-left"
-        },
-        {
-          name: "total_season_count",
-          title: `<span class="icon is-small orange"><i class="fa fa-calendar color-gray"></i></span> Season`,
-          titleClass: "text-left",
-          dataClass: "text-left"
-        },
-        {
-          name: "total_application_count",
+          sortField: "Application",
+          name: "application",
           title: `<span class="icon is-small orange"><i class="fa fa-send color-gray"></i></span> Application`,
           titleClass: "text-left",
           dataClass: "text-left"
         },
         {
-          name: "total_score_count",
-          title: `<span class="icon is-small orange"><i class="fa fa-handshake-o color-gray"></i></span> Enrolled`,
+          name: "scored",
+          title: `<span class="icon is-small orange"><i class="fa fa-handshake-o color-gray"></i></span> Scored`,
           titleClass: "text-left",
           dataClass: "text-left"
         },
         {
-          name: "total_enrolled_count",
-          title: `<span class="icon is-small orange"><i class="fa fa-calendar color-gray"></i></span> Season`,
+          name: "enrolled",
+          title: `<span class="icon is-small orange"><i class="fa fa-handshake-o color-gray"></i></span> Enrolled`,
           titleClass: "text-left",
           dataClass: "text-left"
         },
+
         "__slot:actions"
       ],
-      schools: [],
       newSeason: {},
-      selectedSchoolForDelete: null,
+      selectedSeason: null,
       deletingRecord: false
     };
   },
   methods: {
-    goToAddSchool: function() {
-      this.$router.push({ name: "school.add" });
-    },
-    showConfirmDeleteModal: function(school) {
-      this.selectedSchoolForDelete = school;
+    showConfirmDeleteModal: function(season) {
+      this.selectedSeason = season;
       this.$refs.confirmDeleteModalRef.show();
     },
     deleteSchool: function() {
       let self = this;
       self.deletingRecord = true;
-      schoolApi.delete(self.selectedSchoolForDelete).then(
+      SeasonApi.delete(self.selectedSeason).then(
         function() {
           self.$refs.vuetable.refresh();
           self.deletingRecord = false;
@@ -348,49 +349,63 @@ export default {
         function() {
           self.deletingRecord = false;
           self.notifyError(
-            "Some error happened when trying to delete the school"
+            "Some error happened when trying to delete the season"
           );
         }
       );
     },
-    editRow: function(school) {
-      this.$router.push({ name: "school.edit", params: { id: school.id } });
-    },
-    onRowClicked: function(data) {
-      this.selectedSchoolId = data.id;
-      this.$refs.vuetable.toggleDetailRow(data.id);
-    },
-    onRowClass: function(dataItem) {
-      if (this.selectedSchoolId !== dataItem.id) {
-        return "clickable";
-      }
-      return "bg-info text-light clickable";
+    editRow: function(season) {
+      this.selectedSeason = season.id;
+      this.newSeason = season;
+      this.$refs.newSeasonModalRef.show();
     },
     goToAddSeason: function() {
-      if (this.selectedSchoolId === -1) {
-        this.notifyError("Please select a school to add it's new season");
-        return;
-      }
+      this.selectedSeason = null;
       this.$refs.newSeasonModalRef.show();
     },
     submitSeason: function() {
       let self = this;
-      seasonApi.add(this.selectedSchoolId, this.newSeason).then(
-        function(resp) {
-          self.notifySuccess("The season inserted");
-          self.$refs.newSeasonModalRef.hide();
-          self.localData.results.forEach(function(school) {
-            if (school.id === self.selectedSchoolId) {
-              school.seasons.push(resp.data);
-            }
-          });
-        },
-        function() {
-          self.notifyError(
-            "Some error happened when trying to add the new school"
-          );
-        }
-      );
+      if( this.selectedSeason == null ){
+        seasonApi.add(this.selectedSchoolId, this.newSeason).then(
+          function(resp) {
+            self.notifySuccess("The season inserted");
+            self.$refs.newSeasonModalRef.hide();
+            self.localData.results.forEach(function(school) {
+              if (school.id === self.selectedSchoolId) {
+                school.seasons.push(resp.data);
+              }
+            });
+          },
+          function() {
+            self.notifyError(
+              "Some error happened when trying to add the new season"
+            );
+          }
+        );
+      }else{
+        seasonApi.put(this.newSeason).then(
+          function(resp) {
+            self.notifySuccess("The season updated");
+            self.$refs.newSeasonModalRef.hide();
+            self.localData.results.forEach(function(school) {
+              if (school.id === self.selectedSchoolId) {
+                school.seasons.push(resp.data);
+              }
+            });
+          },
+          function() {
+            self.notifyError(
+              "Some error happened when trying to update the new season"
+            );
+          }
+        );
+      }
+    },
+    gotoSeasonHome: function(season) {
+      this.$router.push({
+        name: "school.detail",
+        params: { school_id: this.selectedSchoolId, season_id: season.id }
+      });
     }
   }
 };
