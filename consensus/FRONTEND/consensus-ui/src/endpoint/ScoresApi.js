@@ -20,7 +20,7 @@ export default {
         first_name: "staff",
         last_name: "12",
         score_date: "2018-12-24",
-        score: 4,
+        score: 4
       },
       {
         id: 18,
@@ -30,7 +30,7 @@ export default {
         first_name: "staff",
         last_name: "11",
         score_date: "2018-12-22",
-        score: 4,
+        score: 4
       },
       {
         id: 18,
@@ -40,7 +40,7 @@ export default {
         first_name: "staff",
         last_name: "12",
         score_date: "2018-12-24",
-        score: 4,
+        score: 4
       },
       {
         id: 15,
@@ -50,16 +50,16 @@ export default {
         first_name: "staff",
         last_name: "13",
         score_date: "2018-12-20",
-        score: 2,
-      },
+        score: 2
+      }
     ]
   },
   getAll() {
     return this.mockScore;
   },
-  get(ScoreId) {
+  get(scoreId) {
     for (let i = 0; i < this.mockScore.results.length; i++) {
-      if (this.mockScore.results[i].id === +schoolId) {
+      if (this.mockScore.results[i].id === +scoreId) {
         return Promise.resolve({
           status: 200,
           data: this.mockScore.results[i]
@@ -72,13 +72,13 @@ export default {
     });
   },
   add(score) {
-    application.id = Math.floor(Math.random() * 10000 + 1);
+    score.id = Math.floor(Math.random() * 10000 + 1);
     this.mockScore.results.push(score);
     return Promise.resolve({ status: 200 });
   },
   put(score) {
     return this.get(score.id).then(function(persistedScore) {
-      Object.assign(persistedScore.data, application);
+      Object.assign(persistedScore.data, score);
       return Promise.resolve({ status: 200 });
     });
   },

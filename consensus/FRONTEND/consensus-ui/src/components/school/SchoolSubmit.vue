@@ -189,7 +189,7 @@ export default {
       );
     },
     cancel: function() {
-      this.$router.back();
+      this.$router.push("/home");
     }
   }
 };

@@ -113,17 +113,16 @@
         pagination-path="pagination"
         @vuetable:pagination-data="onPaginationData"
       >
-      <template slot="review_actions" scope="props">
-        <div class="table-button-container">
-          <button
-            class="btn btn-warning btn-sm"
-            @click="scoreBoxClick(props.rowData);"
-          >
-            <span class="fa fa-eye"></span></button
-          >&nbsp;&nbsp;
-        </div>
-      </template>
-
+        <template slot="review_actions" scope="props">
+          <div class="table-button-container">
+            <button
+              class="btn btn-warning btn-sm"
+              @click="scoreBoxClick(props.rowData);"
+            >
+              <span class="fa fa-eye"></span></button
+            >&nbsp;&nbsp;
+          </div>
+        </template>
       </vuetable>
     </div>
     <!-- End Enrolled Application -->
@@ -487,37 +486,29 @@
     </b-modal>
     <!-- end review model -->
 
-
     <!-- scores modal -->
-    <b-modal
-      centered
-      ref="scoreModalRef"
-      id="scoreModal"
-      :hide-header="true"
-    >
-
-    <!-- Scores -->
-    <div class="row row-no-padding">
-      <vuetable
-        ref="vuetable"
-        :api-mode="false"
-        :data="scoreData"
-        :fields="scoreTableFields"
-        :css="css.table"
-        class="application-table"
-        :query-params="{
-          sort: 'order_by',
-          page: 'page',
-          perPage: 'page_size'
-        }"
-        data-path="results"
-        pagination-path="pagination"
-        @vuetable:pagination-data="onPaginationData"
-      >
-      </vuetable>
-    </div>
-    <!-- End Scores -->
-
+    <b-modal centered ref="scoreModalRef" id="scoreModal" :hide-header="true">
+      <!-- Scores -->
+      <div class="row row-no-padding">
+        <vuetable
+          ref="vuetable"
+          :api-mode="false"
+          :data="scoreData"
+          :fields="scoreTableFields"
+          :css="css.table"
+          class="application-table"
+          :query-params="{
+            sort: 'order_by',
+            page: 'page',
+            perPage: 'page_size'
+          }"
+          data-path="results"
+          pagination-path="pagination"
+          @vuetable:pagination-data="onPaginationData"
+        >
+        </vuetable>
+      </div>
+      <!-- End Scores -->
     </b-modal>
 
     <!-- end scores modal -->
@@ -532,7 +523,6 @@ import utilMixin from "@/mixins/UtilMixin";
 import vuetableBootstrapMixin from "../../mixins/VuetableBootstrapMixin";
 import applicationApi from "../../endpoint/ApplicationApi";
 import ApplicationStatus from "./model/ApplicationStatus";
-import SessionApi from "@/endpoint/SessionApi";
 import ScoresApi from "@/endpoint/ScoresApi";
 
 let reviewActionField = {
@@ -554,23 +544,16 @@ export default {
     VuetablePagination,
     "b-modal": bModal
   },
-  props: {
-    schoolId: {
-      type: Number,
-      required: true
-    },
-    seasonId: {
-      type: Number,
-      required: true
-    }
-  },
   created: function() {
+    this.$eventsBus.$emit("header:title", "School's season");
+    this.schoolId = +this.$route.params.school_id;
+    this.seasonId = +this.$route.params.season_id;
     this.reAssignData();
-    var user = SessionApi.getUser();
-
   },
   data: function() {
     return {
+      schoolId: 0,
+      seasonId: 0,
       season: {
         application: 0,
         applicationScored: 0,
@@ -612,7 +595,7 @@ export default {
           title: "score",
           titleClass: "text-left",
           dataClass: "text-left"
-        },
+        }
       ],
       tableFields: [
         {
@@ -735,8 +718,7 @@ export default {
       this.decisionActionField.visible = !this.enrolledShown;
       this.$refs.vuetable && this.$refs.vuetable.normalizeFields();
     },
-    scoreBoxClick : function(enrolled) {
-      var applicationId = enrolled.id;
+    scoreBoxClick: function() {
       this.scoreData = ScoresApi.getAll();
       this.$refs.scoreModalRef.show();
     },

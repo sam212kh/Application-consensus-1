@@ -36,7 +36,7 @@ export default {
   methods: {
     gotoSeasonHome: function(season) {
       this.$router.push({
-        name: "school.detail",
+        name: "school.season",
         params: { school_id: this.rowData.id, season_id: season.id }
       });
     }

@@ -2,14 +2,6 @@
   <div class="container-fluid school.detail">
     <div class="row-no-padding">
       <div class="col">
-        <school-staff v-bind:schoolId="schoolId"></school-staff>
-      </div>
-    </div>
-    <div class="row-no-padding">
-      <div class="col"><h1 /></div>
-    </div>
-    <div class="row-no-padding">
-      <div class="col">
         <school-season
           :school-id="schoolId"
           :season-id="seasonId"
@@ -20,14 +12,12 @@
 </template>
 
 <script>
-import SchoolStaff from "./SchoolStaff";
 import SchoolSeason from "./SchoolSeason";
 
 export default {
   name: "SchoolDetail",
   mixins: [],
   components: {
-    SchoolStaff,
     SchoolSeason
   },
   created: function() {
