@@ -12,30 +12,30 @@ export default {
       total: 1
     },
     results: [
-    {
-      id: 18,
-      school_id: 12,
-      full_name: "season_11",
-      application: 7,
-      scored: 4,
-      enrolled: 2
-    },
-    {
-      id: 12,
-      school_id: 12,
-      full_name: "season_12",
-      application: 9,
-      scored: 2,
-      enrolled: 6
-    },
-    {
-      id: 31,
-      school_id: 13,
-      full_name: "season_13",
-      application: 6,
-      scored: 1,
-      enrolled: 3
-    }
+      {
+        id: 18,
+        school_id: 12,
+        full_name: "season_11",
+        application: 7,
+        scored: 4,
+        enrolled: 2
+      },
+      {
+        id: 12,
+        school_id: 12,
+        full_name: "season_12",
+        application: 9,
+        scored: 2,
+        enrolled: 6
+      },
+      {
+        id: 31,
+        school_id: 13,
+        full_name: "season_13",
+        application: 6,
+        scored: 1,
+        enrolled: 3
+      }
     ]
   },
   getAll() {
@@ -70,7 +70,10 @@ export default {
   delete(season) {
     let self = this;
     return this.get(season.id).then(function(persistedSeason) {
-      self.mockSeason.results.splice(self.mockSeason.indexOf(persistedSeason), 1);
+      self.mockSeason.results.splice(
+        self.mockSeason.indexOf(persistedSeason),
+        1
+      );
       return Promise.resolve({ status: 200 });
     });
   }

@@ -20,7 +20,6 @@
           :data="localData"
           :fields="tableFields"
           :css="css.table"
-          :row-class="onRowClass"
           class="school-table"
           :query-params="{
             sort: 'order_by',
@@ -53,8 +52,8 @@
                 class="btn btn-info btn-sm"
                 @click="gotoSeasonHome(props.rowData);"
               >
-                <span class="fa fa-eye"></span></button
-              >
+                <span class="fa fa-eye"></span>
+              </button>
             </div>
           </template>
         </vuetable>
@@ -292,7 +291,7 @@ export default {
   },
   data: function() {
     return {
-      selectedSchoolId: this.$route.params.id,
+      schoolId: this.$route.params.id,
       localData: {},
       schoolData: {},
       tableFields: [
@@ -339,7 +338,7 @@ export default {
     deleteSchool: function() {
       let self = this;
       self.deletingRecord = true;
-      SeasonApi.delete(self.selectedSeason).then(
+      seasonApi.delete(self.selectedSeason).then(
         function() {
           self.$refs.vuetable.refresh();
           self.deletingRecord = false;
@@ -365,7 +364,7 @@ export default {
     },
     submitSeason: function() {
       let self = this;
-      if( this.selectedSeason == null ){
+      if (this.selectedSeason == null) {
         seasonApi.add(this.selectedSchoolId, this.newSeason).then(
           function(resp) {
             self.notifySuccess("The season inserted");
@@ -382,7 +381,7 @@ export default {
             );
           }
         );
-      }else{
+      } else {
         seasonApi.put(this.newSeason).then(
           function(resp) {
             self.notifySuccess("The season updated");

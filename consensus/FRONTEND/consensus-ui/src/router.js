@@ -1,10 +1,10 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Home from "./components/school/Home";
+import Home from "./components/Home";
 import SchoolHome from "./components/school/SchoolHome";
 import SchoolSubmit from "./components/school/SchoolSubmit";
-import SchoolDetail from "./components/school/SchoolDetail";
-import School from "./components/school/School.vue";
+import SchoolSeason from "./components/school/SchoolSeason";
+import Schools from "./components/school/Schools.vue";
 import SignIn from "./components/SignIn.vue";
 import store from "./store.js";
 
@@ -15,11 +15,7 @@ export default new Router({
   routes: [
     {
       path: "/",
-      redirect: "/home"
-    },
-    {
-      path: "/",
-      component: School,
+      component: Home,
       beforeEnter: (to, from, next) => {
         store.dispatch("checkSession").then(function() {
           if (store.getters.isLoadedUser) {
@@ -29,46 +25,30 @@ export default new Router({
         //TODO: should be handle dispatch promise failed
       },
       children: [
-        { path: "/" },
         {
-          path: "home",
-          name: "home",
-          component: Home
+          path: "",
+          name: "schools",
+          component: Schools
         },
-      ]
-    },
-    {
-      path: "/school",
-      component: School,
-      beforeEnter: (to, from, next) => {
-        store.dispatch("checkSession").then(function() {
-          if (store.getters.isLoadedUser) {
-            next();
-          }
-        });
-        //TODO: should be handle dispatch promise failed
-      },
-      children: [
-        { path: "/school/", redirect: "home" },
         {
-          path: ":id/view",
-          name: "school.view",
+          path: "/school/:id/home",
+          name: "school.home",
           component: SchoolHome
         },
         {
-          path: "add",
+          path: "/add",
           name: "school.add",
           component: SchoolSubmit
         },
         {
-          path: ":id/edit",
+          path: "/:id/edit",
           name: "school.edit",
           component: SchoolSubmit
         },
         {
-          path: ":school_id/season/:season_id",
-          name: "school.detail",
-          component: SchoolDetail
+          path: "/:school_id/season/:season_id",
+          name: "school.season",
+          component: SchoolSeason
         }
       ]
     },

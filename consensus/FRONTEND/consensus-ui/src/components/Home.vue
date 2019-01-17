@@ -1,5 +1,5 @@
 <template>
-  <div class="school">
+  <div class="home">
     <main-header></main-header>
     <router-view></router-view>
   </div>
@@ -7,10 +7,10 @@
 
 <script>
 // @ is an alias to /src
-import MainHeader from "./SchoolHeader";
+import MainHeader from "./MainHeader";
 
 export default {
-  name: "School",
+  name: "Home",
   components: {
     MainHeader
   }
@@ -18,7 +18,7 @@ export default {
 </script>
 
 <style scoped>
-.school {
+.home {
   height: 100%;
 }
 </style>
