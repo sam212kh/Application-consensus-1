@@ -504,7 +504,6 @@
           }"
           data-path="results"
           pagination-path="pagination"
-          @vuetable:pagination-data="onPaginationData"
         >
         </vuetable>
       </div>
@@ -520,9 +519,9 @@ import Vuetable from "vuetable-2/src/components/Vuetable";
 import VuetablePagination from "vuetable-2/src/components/VuetablePagination";
 import bModal from "bootstrap-vue/es/components/modal/modal";
 import utilMixin from "@/mixins/UtilMixin";
-import vuetableBootstrapMixin from "../../mixins/VuetableBootstrapMixin";
-import applicationApi from "../../endpoint/ApplicationApi";
-import ApplicationStatus from "./model/ApplicationStatus";
+import vuetableBootstrapMixin from "../../../mixins/VuetableBootstrapMixin";
+import applicationApi from "../../../endpoint/ApplicationApi";
+import ApplicationStatus from "../model/ApplicationStatus";
 import ScoresApi from "@/endpoint/ScoresApi";
 
 let reviewActionField = {
@@ -537,7 +536,7 @@ let decisionActionField = {
 };
 
 export default {
-  name: "SchoolSeason",
+  name: "SeasonHome",
   mixins: [utilMixin, vuetableBootstrapMixin],
   components: {
     Vuetable,
