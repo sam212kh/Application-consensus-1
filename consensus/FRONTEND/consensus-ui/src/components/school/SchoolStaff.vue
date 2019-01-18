@@ -1,5 +1,5 @@
 <template>
-  <section class="container-fluid">
+  <section>
     <div class="row row-no-padding justify-content-end">
       <div class="col-md-4 col-sm-4 col-xs-4 ">
         <button class="btn btn-block btn-primary" @click="showNewStaffModal();">
@@ -385,7 +385,7 @@ export default {
     "b-modal": bModal
   },
   props: {
-    schoolId: {
+    cSchoolId: {
       type: Number,
       required: true
     }

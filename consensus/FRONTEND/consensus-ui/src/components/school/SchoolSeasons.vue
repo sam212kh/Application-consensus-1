@@ -2,6 +2,7 @@
   <table border="0">
     <thead>
       <tr>
+        <th>#</th>
         <th>Name</th>
         <th>Application</th>
         <th>score</th>
@@ -10,7 +11,15 @@
     </thead>
     <tbody>
       <tr v-for="season in rowData.seasons" :key="season.id">
-        <td class="clickable" v-on:click="gotoSeasonHome(season);">
+        <td>
+          <router-link
+            class="btn btn-info btn-sm"
+            :to="{ name: 'school.season', params: { school_id: rowData.id, season_id: season.id } }"
+          >
+            <span class="fa fa-eye"></span>
+          </router-link>
+        </td>
+        <td>
           {{ season.full_name }}
         </td>
         <td>{{ season.application || 0 }}</td>
@@ -31,14 +40,6 @@ export default {
     },
     rowIndex: {
       type: Number
-    }
-  },
-  methods: {
-    gotoSeasonHome: function(season) {
-      this.$router.push({
-        name: "school.season",
-        params: { school_id: this.rowData.id, season_id: season.id }
-      });
     }
   }
 };
