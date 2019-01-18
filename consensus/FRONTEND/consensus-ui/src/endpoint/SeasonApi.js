@@ -63,7 +63,7 @@ export default {
   },
   put(season) {
     return this.get(season.id).then(function(persistedSeason) {
-      Object.assign(persistedSeason, season);
+      Object.assign(persistedSeason.data, season);
       return Promise.resolve({ status: 200 });
     });
   },
@@ -71,7 +71,7 @@ export default {
     let self = this;
     return this.get(season.id).then(function(persistedSeason) {
       self.mockSeason.results.splice(
-        self.mockSeason.indexOf(persistedSeason),
+        self.mockSeason.results.indexOf(persistedSeason.data),
         1
       );
       return Promise.resolve({ status: 200 });

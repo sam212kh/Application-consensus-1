@@ -3,7 +3,7 @@ import EventBus from "./event-bus";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
-import SchoolSeasons from "./components/school/SchoolSeasons";
+import SchoolSeasons from "./components/school/season/SchoolSeasons";
 
 Vue.config.productionTip = false;
 Vue.prototype.$eventsBus = EventBus;

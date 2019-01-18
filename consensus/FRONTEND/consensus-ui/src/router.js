@@ -3,7 +3,7 @@ import Router from "vue-router";
 import Home from "./components/Home";
 import SchoolHome from "./components/school/SchoolHome";
 import SchoolSubmit from "./components/school/SchoolSubmit";
-import SchoolSeason from "./components/school/SchoolSeason";
+import SeasonHome from "./components/school/season/SeasonHome";
 import Schools from "./components/school/Schools.vue";
 import SignIn from "./components/SignIn.vue";
 import store from "./store.js";
@@ -47,8 +47,8 @@ export default new Router({
         },
         {
           path: "/:school_id/season/:season_id",
-          name: "school.season",
-          component: SchoolSeason
+          name: "season.home",
+          component: SeasonHome
         }
       ]
     },

@@ -61,7 +61,7 @@
               >&nbsp;
               <router-link
                 class="btn btn-info btn-sm"
-                :to="{ name: 'season.home', params: { school_id: props.rowData.school_id, season_id: props.rowData.id } }"
+                :to="{ name: 'season.home', params: { school_id: schoolId, season_id: props.rowData.id } }"
               >
                 <span class="fa fa-eye"></span>
               </router-link>
@@ -69,7 +69,6 @@
           </template>
         </vuetable>
       </div>
-    </div>
     <div class="row row-no-padding">
       <div class="col">
         <vuetable-pagination
@@ -98,7 +97,7 @@
           type="button"
           class="btn btn-danger float-right"
           :disabled="deletingRecord"
-          @click="deleteSchool();"
+          @click="deleteSeason();"
         >
           <i
             :class="deletingRecord ? 'la la-spin la-spinner' : 'la la-trash'"
@@ -280,18 +279,23 @@
 import UtilMixin from "@/mixins/UtilMixin";
 import Vuetable from "vuetable-2/src/components/Vuetable";
 import VuetablePagination from "vuetable-2/src/components/VuetablePagination";
-import VuetableBootstrapMixin from "../../mixins/VuetableBootstrapMixin";
+import VuetableBootstrapMixin from "@/mixins/VuetableBootstrapMixin";
 import bModal from "bootstrap-vue/es/components/modal/modal";
 import schoolApi from "@/endpoint/SchoolApi";
 import seasonApi from "@/endpoint/SeasonApi";
 
 export default {
-  name: "Season",
+  name: "SchoolSeason",
   mixins: [UtilMixin, VuetableBootstrapMixin],
   components: {
     Vuetable,
     VuetablePagination,
     "b-modal": bModal
+  },
+  props: {
+    schoolId: {
+      required: true
+    }
   },
   created: function() {
     this.$eventsBus.$emit("header:title", "School ");
@@ -300,7 +304,6 @@ export default {
   },
   data: function() {
     return {
-      schoolId: this.$route.params.id,
       localData: {},
       schoolData: {},
       tableFields: [
@@ -344,7 +347,7 @@ export default {
       this.selectedSeason = season;
       this.$refs.confirmDeleteModalRef.show();
     },
-    deleteSchool: function() {
+    deleteSeason: function() {
       let self = this;
       self.deletingRecord = true;
       seasonApi.delete(self.selectedSeason).then(

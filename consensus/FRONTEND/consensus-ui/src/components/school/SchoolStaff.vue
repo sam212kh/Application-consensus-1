@@ -385,8 +385,7 @@ export default {
     "b-modal": bModal
   },
   props: {
-    cSchoolId: {
-      type: Number,
+    schoolId: {
       required: true
     }
   },

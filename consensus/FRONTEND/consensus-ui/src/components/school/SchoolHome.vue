@@ -2,7 +2,7 @@
   <section class="container">
     <div class="row row-no-padding">
       <div class="col">
-        <season v-bind:schoolId="schoolId"></season>
+        <school-season v-bind:schoolId="schoolId"></school-season>
         <school-staff v-bind:schoolId="schoolId"></school-staff>
       </div>
     </div>
@@ -15,10 +15,8 @@ import Vuetable from "vuetable-2/src/components/Vuetable";
 import VuetablePagination from "vuetable-2/src/components/VuetablePagination";
 import VuetableBootstrapMixin from "../../mixins/VuetableBootstrapMixin";
 import bModal from "bootstrap-vue/es/components/modal/modal";
-import schoolApi from "@/endpoint/SchoolApi";
-import seasonApi from "@/endpoint/SeasonApi";
 import SchoolStaff from "./SchoolStaff";
-import Season from "./Season";
+import SchoolSeason from "./season/SchoolSeason";
 
 export default {
   name: "SchoolHome",
@@ -26,7 +24,7 @@ export default {
   components: {
     Vuetable,
     SchoolStaff,
-    Season,
+    SchoolSeason,
     VuetablePagination,
     "b-modal": bModal
   },
@@ -39,12 +37,5 @@ export default {
 </script>
 
 <style>
-.school-table .vuetable-th-slot-actions {
-  width: 200px;
-  min-width: 200px;
-}
 
-.clickable {
-  cursor: pointer;
-}
 </style>
