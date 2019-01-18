@@ -11,16 +11,17 @@
     </thead>
     <tbody>
       <tr v-for="season in rowData.seasons" :key="season.id">
-        <td>
-          {{ season.full_name }}
-        </td>
+        <td>{{ season.full_name }}</td>
         <td>{{ season.application || 0 }}</td>
         <td>{{ season.scored || 0 }}</td>
         <td>{{ season.enrolled || 0 }}</td>
         <td>
           <router-link
             class="btn btn-info btn-sm"
-            :to="{ name: 'season.home', params: { school_id: rowData.id, season_id: season.id } }"
+            :to="{
+              name: 'season.home',
+              params: { school_id: rowData.id, season_id: season.id }
+            }"
           >
             <span class="fa fa-eye"></span>
           </router-link>
@@ -45,5 +46,4 @@ export default {
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>
