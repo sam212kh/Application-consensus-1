@@ -29,46 +29,49 @@
       </div>
     </div>
     <div class="row row-no-padding" v-if="seasonShown">
-        <vuetable
-          ref="vuetable"
-          :api-mode="false"
-          :data="localData"
-          :fields="tableFields"
-          :css="css.table"
-          class="school-table"
-          :query-params="{
-            sort: 'order_by',
-            page: 'page',
-            perPage: 'page_size'
-          }"
-          data-path="results"
-          pagination-path="pagination"
-          @vuetable:pagination-data="onPaginationData"
-        >
-          <template slot="actions" scope="props">
-            <div class="table-button-container">
-              <button
-                class="btn btn-warning btn-sm"
-                @click="editRow(props.rowData);"
-              >
-                <span class="glyphicon glyphicon-pencil"></span></button
-              >&nbsp;
-              <button
-                class="btn btn-danger btn-sm"
-                @click="showConfirmDeleteModal(props.rowData);"
-              >
-                <span class="glyphicon glyphicon-trash"></span></button
-              >&nbsp;
-              <router-link
-                class="btn btn-info btn-sm"
-                :to="{ name: 'season.home', params: { school_id: schoolId, season_id: props.rowData.id } }"
-              >
-                <span class="fa fa-eye"></span>
-              </router-link>
-            </div>
-          </template>
-        </vuetable>
-      </div>
+      <vuetable
+        ref="vuetable"
+        :api-mode="false"
+        :data="localData"
+        :fields="tableFields"
+        :css="css.table"
+        class="school-table"
+        :query-params="{
+          sort: 'order_by',
+          page: 'page',
+          perPage: 'page_size'
+        }"
+        data-path="results"
+        pagination-path="pagination"
+        @vuetable:pagination-data="onPaginationData"
+      >
+        <template slot="actions" scope="props">
+          <div class="table-button-container">
+            <button
+              class="btn btn-warning btn-sm"
+              @click="editRow(props.rowData);"
+            >
+              <span class="glyphicon glyphicon-pencil"></span></button
+            >&nbsp;
+            <button
+              class="btn btn-danger btn-sm"
+              @click="showConfirmDeleteModal(props.rowData);"
+            >
+              <span class="glyphicon glyphicon-trash"></span></button
+            >&nbsp;
+            <router-link
+              class="btn btn-info btn-sm"
+              :to="{
+                name: 'season.home',
+                params: { school_id: schoolId, season_id: props.rowData.id }
+              }"
+            >
+              <span class="fa fa-eye"></span>
+            </router-link>
+          </div>
+        </template>
+      </vuetable>
+    </div>
     <div class="row row-no-padding">
       <div class="col">
         <vuetable-pagination
@@ -339,7 +342,7 @@ export default {
       newSeason: {},
       selectedSeason: null,
       deletingRecord: false,
-      seasonShown: false,
+      seasonShown: false
     };
   },
   methods: {

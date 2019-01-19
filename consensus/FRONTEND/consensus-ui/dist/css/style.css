@@ -312,6 +312,13 @@ body {
         float: left;
     }
 
+    .boxing h5 {
+        margin-top: 10px;
+        margin-left: 10px;
+        color: gray;
+        float: left;
+    }
+
     .boxing .info {
         float: left;
         width: 100%;

@@ -30,12 +30,10 @@ export default {
   },
   data: function() {
     return {
-      schoolId: this.$route.params.id,
-    }
+      schoolId: this.$route.params.id
+    };
   }
 };
 </script>
 
-<style>
-
-</style>
+<style></style>
