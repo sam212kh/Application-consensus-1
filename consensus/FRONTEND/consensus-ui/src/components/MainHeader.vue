@@ -70,9 +70,9 @@
     <div class="content-header">
       <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12">
-          <ol class="breadcrumb">
-            <li class="active"><i class="fa fa-dashboard"></i> Home</li>
-          </ol>
+          <template>
+            <b-breadcrumb :items="items"/>
+          </template>
         </div>
       </div>
     </div>
@@ -82,15 +82,27 @@
 <script>
 import SessionApi from "@/endpoint/SessionApi";
 import UtilMixin from "@/mixins/UtilMixin";
+import bBreadcrumb from 'bootstrap-vue/es/components/breadcrumb/breadcrumb';
+
 
 export default {
   name: "MainHeader",
   mixins: [UtilMixin],
+  components: {
+      bBreadcrumb
+  },
   created: function() {
     this.$eventsBus.$on("header:title", this.onTitleChanged);
   },
   data: function() {
     return {
+      items: [{
+        text: 'Home',
+        to: { path: '/' },
+      },{
+        text: 'Manage',
+        href: '#'
+      }],
       title: "Home"
     };
   },
