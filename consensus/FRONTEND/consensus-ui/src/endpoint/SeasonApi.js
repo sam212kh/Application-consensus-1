@@ -1,30 +1,43 @@
 export default {
-  mockSeason: [
-    {
-      id: 18,
-      school_id: 12,
-      full_name: "season_11",
-      application: 7,
-      scored: 4,
-      enrolled: 2
+  mockSeason: {
+    pagination: {
+      next_url: null,
+      previous_url: null,
+      current_page: 1,
+      next_page: null,
+      previous_page: null,
+      first_page: 1,
+      last_page: 1,
+      page_size: 10,
+      total: 1
     },
-    {
-      id: 12,
-      school_id: 12,
-      full_name: "season_12",
-      application: 9,
-      scored: 2,
-      enrolled: 6
-    },
-    {
-      id: 31,
-      school_id: 13,
-      full_name: "season_13",
-      application: 6,
-      scored: 1,
-      enrolled: 3
-    }
-  ],
+    results: [
+      {
+        id: 18,
+        school_id: 12,
+        full_name: "season_11",
+        application: 7,
+        scored: 4,
+        enrolled: 2
+      },
+      {
+        id: 12,
+        school_id: 12,
+        full_name: "season_12",
+        application: 9,
+        scored: 2,
+        enrolled: 6
+      },
+      {
+        id: 31,
+        school_id: 13,
+        full_name: "season_13",
+        application: 6,
+        scored: 1,
+        enrolled: 3
+      }
+    ]
+  },
   getAll() {
     return this.mockSeason;
   },
@@ -50,7 +63,7 @@ export default {
   },
   put(season) {
     return this.get(season.id).then(function(persistedSeason) {
-      Object.assign(persistedSeason, season);
+      Object.assign(persistedSeason.data, season);
       return Promise.resolve({ status: 200 });
     });
   },
@@ -58,7 +71,7 @@ export default {
     let self = this;
     return this.get(season.id).then(function(persistedSeason) {
       self.mockSeason.results.splice(
-        self.mockSeason.indexOf(persistedSeason),
+        self.mockSeason.results.indexOf(persistedSeason.data),
         1
       );
       return Promise.resolve({ status: 200 });
