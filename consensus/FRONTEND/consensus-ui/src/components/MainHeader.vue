@@ -100,10 +100,7 @@ export default {
   },
   data: function() {
     return {
-      items: [{
-        text: 'Home',
-        href: '/',
-      }],
+      items: [],
       title: "Home"
     };
   },
