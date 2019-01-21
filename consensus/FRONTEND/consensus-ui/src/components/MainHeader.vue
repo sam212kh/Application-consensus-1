@@ -89,6 +89,8 @@ import UtilMixin from "@/mixins/UtilMixin";
 import bBreadcrumb from 'bootstrap-vue/es/components/breadcrumb/breadcrumb';
 
 
+
+
 export default {
   name: "MainHeader",
   mixins: [UtilMixin],
@@ -100,6 +102,7 @@ export default {
   },
   data: function() {
     return {
+      pageList: [],
       items: [],
       title: "Home"
     };
@@ -126,7 +129,13 @@ export default {
       );
     },
     onTitleChanged: function(title) {
-      this.items.push({text:title,href:this.$route.path});
+      if( this.pageList.indexOf(title) == -1  ){
+          this.pageList.push(title);
+          this.items.push({text:title,to:this.$route.path});
+      }else{
+        this.items.splice(this.pageList.indexOf(title)+1,2 )
+        this.pageList.splice(this.pageList.indexOf(title)+1,2 )
+      }
       this.title = title;
     }
   }
