@@ -22,7 +22,7 @@ export default {
     }
   },
   created: function() {
-    this.$eventsBus.$on("header:title", this.updateList);
+    this.updateList();
   },
   mounted: function() {
     this.updateList()
