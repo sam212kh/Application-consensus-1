@@ -70,6 +70,7 @@ export default {
   text-shadow: 0 1px 0 rgba(255,255,255,.5);
   background-color: #ddd;
   background-image: linear-gradient(to right, #f5f5f5, #ddd);
+  margin: 0
 }
 
 .breadcrumb li:first-child .linked{
