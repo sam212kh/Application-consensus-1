@@ -6,8 +6,18 @@ import SchoolSubmit from "./components/school/SchoolSubmit";
 import SeasonHome from "./components/school/season/SeasonHome";
 import Schools from "./components/school/Schools.vue";
 import SignIn from "./components/SignIn.vue";
+
 import store from "./store.js";
 
+import VueBreadcrumbs from 'vue-breadcrumbs'
+
+Vue.use(VueBreadcrumbs)
+
+Vue.use(VueBreadcrumbs, {
+  template: '<nav class="breadcrumb" v-if="$breadcrumbs.length"> ' +
+    '<router-link class="breadcrumb-item" v-for="(crumb, key) in $breadcrumbs" :to="linkProp(crumb)" :key="key">{{ crumb | crumbText }}</router-link> ' +
+    '</nav>'
+});
 
 Vue.use(Router);
 
@@ -17,6 +27,7 @@ export default new Router({
     {
       path: "/",
       component: Home,
+
       beforeEnter: (to, from, next) => {
         store.dispatch("checkSession").then(function() {
           if (store.getters.isLoadedUser) {
@@ -29,27 +40,57 @@ export default new Router({
         {
           path: "",
           name: "schools",
-          component: Schools
+          component: Schools,
+          meta:{
+            breadcrumb: [
+              {name:'Schools', link:'/'}
+            ]
+          },
         },
         {
           path: "/school/:id/home",
           name: "school.home",
-          component: SchoolHome
+          component: SchoolHome,
+          meta:{
+            breadcrumb: [
+              {name:'Schools', link:'/'},
+              {name:'School home'}
+            ]
+          },
         },
         {
           path: "/add",
           name: "school.add",
-          component: SchoolSubmit
+          component: SchoolSubmit,
+          meta:{
+            breadcrumb: [
+              {name:'Schools', link:'/'},
+              {name:'New School'}
+            ]
+          }
         },
         {
           path: "/:id/edit",
           name: "school.edit",
-          component: SchoolSubmit
+          component: SchoolSubmit,
+          meta:{
+            breadcrumb: [
+              {name:'Schools', link:'/'},
+              {name:'Edit School'}
+            ]
+          }
         },
         {
           path: "/:school_id/season/:season_id",
           name: "season.home",
-          component: SeasonHome
+          component: SeasonHome,
+          meta:{
+            breadcrumb: [
+              {name: 'Schools', link:'/'},
+              {name: 'School', link: '/'},
+              {name: "School's season"}
+            ]
+          }
         }
       ]
     },

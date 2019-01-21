@@ -9,6 +9,7 @@
 // @ is an alias to /src
 import MainHeader from "./MainHeader";
 
+
 export default {
   name: "Home",
   components: {

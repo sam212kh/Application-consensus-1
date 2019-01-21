@@ -70,9 +70,7 @@
     <div class="content-header">
       <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12">
-          <template>
-            <b-breadcrumb :items="items" separator="chevron_right"/>
-          </template>
+          <breadcrumb></breadcrumb>
         </div>
       </div>
     </div>
@@ -82,20 +80,14 @@
 <script>
 import SessionApi from "@/endpoint/SessionApi";
 import UtilMixin from "@/mixins/UtilMixin";
-
-
-
-
-import bBreadcrumb from 'bootstrap-vue/es/components/breadcrumb/breadcrumb';
-
-
+import Breadcrumb from "./Breadcrumb.vue";
 
 
 export default {
   name: "MainHeader",
   mixins: [UtilMixin],
   components: {
-      bBreadcrumb
+    Breadcrumb
   },
   created: function() {
     this.$eventsBus.$on("header:title", this.onTitleChanged);
@@ -129,87 +121,15 @@ export default {
       );
     },
     onTitleChanged: function(title) {
-      if( this.pageList.indexOf(title) == -1  ){
-          this.pageList.push(title);
-          this.items.push({text:title,to:this.$route.path});
-      }else{
-        this.items.splice(this.pageList.indexOf(title)+1,2 )
-        this.pageList.splice(this.pageList.indexOf(title)+1,2 )
-      }
+      //if( this.pageList.indexOf(title) == -1  ){
+      //    this.pageList.push(title);
+      //    this.items.push({text:title,to:this.$route.path});
+      ///}else{
+      ///  this.items.splice(this.pageList.indexOf(title)+1,2 )
+      ///  this.pageList.splice(this.pageList.indexOf(title)+1,2 )
+      ///}
       this.title = title;
     }
   }
 };
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-
-.breadcrumb{
-  background: #eee;
-  border-width: 1px;
-  border-style: solid;
-  border-color: #f5f5f5 #e5e5e5 #ccc;
-  border-radius: 5px;
-  box-shadow: 0 0 2px rgba(0,0,0,.2);
-  overflow: hidden;
-  width: 100%;
-}
-
-.breadcrumb-item{
-  float: left;
-}
-
-.breadcrumb li{
-  padding: .7em 1em .7em 2em;
-  float: left;
-  text-decoration: none;
-  color: #444;
-  position: relative;
-  text-shadow: 0 1px 0 rgba(255,255,255,.5);
-  background-color: #ddd;
-  background-image: linear-gradient(to right, #f5f5f5, #ddd);
-}
-
-.breadcrumb li:first-child a{
-  padding-left: 1em;
-  border-radius: 5px 0 0 5px;
-}
-
-
-
-.breadcrumb-item a::after,
-.breadcrumb-item a::before{
-  content: "";
-  position: absolute;
-  top: 50%;
-  margin-top: -1.5em;
-  border-top: 1.5em solid transparent;
-  border-bottom: 1.5em solid transparent;
-  border-left: 1em solid;
-  right: -1em;
-}
-
-.breadcrumb-item a::after{
-  z-index: 2;
-  border-left-color: #ddd;
-}
-
-.breadcrumb-item a::before{
-  border-left-color: #ccc;
-  right: -1.1em;
-  z-index: 1;
-}
-
-
-.breadcrumb .active,
-.breadcrumb .active:hover{
-  font-weight: bold;
-  background: none;
-}
-
-.breadcrumb .active::after,
-.breadcrumb .active::before{
-  content: normal;
-}
-</style>

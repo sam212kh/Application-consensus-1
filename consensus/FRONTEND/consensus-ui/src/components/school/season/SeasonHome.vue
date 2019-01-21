@@ -545,6 +545,7 @@ export default {
   },
   created: function() {
     this.$eventsBus.$emit("header:title", "School's season");
+    this.$route.meta.breadcrumb[1].link = '/school/'+this.$route.params.school_id+'/home'
     this.schoolId = +this.$route.params.school_id;
     this.seasonId = +this.$route.params.season_id;
     this.reAssignData();
