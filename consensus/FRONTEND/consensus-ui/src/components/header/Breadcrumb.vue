@@ -39,10 +39,11 @@ export default {
       }
     },
     updateLinkList: function(value) {
-      this.breadcrumbList.map(function(obj, index) {
-          //alert( value.name );
+      let self = this;
+      self.breadcrumbList.map(function(obj, index) {
           if( obj.name == value.name ) {
-              this.routedByBreadCrumb = true;
+              self.routedByBreadCrumb = true;
+              self.breadcrumbList.splice(index + 1, self.breadcrumbList.length);
           }
       });
       if (!this.routedByBreadCrumb) {
