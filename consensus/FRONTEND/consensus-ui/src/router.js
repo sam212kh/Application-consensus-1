@@ -27,7 +27,6 @@ export default new Router({
     {
       path: "/",
       component: Home,
-
       beforeEnter: (to, from, next) => {
         store.dispatch("checkSession").then(function() {
           if (store.getters.isLoadedUser) {

@@ -121,13 +121,6 @@ export default {
       );
     },
     onTitleChanged: function(title) {
-      //if( this.pageList.indexOf(title) == -1  ){
-      //    this.pageList.push(title);
-      //    this.items.push({text:title,to:this.$route.path});
-      ///}else{
-      ///  this.items.splice(this.pageList.indexOf(title)+1,2 )
-      ///  this.pageList.splice(this.pageList.indexOf(title)+1,2 )
-      ///}
       this.title = title;
     }
   }

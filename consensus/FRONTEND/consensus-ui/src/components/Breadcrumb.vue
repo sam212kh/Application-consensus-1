@@ -27,7 +27,7 @@ export default {
   mounted: function() {
     this.updateList()
   },
-  watch: { '$route' () { this.updateList } },
+  watch: { '$route' () { this.updateList() } },
   methods: {
     routeTo: function(pRouteTo){
       if( this.breadcrumbList[pRouteTo].link ) this.$router.push(this.breadcrumbList[pRouteTo].link)

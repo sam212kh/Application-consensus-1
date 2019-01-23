@@ -61,8 +61,8 @@
                   v-bind:class="[
                     'fa',
                     $refs.vuetable.isVisibleDetailRow(props.rowData.id)
-                      ? 'fa-minus'
-                      : 'fa-plus'
+                      ? 'fa-angle-up'
+                      : 'fa-angle-down'
                   ]"
                 ></span></button
               >&nbsp;&nbsp;
