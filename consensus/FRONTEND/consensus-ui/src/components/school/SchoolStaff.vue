@@ -2,7 +2,7 @@
   <section>
     <div class="row row-no-padding justify-content-end">
       <div class="col-md-4 col-sm-4 col-xs-4 ">
-        <button class="btn btn-block btn-primary" @click="showNewStaffModal();">
+        <button class="btn btn-block btn-primary" @click="showNewStaffModal()">
           <i class="fa fa-plus"></i> Add a new Staff
         </button>
       </div>
@@ -11,7 +11,7 @@
       <div class="col-md-4 justify-content-start">
         <div
           class="boxing"
-          v-on:click="staffShown = !staffShown;"
+          v-on:click="staffShown = !staffShown"
           v-bind:class="{ active: staffShown }"
         >
           <i class="fa fa-users"></i>
@@ -50,13 +50,13 @@
           <div class="table-button-container">
             <button
               class="btn btn-warning btn-sm"
-              @click="editRow(props.rowData);"
+              @click="editRow(props.rowData)"
             >
               <span class="glyphicon glyphicon-pencil"></span> Edit</button
             >&nbsp;&nbsp;
             <button
               class="btn btn-danger btn-sm"
-              @click="showConfirmDeleteModal(props.rowData);"
+              @click="showConfirmDeleteModal(props.rowData)"
             >
               <span class="glyphicon glyphicon-trash"></span> Delete</button
             >&nbsp;&nbsp;
@@ -191,7 +191,7 @@
               type="button"
               class="btn btn-danger btn-block"
               data-dismiss="modal"
-              @click="$refs.newStaffModalRef.hide();"
+              @click="$refs.newStaffModalRef.hide()"
             >
               <i class="fa fa-close"></i> Cancel
             </button>
@@ -327,7 +327,7 @@
               type="button"
               class="btn btn-danger btn-block"
               data-dismiss="modal"
-              @click="$refs.editStaffModalRef.hide();"
+              @click="$refs.editStaffModalRef.hide()"
             >
               <i class="fa fa-close"></i> Cancel
             </button>
@@ -347,7 +347,7 @@
         <button
           type="button"
           class="btn btn-secondary float-left"
-          @click="$refs.confirmDeleteModalRef.hide();"
+          @click="$refs.confirmDeleteModalRef.hide()"
         >
           <i class="la la-close"></i> Cancel
         </button>
@@ -355,7 +355,7 @@
           type="button"
           class="btn btn-danger float-right"
           :disabled="deletingRecord"
-          @click="deleteStaff();"
+          @click="deleteStaff()"
         >
           <i
             :class="deletingRecord ? 'la la-spin la-spinner' : 'la la-trash'"

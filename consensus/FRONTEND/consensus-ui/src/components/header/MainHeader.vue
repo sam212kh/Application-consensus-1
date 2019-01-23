@@ -70,9 +70,7 @@
     <div class="content-header">
       <div class="row">
         <div class="col-md-12 col-sm-12 col-xs-12">
-          <ol class="breadcrumb">
-            <li class="active"><i class="fa fa-dashboard"></i> Home</li>
-          </ol>
+          <breadcrumb></breadcrumb>
         </div>
       </div>
     </div>
@@ -82,15 +80,21 @@
 <script>
 import SessionApi from "@/endpoint/SessionApi";
 import UtilMixin from "@/mixins/UtilMixin";
+import Breadcrumb from "./Breadcrumb.vue";
 
 export default {
   name: "MainHeader",
   mixins: [UtilMixin],
+  components: {
+    Breadcrumb
+  },
   created: function() {
     this.$eventsBus.$on("header:title", this.onTitleChanged);
   },
   data: function() {
     return {
+      pageList: [],
+      items: [],
       title: "Home"
     };
   },
@@ -116,11 +120,15 @@ export default {
       );
     },
     onTitleChanged: function(title) {
+      if (this.pageList.indexOf(title) == -1) {
+        this.pageList.push(title);
+        this.items.push({ text: title, to: this.$route.path });
+      } else {
+        this.items.splice(this.pageList.indexOf(title) + 1, 2);
+        this.pageList.splice(this.pageList.indexOf(title) + 1, 2);
+      }
       this.title = title;
     }
   }
 };
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped></style>
