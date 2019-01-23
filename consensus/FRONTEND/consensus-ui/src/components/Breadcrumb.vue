@@ -21,9 +21,6 @@ export default {
       breadcrumbList:[],
     }
   },
-  created: function() {
-    this.updateList();
-  },
   mounted: function() {
     this.updateList()
   },
