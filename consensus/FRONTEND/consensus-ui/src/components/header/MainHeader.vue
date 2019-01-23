@@ -82,7 +82,6 @@ import SessionApi from "@/endpoint/SessionApi";
 import UtilMixin from "@/mixins/UtilMixin";
 import Breadcrumb from "./Breadcrumb.vue";
 
-
 export default {
   name: "MainHeader",
   mixins: [UtilMixin],
@@ -94,8 +93,6 @@ export default {
   },
   data: function() {
     return {
-      pageList: [],
-      items: [],
       title: "Home"
     };
   },

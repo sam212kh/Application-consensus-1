@@ -117,14 +117,12 @@
                 </button>
               </div>
               <div class="col-md-3 col-sm-3 col-xs-12">
-                <button
-                  type="button"
-                  class="btn btn-danger btn-block"
-                  data-dismiss="modal"
-                  v-on:click="cancel"
+                <router-link
+                  class="btn btn-block btn-danger"
+                  :to="{ name: 'schools'}"
                 >
                   <i class="fa fa-close"></i> Cancel
-                </button>
+                </router-link>
               </div>
             </div>
           </form>
@@ -187,9 +185,6 @@ export default {
           self.notifyDefaultServerError(error);
         }
       );
-    },
-    cancel: function() {
-      this.$router.push("/");
     }
   }
 };

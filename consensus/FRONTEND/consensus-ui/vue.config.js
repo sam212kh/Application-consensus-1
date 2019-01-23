@@ -1,5 +1,5 @@
 module.exports = {
-  baseUrl: process.env.NODE_ENV === "production" ? "/static/" : "/",
+  publicPath: process.env.NODE_ENV === "production" ? "/static/" : "/",
   productionSourceMap: false,
   runtimeCompiler: true,
   chainWebpack: config => {
