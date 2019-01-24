@@ -420,9 +420,10 @@ export default {
 </script>
 
 <style>
-.school-table .vuetable-th-slot-actions {
-  width: 200px;
-  min-width: 200px;
+.school-table {
+  margin-top: 15px;
+  margin-left: 15px;
+  margin-right: 15px;
 }
 
 .clickable {
