@@ -6,6 +6,7 @@ import SchoolSubmit from "./components/school/SchoolSubmit";
 import SeasonHome from "./components/school/season/SeasonHome";
 import Schools from "./components/school/Schools.vue";
 import SignIn from "./components/SignIn.vue";
+
 import store from "./store.js";
 
 Vue.use(Router);
@@ -16,6 +17,7 @@ export default new Router({
     {
       path: "/",
       component: Home,
+
       beforeEnter: (to, from, next) => {
         store.dispatch("checkSession").then(function() {
           if (store.getters.isLoadedUser) {
@@ -36,17 +38,17 @@ export default new Router({
           component: SchoolHome
         },
         {
-          path: "/add",
+          path: "/school/add",
           name: "school.add",
           component: SchoolSubmit
         },
         {
-          path: "/:id/edit",
+          path: "/school/:id/edit",
           name: "school.edit",
           component: SchoolSubmit
         },
         {
-          path: "/:school_id/season/:season_id",
+          path: "/school/:school_id/season/:season_id",
           name: "season.home",
           component: SeasonHome
         }

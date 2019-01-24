@@ -40,13 +40,13 @@
             &nbsp;&nbsp;
             <button
               class="btn btn-warning btn-sm"
-              @click="editRow(props.rowData);"
+              @click="editRow(props.rowData)"
             >
               <span class="glyphicon glyphicon-pencil"></span></button
             >&nbsp;&nbsp;
             <button
               class="btn btn-danger btn-sm"
-              @click="showConfirmDeleteModal(props.rowData);"
+              @click="showConfirmDeleteModal(props.rowData)"
             >
               <span class="glyphicon glyphicon-trash"></span>
             </button>
@@ -55,14 +55,14 @@
             <div class="table-button-container">
               <button
                 class="btn btn-info btn-sm"
-                @click="toggle(props.rowData);"
+                @click="toggle(props.rowData)"
               >
                 <span
                   v-bind:class="[
                     'fa',
                     $refs.vuetable.isVisibleDetailRow(props.rowData.id)
-                      ? 'fa-minus'
-                      : 'fa-plus'
+                      ? 'fa-angle-down'
+                      : 'fa-angle-right'
                   ]"
                 ></span></button
               >&nbsp;&nbsp;
@@ -91,7 +91,7 @@
         <button
           type="button"
           class="btn btn-secondary float-left"
-          @click="$refs.confirmDeleteModalRef.hide();"
+          @click="$refs.confirmDeleteModalRef.hide()"
         >
           <i class="la la-close"></i> Cancel
         </button>
@@ -99,7 +99,7 @@
           type="button"
           class="btn btn-danger float-right"
           :disabled="deletingRecord"
-          @click="deleteSchool();"
+          @click="deleteSchool()"
         >
           <i
             :class="deletingRecord ? 'la la-spin la-spinner' : 'la la-trash'"

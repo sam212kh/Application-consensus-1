@@ -11,7 +11,7 @@
       <div class="col-md-4 justify-content-start">
         <div
           class="boxing"
-          v-on:click="seasonShown = !seasonShown;"
+          v-on:click="seasonShown = !seasonShown"
           v-bind:class="{ active: seasonShown }"
         >
           <i class="fa fa-eye"></i>
@@ -49,13 +49,13 @@
           <div class="table-button-container">
             <button
               class="btn btn-warning btn-sm"
-              @click="editRow(props.rowData);"
+              @click="editRow(props.rowData)"
             >
               <span class="glyphicon glyphicon-pencil"></span></button
             >&nbsp;
             <button
               class="btn btn-danger btn-sm"
-              @click="showConfirmDeleteModal(props.rowData);"
+              @click="showConfirmDeleteModal(props.rowData)"
             >
               <span class="glyphicon glyphicon-trash"></span></button
             >&nbsp;
@@ -92,7 +92,7 @@
         <button
           type="button"
           class="btn btn-secondary float-left"
-          @click="$refs.confirmDeleteModalRef.hide();"
+          @click="$refs.confirmDeleteModalRef.hide()"
         >
           <i class="la la-close"></i> Cancel
         </button>
@@ -100,7 +100,7 @@
           type="button"
           class="btn btn-danger float-right"
           :disabled="deletingRecord"
-          @click="deleteSeason();"
+          @click="deleteSeason()"
         >
           <i
             :class="deletingRecord ? 'la la-spin la-spinner' : 'la la-trash'"
@@ -267,7 +267,7 @@
               type="button"
               class="btn btn-danger btn-block"
               data-dismiss="modal"
-              v-on:click="$refs.newSeasonModalRef.hide();"
+              v-on:click="$refs.newSeasonModalRef.hide()"
             >
               <i class="fa fa-close"></i> Cancel
             </button>
@@ -301,7 +301,7 @@ export default {
     }
   },
   created: function() {
-    this.$eventsBus.$emit("header:title", "School ");
+    this.$eventsBus.$emit("header:title", "School");
     this.localData = seasonApi.getAll();
     this.schoolData = schoolApi.get(this.$route.params.id);
   },
@@ -420,9 +420,10 @@ export default {
 </script>
 
 <style>
-.school-table .vuetable-th-slot-actions {
-  width: 200px;
-  min-width: 200px;
+.school-table {
+  margin-top: 15px;
+  margin-left: 15px;
+  margin-right: 15px;
 }
 
 .clickable {

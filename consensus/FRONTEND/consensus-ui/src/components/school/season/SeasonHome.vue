@@ -4,7 +4,7 @@
       <div class="col-md-4 col-sm-4 col-xs-4">
         <button
           class="btn btn-block btn-success"
-          @click="showNewApplicationModal();"
+          @click="showNewApplicationModal()"
         >
           <i class="glyphicon glyphicon-ok"></i> Submit a new application
         </button>
@@ -69,7 +69,7 @@
           <div class="table-button-container">
             <button
               class="btn btn-warning btn-sm"
-              @click="reviewApplication(props.rowData);"
+              @click="reviewApplication(props.rowData)"
             >
               <span class="glyphicon glyphicon-pencil"></span></button
             >&nbsp;&nbsp;
@@ -79,13 +79,13 @@
           <div class="table-button-container">
             <button
               class="btn btn-success btn-sm"
-              @click="acceptConfirmation(props.rowData);"
+              @click="acceptConfirmation(props.rowData)"
             >
               <span class="glyphicon glyphicon-check"></span></button
             >&nbsp;&nbsp;
             <button
               class="btn btn-outline-danger btn-sm"
-              @click="rejectConfirmation(props.rowData);"
+              @click="rejectConfirmation(props.rowData)"
             >
               <span class="glyphicon glyphicon-trash"></span></button
             >&nbsp;&nbsp;
@@ -117,7 +117,7 @@
           <div class="table-button-container">
             <button
               class="btn btn-warning btn-sm"
-              @click="scoreBoxClick(props.rowData);"
+              @click="scoreBoxClick(props.rowData)"
             >
               <span class="fa fa-eye"></span></button
             >&nbsp;&nbsp;
@@ -274,7 +274,7 @@
               type="button"
               class="btn btn-danger btn-block"
               data-dismiss="modal"
-              @click="$refs.newApplicationModalRef.hide();"
+              @click="$refs.newApplicationModalRef.hide()"
             >
               <i class="fa fa-close"></i> Cancel
             </button>
@@ -299,7 +299,7 @@
         <button
           type="button"
           class="btn btn-secondary float-left"
-          @click="$refs.confirmModalRef.hide();"
+          @click="$refs.confirmModalRef.hide()"
         >
           <i class="la la-close"></i> Cancel
         </button>
@@ -307,7 +307,7 @@
           v-if="rejectConfirm"
           type="button"
           class="btn btn-danger float-right"
-          @click="rejectApplication();"
+          @click="rejectApplication()"
         >
           <span v-show="rejectApplication">reject</span>
         </button>
@@ -315,7 +315,7 @@
           v-if="acceptConfirm"
           type="button"
           class="btn btn-success float-right"
-          @click="acceptApplication();"
+          @click="acceptApplication()"
         >
           <span v-show="acceptApplication">Accept</span>
         </button>
@@ -476,7 +476,7 @@
               type="button"
               class="btn btn-danger btn-block"
               data-dismiss="modal"
-              @click="$refs.reviewAppModalRef.hide();"
+              @click="$refs.reviewAppModalRef.hide()"
             >
               <i class="fa fa-close"></i> Cancel
             </button>

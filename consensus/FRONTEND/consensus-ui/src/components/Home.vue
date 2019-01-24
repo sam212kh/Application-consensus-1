@@ -7,7 +7,7 @@
 
 <script>
 // @ is an alias to /src
-import MainHeader from "./MainHeader";
+import MainHeader from "./header/MainHeader";
 
 export default {
   name: "Home",
