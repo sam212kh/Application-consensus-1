@@ -18,7 +18,7 @@ export default {
   data() {
     return {
       breadcrumbList: [],
-      routedByBreadCrumb: false
+      shouldBeAddedToNavigation: true
     };
   },
   mounted: function() {
@@ -33,16 +33,23 @@ export default {
     routeTo: function(pRouteTo) {
       let newRoute = this.breadcrumbList[pRouteTo].link;
       if (newRoute) {
-        this.routedByBreadCrumb = true;
-        this.breadcrumbList.splice(pRouteTo + 1, this.breadcrumbList.length);
         this.$router.push(newRoute);
       }
     },
-    updateLinkList: function(value) {
-      if (!this.routedByBreadCrumb) {
-        this.breadcrumbList.push({ name: value.name, link: value.path });
+    updateLinkList: function(newRoute) {
+      let self = this;
+      // If the new route already exists in the bread crumb list
+      self.breadcrumbList.forEach(function(currentBreadcrumbItem, index) {
+        if (currentBreadcrumbItem.name === newRoute.name) {
+          self.shouldBeAddedToNavigation = false;
+          // Truncate list from new route index
+          self.breadcrumbList.splice(index + 1, self.breadcrumbList.length);
+        }
+      });
+      if (this.shouldBeAddedToNavigation) {
+        this.breadcrumbList.push({ name: newRoute.name, link: newRoute.path });
       }
-      this.routedByBreadCrumb = false;
+      this.shouldBeAddedToNavigation = true;
     }
   }
 };

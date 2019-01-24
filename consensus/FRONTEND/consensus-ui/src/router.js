@@ -9,10 +9,6 @@ import SignIn from "./components/SignIn.vue";
 
 import store from "./store.js";
 
-import VueBreadcrumbs from "vue-breadcrumbs";
-
-Vue.use(VueBreadcrumbs);
-
 Vue.use(Router);
 
 export default new Router({
