@@ -135,6 +135,7 @@
 <script>
 import UtilMixin from "@/mixins/UtilMixin";
 import SchoolApi from "../../endpoint/SchoolApi";
+import SessionApi from "@/endpoint/SessionApi";
 
 export default {
   name: "SubmitSchool",
@@ -168,6 +169,12 @@ export default {
     submitSchool: function() {
       // If current school should be edit
       let request;
+      let response;
+      SessionApi.getUser().then(
+        function(response) {
+          self.school.user_id = response.data.id ;
+        }
+      );
       if (this.school.id && this.school.id > 0) {
         request = SchoolApi.put(this.school);
       } else {

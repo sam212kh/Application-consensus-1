@@ -7,6 +7,9 @@ rest_router = routers.DefaultRouter()
 rest_router.trailing_slash = "/?"  # added to support both / and slashless
 rest_router.register(r'school', SchoolView)
 
+
+
+
 app_name = 'school'
 urlpatterns = [
     path('', include(rest_router.urls)),

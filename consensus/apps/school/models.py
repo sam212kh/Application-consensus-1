@@ -6,6 +6,11 @@ from django.db import models
 @reversion.register()
 class School(models.Model):
     full_name = models.CharField(max_length=255)
+    user_id   = models.ForeignKey(
+        'auth.User',
+        related_name='school',
+        on_delete=models.CASCADE
+    )
     phone_number = models.CharField(max_length=255, null=True, blank=True)
     address = models.CharField(max_length=255, null=True, blank=True)
     country = models.CharField(max_length=255, null=True, blank=True)

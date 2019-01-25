@@ -8,6 +8,7 @@ class SchoolSerializer(serializers.ModelSerializer):
     class Meta:
         fields = (
             'id',
+            'user_id',
             'full_name',
             'phone_number',
             'address',

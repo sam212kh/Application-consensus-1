@@ -9,8 +9,6 @@ import SignIn from "./components/SignIn.vue";
 
 import store from "./store.js";
 
-
-
 Vue.use(Router);
 
 export default new Router({

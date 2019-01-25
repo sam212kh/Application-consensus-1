@@ -1,4 +1,6 @@
+import Api from "@/endpoint/Api";
 export default {
+  userid:0,
   mockSchool: {
     pagination: {
       next_url: null,
@@ -79,6 +81,12 @@ export default {
     ]
   },
   getAll() {
+    Api.get('school').then(
+      function(response) {
+        console.log( response  );
+      }
+    );
+
     return this.mockSchool;
     // return Api.get("school");
   },
@@ -94,10 +102,10 @@ export default {
     // return Api.get("school/" + id);
   },
   add(school) {
-    school.id = Math.floor(Math.random() * 10000 + 1);
-    this.mockSchool.results.push(school);
-    return Promise.resolve({ status: 200 });
-    // return Api.post("school", school);
+    return Api.post("school", school);
+    //school.id = Math.floor(Math.random() * 10000 + 1);
+    //this.mockSchool.results.push(school);
+    //return Promise.resolve({ status: 200 });
   },
   put(school) {
     return this.get(school.id).then(function(persistedSchool) {
