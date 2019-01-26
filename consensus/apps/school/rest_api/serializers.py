@@ -5,6 +5,7 @@ from apps.school import models
 
 class SchoolSerializer(serializers.ModelSerializer):
 
+
     class Meta:
         fields = (
             'id',

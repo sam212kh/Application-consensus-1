@@ -169,12 +169,6 @@ export default {
     submitSchool: function() {
       // If current school should be edit
       let request;
-      let response;
-      SessionApi.getUser().then(
-        function(response) {
-          self.school.user_id = response.data.id ;
-        }
-      );
       if (this.school.id && this.school.id > 0) {
         request = SchoolApi.put(this.school);
       } else {

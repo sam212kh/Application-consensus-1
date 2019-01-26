@@ -8,7 +8,7 @@ class School(models.Model):
     full_name = models.CharField(max_length=255)
     user_id   = models.ForeignKey(
         'auth.User',
-        related_name='school',
+        default='0',
         on_delete=models.CASCADE
     )
     phone_number = models.CharField(max_length=255, null=True, blank=True)
