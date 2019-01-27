@@ -14,8 +14,6 @@
       <div class="col">
         <vuetable
           ref="vuetable"
-          :api-mode="false"
-          :data="localData"
           :api-url="tableUrl"
           :fields="tableFields"
           :css="css.table"

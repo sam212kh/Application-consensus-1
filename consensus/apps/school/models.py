@@ -2,10 +2,14 @@ import reversion
 
 from django.db import models
 
+from apps.user.models import UserProfile
+from django.db.models import CASCADE
+
 
 @reversion.register()
 class School(models.Model):
     full_name = models.CharField(max_length=255)
+    owner = models.ForeignKey(UserProfile, on_delete=models.CASCADE, editable=False)
     phone_number = models.CharField(max_length=255, null=True, blank=True)
     address = models.CharField(max_length=255, null=True, blank=True)
     country = models.CharField(max_length=255, null=True, blank=True)
