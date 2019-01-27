@@ -14,4 +14,4 @@ class StaffView(viewsets.ModelViewSet):
 
 
     def get_object(self):
-        return Staff.objects.filter(school_id=self.kwargs.get('id')).all()
+        return Staff.objects.filter(school_id=self.kwargs.get('id')).get()

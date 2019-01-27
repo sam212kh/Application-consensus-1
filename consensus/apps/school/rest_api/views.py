@@ -12,6 +12,14 @@ from apps.school import models
 from django.core.serializers import serialize
 
 
+class SchoolsSerializer(serializers.ModelSerializer):
+        class Meta:
+            fields = (
+                'id',
+                'full_name',
+                )
+            model = School
+
 
 class SchoolView(viewsets.ModelViewSet):
     queryset = School.objects.all()
