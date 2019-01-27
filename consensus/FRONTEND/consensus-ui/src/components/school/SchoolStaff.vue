@@ -390,7 +390,13 @@ export default {
     }
   },
   created: function() {
-    this.localData = staffApi.getAll(this.schoolId);
+    let self = this;
+    self.localData = staffApi.getAll(self.schoolId);
+    staffApi.getAll(this.schoolId).then(
+      function(response) {
+        console.log( self.localData = response.data.results  );
+      }
+    );
   },
   data: function() {
     return {
@@ -471,6 +477,7 @@ export default {
     },
     updateStaff: function() {
       let self = this;
+      self.newStaff.school_id = self.schoolId
       staffApi.put(self.editStaff).then(
         function() {
           self.notifySuccess("The staff updated");
@@ -485,6 +492,7 @@ export default {
     },
     submitStaff: function() {
       let self = this;
+      self.newStaff.school_id = self.schoolId
       staffApi.add(self.newStaff).then(
         function() {
           self.notifySuccess("The staff inserted");

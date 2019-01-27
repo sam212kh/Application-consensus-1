@@ -21,7 +21,8 @@
               <div class="col-md-6 col-sm-6 col-xs-6">
                 <div class="form-group">
                   <label class="pull-left">Grade</label>
-                  <select class="form-control select">
+                  <select class="form-control select"
+                  v-model="school.grade">
                     <option>1</option>
                     <option>2</option>
                     <option>3</option>
@@ -48,6 +49,7 @@
                     type="email"
                     class="form-control"
                     placeholder="put your school email"
+                    v-model="school.email"
                   />
                 </div>
               </div>
@@ -57,7 +59,9 @@
               <div class="col-md-6 col-sm-6 col-xs-6">
                 <div class="form-group">
                   <label class="pull-left">Country</label>
-                  <select class="form-control select">
+                  <select class="form-control select"
+                  v-model="school.country"
+                  >
                     <option>US</option>
                     <option>United kingdom</option>
                     <option>Canada</option>
@@ -67,7 +71,9 @@
               <div class="col-md-6 col-sm-6 col-xs-6">
                 <div class="form-group">
                   <label class="pull-left">State</label>
-                  <input type="text" class="form-control" />
+                  <input type="text" class="form-control"
+                  v-model="school.state"
+                  />
                 </div>
               </div>
             </div>
@@ -75,7 +81,8 @@
               <div class="col-md-6 col-sm-6 col-xs-6">
                 <div class="form-group">
                   <label class="pull-left">City</label>
-                  <select class="form-control select">
+                  <select class="form-control select"
+                  v-model="school.city">
                     <option>Seattle</option>
                     <option>Boston</option>
                     <option>Austin</option>
@@ -85,11 +92,9 @@
               <div class="col-md-6 col-sm-6 col-xs-6">
                 <div class="form-group">
                   <label class="pull-left">Zipcode</label>
-                  <select class="form-control select">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                  </select>
+                  <input type="text" class="form-control"
+                  v-model="school.zip_code"
+                  />
                 </div>
               </div>
             </div>
@@ -101,6 +106,7 @@
                     type="text"
                     class="form-control"
                     placeholder="write down your school address"
+                    v-model="school.address"
                   />
                 </div>
               </div>

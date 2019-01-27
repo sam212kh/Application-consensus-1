@@ -43,6 +43,10 @@ INSTALLED_APPS = [
     'reversion',
     'apps.user',
     'apps.school',
+    'apps.season',
+    'apps.staff',
+    'apps.score',
+    'apps.application'
 ]
 
 

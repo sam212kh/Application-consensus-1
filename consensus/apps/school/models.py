@@ -12,6 +12,8 @@ class School(models.Model):
         on_delete=models.CASCADE
     )
     phone_number = models.CharField(max_length=255, null=True, blank=True)
+    email  = models.CharField(max_length=255, null=True, blank=True)
+    grade = models.IntegerField(null=True, blank=True)
     address = models.CharField(max_length=255, null=True, blank=True)
     country = models.CharField(max_length=255, null=True, blank=True)
     state = models.CharField(max_length=255, null=True, blank=True)

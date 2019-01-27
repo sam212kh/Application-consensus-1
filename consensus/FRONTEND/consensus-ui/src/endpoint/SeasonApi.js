@@ -1,3 +1,4 @@
+import Api from "@/endpoint/Api";
 export default {
   mockSeason: {
     pagination: {
@@ -56,18 +57,22 @@ export default {
     });
   },
   add(schoolId, season) {
+    season.school_id = schoolId;
+    return Api.post("season", season);
     season.id = Math.floor(Math.random() * 10000 + 1);
     season.school_id = schoolId;
     this.mockSeason.results.push(season);
     return Promise.resolve({ status: 200, data: season });
   },
   put(season) {
+    return Api.put("season/" + season.id, season);
     return this.get(season.id).then(function(persistedSeason) {
       Object.assign(persistedSeason.data, season);
       return Promise.resolve({ status: 200 });
     });
   },
   delete(season) {
+    return Api.delete("season/" + season.id);
     let self = this;
     return this.get(season.id).then(function(persistedSeason) {
       self.mockSeason.results.splice(

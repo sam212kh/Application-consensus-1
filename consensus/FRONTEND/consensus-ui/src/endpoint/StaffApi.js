@@ -1,3 +1,4 @@
+import Api from "@/endpoint/Api";
 export default {
   mockStaff: {
     pagination: {
@@ -13,8 +14,8 @@ export default {
     },
     results: [
       {
-        id: 12,
-        school_id: 12,
+        id: 1,
+        school_id: 15,
         first_name: "staff 1",
         last_name: "one",
         email: "staff1@gmail.com",
@@ -41,11 +42,13 @@ export default {
       }
     ]
   },
-  getAll() {
-    return this.mockStaff;
-    // return Api.get("staff", schoolId);
+  getAll(schoolId) {
+    //return this.mockStaff;
+    return Api.get("staff");
+    //return Api.get("staff", schoolId);
   },
   get(id) {
+    return Api.get("staff/" + id);
     for (let i = 0; i < this.mockStaff.results.length; i++) {
       if (this.mockStaff.results[i].id === +id) {
         return Promise.resolve({
@@ -57,12 +60,16 @@ export default {
     // return Api.get("staff/" + schoolshowConfirmDeleteModalshowConfirmDeleteModalshowConfirmDeleteModalshowConfirmDeleteModalId);
   },
   add(staff) {
+    return Api.post("staff", staff);
+
     staff.id = Math.floor(Math.random() * 10000 + 1);
     this.mockStaff.results.push(staff);
     return Promise.resolve({ status: 200 });
     // return Api.post("staff", staff);
   },
   put(staff) {
+    return Api.put("staff/" + staff.id, staff);
+    
     return this.get(staff.id).then(function(persistedStaff) {
       Object.assign(persistedStaff, staff);
       return Promise.resolve({ status: 200 });
@@ -70,6 +77,7 @@ export default {
     // return Api.put("staff/" + staff.id, staff);
   },
   delete(staff) {
+    return Api.delete("staff/" + staff);
     let self = this;
     return this.get(staff.id).then(function(persistedStaff) {
       self.mockStaff.results.splice(

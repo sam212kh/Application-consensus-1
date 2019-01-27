@@ -15,7 +15,7 @@ export default {
     },
     results: [
       {
-        id: 12,
+        id: 15,
         full_name: "school_31",
         total_season_count: 3,
         total_application_count: 15,
@@ -24,14 +24,14 @@ export default {
         total_enrolled_count: 11,
         seasons: [
           {
-            id: 18,
+            id: 1,
             full_name: "season_11",
             application: 7,
             scored: 4,
             enrolled: 2
           },
           {
-            id: 12,
+            id: 2,
             full_name: "season_12",
             application: 9,
             scored: 2,
@@ -91,6 +91,7 @@ export default {
     // return Api.get("school");
   },
   get(id) {
+    return Api.get("school/" + id);
     for (let i = 0; i < this.mockSchool.results.length; i++) {
       if (this.mockSchool.results[i].id === +id) {
         return Promise.resolve({
@@ -108,6 +109,7 @@ export default {
     //return Promise.resolve({ status: 200 });
   },
   put(school) {
+    return Api.put("school/" + school.id, school);
     return this.get(school.id).then(function(persistedSchool) {
       Object.assign(persistedSchool, school);
       return Promise.resolve({ status: 200 });
@@ -115,6 +117,7 @@ export default {
     // return Api.put("school/" + school.id, school);
   },
   delete(school) {
+    return Api.delete("school/" + school.id);
     let self = this;
     return this.get(school.id).then(function(persistedSchool) {
       self.mockSchool.results.splice(
