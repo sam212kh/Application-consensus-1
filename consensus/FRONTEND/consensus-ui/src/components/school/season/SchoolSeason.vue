@@ -380,12 +380,12 @@ export default {
     submitSeason: function() {
       let self = this;
       if (this.selectedSeason == null) {
-        seasonApi.add(this.selectedSchoolId, this.newSeason).then(
+        seasonApi.add(this.schoolId, this.newSeason).then(
           function(resp) {
             self.notifySuccess("The season inserted");
             self.$refs.newSeasonModalRef.hide();
             self.localData.results.forEach(function(school) {
-              if (school.id === self.selectedSchoolId) {
+              if (school.id === self.schoolId) {
                 school.seasons.push(resp.data);
               }
             });

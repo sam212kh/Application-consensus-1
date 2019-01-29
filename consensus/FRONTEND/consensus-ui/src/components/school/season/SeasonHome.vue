@@ -668,7 +668,7 @@ export default {
       this.$refs.newApplicationModalRef.show();
     },
     reAssignData: function() {
-      this.localData = applicationApi.getAll(this.schoolId);
+      this.localData = applicationApi.getAll(this.seasonId);
       this.reviewData = [];
       this.enrolledData = [];
       this.season.applicationScored = 0;

@@ -2,7 +2,6 @@ import os
 
 from django.contrib.auth import get_user_model
 from django.db import models
-from django.conf import settings
 
 from consensus.helpers.utils import get_random_upload_path
 
@@ -23,7 +22,7 @@ class UserProfile(models.Model):
         (GENDER_FEMALE, 'Female'),
     )
 
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, primary_key=True, related_name='profile',
+    user = models.OneToOneField(User, primary_key=True, related_name='profile',
                                 on_delete=models.CASCADE)
     birth_date = models.DateField('Date of birth', blank=True, null=True)
     gender = models.CharField('Gender', max_length=1, choices=GENDER_CHOICES, default=GENDER_UNKNOWN)

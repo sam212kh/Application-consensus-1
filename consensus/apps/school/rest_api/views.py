@@ -50,7 +50,7 @@ class SeasonView(viewsets.ModelViewSet):
     serializer_class = SeasonSerializer
     ordering = 'id'
     ordering_fields = '__all__'
-
+    
 
 class StaffView(viewsets.ModelViewSet):
     queryset = Staff.objects.all()

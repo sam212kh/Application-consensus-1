@@ -30,10 +30,6 @@ API_ENDPOINT = 'api/(?P<{}>v\d+)'.format(VERSION_PARAM)
 urlpatterns = [
     re_path('^{}/'.format(API_ENDPOINT), include('apps.school.urls', namespace='school_rest_api')),
     re_path('^{}/'.format(API_ENDPOINT), include('apps.user.urls', namespace='user_rest_api')),
-    re_path('^{}/'.format(API_ENDPOINT), include('apps.season.urls', namespace='season_rest_api')),
-    re_path('^{}/'.format(API_ENDPOINT), include('apps.application.urls', namespace='application_rest_api')),
-    re_path('^{}/'.format(API_ENDPOINT), include('apps.staff.urls', namespace='staff_rest_api')),
-    re_path('^{}/'.format(API_ENDPOINT), include('apps.score.urls', namespace='score_rest_api')),
     re_path(r'^admin/', admin.site.urls),
     re_path(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     re_path(r'^token/auth/', obtain_jwt_token),
