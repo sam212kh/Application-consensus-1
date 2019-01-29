@@ -128,7 +128,6 @@ export default {
   },
   created: function() {
     this.$eventsBus.$emit("header:title", "Schools");
-    this.localData = schoolApi.getAll();
   },
   data: function() {
     return {
@@ -163,13 +162,13 @@ export default {
         },
         {
           name: "total_score_count",
-          title: `<span class="icon is-small orange"><i class="fa fa-handshake-o color-gray"></i></span> Enrolled`,
+          title: `<span class="icon is-small orange"><i class="fa fa-handshake-o color-gray"></i></span> Scored`,
           titleClass: "text-left",
           dataClass: "text-left"
         },
         {
           name: "total_enrolled_count",
-          title: `<span class="icon is-small orange"><i class="fa fa-calendar color-gray"></i></span> Season`,
+          title: `<span class="icon is-small orange"><i class="fa fa-calendar color-gray"></i></span> Enrolled`,
           titleClass: "text-left",
           dataClass: "text-left"
         },
