@@ -42,11 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'reversion',
     'apps.user',
-    'apps.school',
-    'apps.season',
-    'apps.staff',
-    'apps.score',
-    'apps.application'
+    'apps.school'
 ]
 
 

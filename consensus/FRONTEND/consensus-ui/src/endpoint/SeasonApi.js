@@ -39,10 +39,12 @@ export default {
       }
     ]
   },
-  getAll() {
+  getAll(schoolId) {
+    return Api.get("season/" + schoolId);
     return this.mockSeason;
   },
   get(seasonId) {
+
     for (let i = 0; i < this.mockSeason.results.length; i++) {
       if (this.mockSeason.results[i].id === +seasonId) {
         return Promise.resolve({

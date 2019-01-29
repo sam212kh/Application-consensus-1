@@ -302,7 +302,7 @@ export default {
   },
   created: function() {
     this.$eventsBus.$emit("header:title", "School");
-    this.localData = seasonApi.getAll();
+    this.localData = seasonApi.getAll(this.$route.params.id);
     this.schoolData = schoolApi.get(this.$route.params.id);
   },
   data: function() {
