@@ -492,8 +492,7 @@ export default {
     },
     submitStaff: function() {
       let self = this;
-      self.newStaff.school_id = self.schoolId
-      staffApi.add(self.newStaff).then(
+      staffApi.add(self.schoolId,self.newStaff).then(
         function() {
           self.notifySuccess("The staff inserted");
           self.$refs.newStaffModalRef.hide();

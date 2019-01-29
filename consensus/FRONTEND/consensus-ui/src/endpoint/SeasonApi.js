@@ -4,7 +4,8 @@ export default {
   getAll(schoolId) {
     return Api.get("season/"+schoolId);
   },
-  add(season) {
+  add(schoolId,season) {
+    season.school_id = schoolId;
     return Api.post("season", season);
   },
   put(season) {
