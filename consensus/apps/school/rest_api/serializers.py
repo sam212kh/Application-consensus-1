@@ -9,6 +9,18 @@ class SchoolSerializer(serializers.ModelSerializer):
         model = models.School
 
 
+class StaffSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = '__all__'
+        model = models.Staff
+
+
+class SeasonSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = '__all__'
+        model = models.Season
+
+
 class ApplicationSerializer(serializers.ModelSerializer):
     class Meta:
         fields = '__all__'
@@ -20,14 +32,3 @@ class ScoreSerializer(serializers.ModelSerializer):
         fields = '__all__'
         model = models.Score
 
-
-class SeasonSerializer(serializers.ModelSerializer):
-    class Meta:
-        fields = '__all__'
-        model = models.Season
-
-
-class StaffSerializer(serializers.ModelSerializer):
-    class Meta:
-        fields = '__all__'
-        model = models.Staff

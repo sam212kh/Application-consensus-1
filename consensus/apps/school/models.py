@@ -34,7 +34,7 @@ class Staff(models.Model):
         on_delete=models.CASCADE
     )
 
-    user = models.OneToOneField(User, primary_key=True, related_name='user',
+    user = models.OneToOneField(User, primary_key=False, related_name='user',
                                 on_delete=models.CASCADE)
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255, null=True, blank=True)
@@ -115,5 +115,3 @@ class Score(models.Model):
 
     def __str__(self):
         return self.first_name
-
-
