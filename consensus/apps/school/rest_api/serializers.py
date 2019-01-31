@@ -4,18 +4,31 @@ from apps.school import models
 
 
 class SchoolSerializer(serializers.ModelSerializer):
-
     class Meta:
-        fields = (
-            'id',
-            'owner_id',
-            'full_name',
-            'phone_number',
-            'address',
-            'country',
-            'state',
-            'city',
-            'zip_code',
-            'application_reviews_required',
-            )
+        fields = '__all__'
         model = models.School
+
+
+class StaffSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = '__all__'
+        model = models.Staff
+
+
+class SeasonSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = '__all__'
+        model = models.Season
+
+
+class ApplicationSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = '__all__'
+        model = models.Application
+
+
+class ScoreSerializer(serializers.ModelSerializer):
+    class Meta:
+        fields = '__all__'
+        model = models.Score
+

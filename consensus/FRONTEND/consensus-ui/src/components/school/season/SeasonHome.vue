@@ -569,7 +569,7 @@ export default {
       enrolledShown: false,
       rejectConfirm: false,
       acceptConfirm: false,
-      localData: {},
+      seasonData: {},
       scoreData: {},
       enrolledData: {},
       reviewData: {},
@@ -668,12 +668,12 @@ export default {
       this.$refs.newApplicationModalRef.show();
     },
     reAssignData: function() {
-      this.localData = applicationApi.getAll(this.schoolId);
+      this.seasonData = applicationApi.getAll(this.seasonId);
       this.reviewData = [];
       this.enrolledData = [];
       this.season.applicationScored = 0;
       this.season.applicationEnrolled = 0;
-      this.fragmentationApplication(this.localData.results);
+      this.fragmentationApplication(this.seasonData.results);
     },
     fragmentationApplication: function(applications) {
       let self = this;

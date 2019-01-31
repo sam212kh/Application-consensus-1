@@ -2,7 +2,7 @@
   <section>
     <div class="row row-no-padding justify-content-end">
       <div class="col-md-4 col-sm-4 col-xs-4 ">
-        <button class="btn btn-block btn-primary" @click="showNewStaffModal()">
+        <button class="btn btn-block btn-primary" @click="addStaff">
           <i class="fa fa-plus"></i> Add a new Staff
         </button>
       </div>
@@ -20,7 +20,7 @@
             <div class="left">
               <h6>
                 School staffs :
-                {{ localData.results ? localData.results.length : 0 }}
+                {{ staffData.results ? staffData.results.length : 0 }}
               </h6>
             </div>
             <div class="right"></div>
@@ -32,7 +32,7 @@
       <vuetable
         ref="vuetable"
         :api-mode="false"
-        :data="localData"
+        :data="staffData"
         :api-url="tableUrl"
         :fields="tableFields"
         :css="css.table"
@@ -67,9 +67,9 @@
     <b-modal
       size="lg"
       centered
-      ref="newStaffModalRef"
-      id="newStaffModal"
-      title="Add a new staff"
+      ref="StaffModalRef"
+      id="StaffModal"
+      title="Edit staff"
       :header-bg-variant="'modal-header padding-10 background-light-silver'"
       :footer-bg-variant="
         'modal-footer padding-10 background-light-silver border-bottom-right-radius-10 border-bottom-left-radius-10'
@@ -87,7 +87,7 @@
                     <input
                       type="text"
                       class="form-control"
-                      v-model="newStaff.first_name"
+                      v-model="selectedStaff.first_name"
                     />
                   </div>
                 </div>
@@ -97,7 +97,7 @@
                     <input
                       type="text"
                       class="form-control"
-                      v-model="newStaff.last_name"
+                      v-model="selectedStaff.last_name"
                     />
                   </div>
                 </div>
@@ -109,7 +109,7 @@
                     <input
                       type="text"
                       class="form-control"
-                      v-model="newStaff.user_name"
+                      v-model="selectedStaff.user_name"
                     />
                   </div>
                 </div>
@@ -119,7 +119,7 @@
                     <input
                       type="email"
                       class="form-control"
-                      v-model="newStaff.email"
+                      v-model="selectedStaff.email"
                     />
                   </div>
                 </div>
@@ -131,7 +131,7 @@
                     <input
                       type="text"
                       class="form-control"
-                      v-model="newStaff.phone_number"
+                      v-model="selectedStaff.phone_number"
                     />
                   </div>
                 </div>
@@ -141,7 +141,7 @@
                     <input
                       type="password"
                       class="form-control"
-                      v-model="newStaff.password"
+                      v-model="selectedStaff.password"
                     />
                   </div>
                 </div>
@@ -183,7 +183,7 @@
               type="button"
               class="btn btn-success btn-block"
             >
-              <i class="glyphicon glyphicon-ok"></i> Add Staff
+              <i class="glyphicon glyphicon-ok"></i> Submit Staff
             </button>
           </div>
           <div class="col-md-3 col-sm-3 col-xs-12">
@@ -191,7 +191,7 @@
               type="button"
               class="btn btn-danger btn-block"
               data-dismiss="modal"
-              @click="$refs.newStaffModalRef.hide()"
+              @click="$refs.StaffModalRef.hide()"
             >
               <i class="fa fa-close"></i> Cancel
             </button>
@@ -199,143 +199,6 @@
         </div>
       </div>
     </b-modal>
-
-    <b-modal
-      size="lg"
-      centered
-      ref="editStaffModalRef"
-      id="editStaffModal"
-      title="Edit staff"
-      :header-bg-variant="'modal-header padding-10 background-light-silver'"
-      :footer-bg-variant="
-        'modal-footer padding-10 background-light-silver border-bottom-right-radius-10 border-bottom-left-radius-10'
-      "
-      :aria-required="false"
-    >
-      <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-          <div class="modal-body">
-            <form>
-              <div class="row">
-                <div class="col-md-6 col-sm-6 col-xs-6">
-                  <div class="form-group">
-                    <label class="pull-left">First Name</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="editStaff.first_name"
-                    />
-                  </div>
-                </div>
-                <div class="col-md-6 col-sm-6 col-xs-6">
-                  <div class="form-group">
-                    <label class="pull-left">Last Name</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="editStaff.last_name"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-6 col-sm-6 col-xs-6">
-                  <div class="form-group">
-                    <label class="pull-left">User Name</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="editStaff.user_name"
-                    />
-                  </div>
-                </div>
-                <div class="col-md-6 col-sm-6 col-xs-6">
-                  <div class="form-group">
-                    <label class="pull-left">Email</label>
-                    <input
-                      type="email"
-                      class="form-control"
-                      v-model="editStaff.email"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-6 col-sm-6 col-xs-6">
-                  <div class="form-group">
-                    <label class="pull-left">Phone Number</label>
-                    <input
-                      type="text"
-                      class="form-control"
-                      v-model="editStaff.phone_number"
-                    />
-                  </div>
-                </div>
-                <div class="col-md-6 col-sm-6 col-xs-6">
-                  <div class="form-group">
-                    <label class="pull-left">Password</label>
-                    <input
-                      type="password"
-                      class="form-control"
-                      v-model="editStaff.password"
-                    />
-                  </div>
-                </div>
-              </div>
-              <hr />
-              <div class="row">
-                <div class="col-md-6 col-sm-6 col-xs-6">
-                  <label> Or search and add by username</label>
-                  <div class="input-group mb-2">
-                    <div class="input-group-prepend">
-                      <div class="input-group-text">
-                        <i class="fa fa-search"></i>
-                      </div>
-                    </div>
-                    <input type="text" class="form-control" />
-                  </div>
-                </div>
-                <div class="col-md-6 col-sm-6 col-xs-6">
-                  <label> Or search and add by email</label>
-                  <div class="input-group mb-2">
-                    <div class="input-group-prepend">
-                      <div class="input-group-text">
-                        <i class="fa fa-search"></i>
-                      </div>
-                    </div>
-                    <input type="text" class="form-control" />
-                  </div>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-      <div slot="modal-footer" class="w-100">
-        <div class="row row-no-padding width-full">
-          <div class="col-md-4 col-sm-4 col-xs-12">
-            <button
-              v-on:click="updateStaff"
-              type="button"
-              class="btn btn-success btn-block"
-            >
-              <i class="glyphicon glyphicon-ok"></i> Update Staff
-            </button>
-          </div>
-          <div class="col-md-3 col-sm-3 col-xs-12">
-            <button
-              type="button"
-              class="btn btn-danger btn-block"
-              data-dismiss="modal"
-              @click="$refs.editStaffModalRef.hide()"
-            >
-              <i class="fa fa-close"></i> Cancel
-            </button>
-          </div>
-        </div>
-      </div>
-    </b-modal>
-
     <b-modal
       centered
       ref="confirmDeleteModalRef"
@@ -390,18 +253,12 @@ export default {
     }
   },
   created: function() {
-    this.localData = staffApi.getAll(this.schoolId);
+    let self = this;
+    self.staffData = staffApi.getAll(self.schoolId);
   },
   data: function() {
     return {
-      staffs: {},
-      newStaff: {},
-      editStaff: {},
-      staffShown: false,
-      selectedStaffForDelete: null,
-      deletingRecord: false,
-      localData: {},
-      tableUrl: "/api/v1/staff",
+      staffData: {},
       tableFields: [
         {
           sortField: "first_name",
@@ -435,13 +292,13 @@ export default {
           dataClass: "text-left"
         },
         "__slot:actions"
-      ]
+      ],
+      selectedStaff: {},
+      deletingRecord: false,
+      staffShown: false
     };
   },
   methods: {
-    showNewStaffModal: function() {
-      this.$refs.newStaffModalRef.show();
-    },
     showConfirmDeleteModal: function(staff) {
       this.selectedStaffForDelete = staff;
       this.$refs.confirmDeleteModalRef.show();
@@ -466,36 +323,41 @@ export default {
       );
     },
     editRow: function(staff) {
-      this.editStaff = staff;
-      this.$refs.editStaffModalRef.show();
+      this.selectedStaff = staff.id;
+      this.Staff = staff;
+      this.$refs.StaffModalRef.show();
     },
-    updateStaff: function() {
-      let self = this;
-      staffApi.put(self.editStaff).then(
-        function() {
-          self.notifySuccess("The staff updated");
-          self.$refs.editStaffModalRef.hide();
-        },
-        function() {
-          self.notifyError(
-            "Some error happened when trying to update the staff"
-          );
-        }
-      );
+    addStaff: function() {
+      this.selectedStaff = {};
+      this.$refs.newSeasonModalRef.show();
     },
     submitStaff: function() {
       let self = this;
-      staffApi.add(self.newStaff).then(
-        function() {
-          self.notifySuccess("The staff inserted");
-          self.$refs.newStaffModalRef.hide();
-        },
-        function() {
-          self.notifyError(
-            "Some error happened when trying to add the new staff"
-          );
-        }
-      );
+      if (this.selectedStaff != null) {
+        staffApi.put(self.Staff).then(
+          function() {
+            self.notifySuccess("The staff updated");
+            self.$refs.StaffModalRef.hide();
+          },
+          function() {
+            self.notifyError(
+              "Some error happened when trying to update the staff"
+            );
+          }
+        );
+      } else {
+        staffApi.add(self.schoolId, self.Staff).then(
+          function() {
+            self.notifySuccess("The staff inserted");
+            self.$refs.StaffModalRef.hide();
+          },
+          function() {
+            self.notifyError(
+              "Some error happened when trying to add the new staff"
+            );
+          }
+        );
+      }
     }
   }
 };
