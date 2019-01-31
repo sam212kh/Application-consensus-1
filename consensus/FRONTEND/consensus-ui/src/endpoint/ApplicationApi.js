@@ -2,7 +2,7 @@ import Api from "@/endpoint/Api";
 
 export default {
   getAll(seasonId) {
-    return Api.get("application/"+seasonId);
+    return Api.get("application/?id=" + seasonId);
   },
   add(application) {
     return Api.post("application", application);

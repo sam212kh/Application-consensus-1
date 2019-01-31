@@ -131,7 +131,6 @@ export default {
   },
   data: function() {
     return {
-      localData: {},
       tableUrl: "/api/v1/school",
       tableFields: [
         "__slot:toggle",
@@ -174,7 +173,6 @@ export default {
         },
         "__slot:actions"
       ],
-      schools: [],
       selectedSchoolForDelete: null,
       deletingRecord: false
     };

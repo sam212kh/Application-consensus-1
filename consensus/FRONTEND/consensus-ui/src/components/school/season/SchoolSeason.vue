@@ -2,7 +2,7 @@
   <section>
     <div class="row row-no-padding justify-content-end">
       <div class="col-md-4 col-sm-4 col-xs-4 ">
-        <button class="btn btn-block btn-primary" v-on:click="goToAddSeason">
+        <button class="btn btn-block btn-primary" v-on:click="addSeason">
           <i class="fa fa-plus"></i> Add a new Season
         </button>
       </div>
@@ -20,7 +20,7 @@
             <div class="left">
               <h6>
                 School Season :
-                {{ localData.results ? localData.results.length : 0 }}
+                {{ seasonData.results ? seasonData.results.length : 0 }}
               </h6>
             </div>
             <div class="right"></div>
@@ -32,7 +32,7 @@
       <vuetable
         ref="vuetable"
         :api-mode="false"
-        :data="localData"
+        :data="seasonData"
         :fields="tableFields"
         :css="css.table"
         class="school-table"
@@ -134,7 +134,7 @@
                       type="text"
                       class="form-control"
                       placeholder="pick a name"
-                      v-model="newSeason.full_name"
+                      v-model="selectedSeason.full_name"
                     />
                   </div>
                 </div>
@@ -145,7 +145,7 @@
                       type="text"
                       class="form-control"
                       placeholder="pick a name"
-                      v-model="newSeason.kind"
+                      v-model="selectedSeason.kind"
                     />
                   </div>
                 </div>
@@ -159,7 +159,7 @@
                       class="form-control"
                       data-date-format="dd/mm/yyyy"
                       id="startDate"
-                      v-model="newSeason.start_date"
+                      v-model="selectedSeason.start_date"
                     />
                   </div>
                 </div>
@@ -171,7 +171,7 @@
                       class="form-control"
                       data-date-format="dd/mm/yyyy"
                       id="endDate"
-                      v-model="newSeason.end_date"
+                      v-model="selectedSeason.end_date"
                     />
                   </div>
                 </div>
@@ -187,7 +187,7 @@
                       class="form-control"
                       data-date-format="dd/mm/yyyy"
                       id="appStartDate"
-                      v-model="newSeason.acceptance_start_date"
+                      v-model="selectedSeason.acceptance_start_date"
                     />
                   </div>
                 </div>
@@ -201,7 +201,7 @@
                       class="form-control"
                       data-date-format="dd/mm/yyyy"
                       id="appEndDate"
-                      v-model="newSeason.acceptance_end_date"
+                      v-model="selectedSeason.acceptance_end_date"
                     />
                   </div>
                 </div>
@@ -225,7 +225,7 @@
                     <label class="pull-left">max size (1-250)</label>
                     <select
                       class="form-control select"
-                      v-model="newSeason.max_size"
+                      v-model="selectedSeason.max_size"
                     >
                       <option>20</option>
                       <option>30</option>
@@ -242,7 +242,7 @@
                     <input
                       type="text"
                       class="form-control"
-                      v-model="newSeason.more_info"
+                      v-model="selectedSeason.more_info"
                     />
                   </div>
                 </div>
@@ -284,7 +284,6 @@ import Vuetable from "vuetable-2/src/components/Vuetable";
 import VuetablePagination from "vuetable-2/src/components/VuetablePagination";
 import VuetableBootstrapMixin from "@/mixins/VuetableBootstrapMixin";
 import bModal from "bootstrap-vue/es/components/modal/modal";
-import schoolApi from "@/endpoint/SchoolApi";
 import seasonApi from "@/endpoint/SeasonApi";
 
 export default {
@@ -302,13 +301,14 @@ export default {
   },
   created: function() {
     this.$eventsBus.$emit("header:title", "School");
-    this.localData = seasonApi.getAll(this.$route.params.id);
-    this.schoolData = schoolApi.get(this.$route.params.id);
+    let self = this;
+    seasonApi.getByScoolId(this.schoolId).then(function(response) {
+      self.seasonData = response.data;
+    });
   },
   data: function() {
     return {
-      localData: {},
-      schoolData: {},
+      seasonData: {},
       tableFields: [
         {
           sortField: "Name",
@@ -339,8 +339,7 @@ export default {
 
         "__slot:actions"
       ],
-      newSeason: {},
-      selectedSeason: null,
+      selectedSeason: {},
       deletingRecord: false,
       seasonShown: false
     };
@@ -369,26 +368,21 @@ export default {
       );
     },
     editRow: function(season) {
-      this.selectedSeason = season.id;
-      this.newSeason = season;
+      this.selectedSeason = season;
       this.$refs.newSeasonModalRef.show();
     },
-    goToAddSeason: function() {
-      this.selectedSeason = null;
+    addSeason: function() {
+      this.selectedSeason = {};
       this.$refs.newSeasonModalRef.show();
     },
     submitSeason: function() {
       let self = this;
-      if (this.selectedSeason == null) {
-        seasonApi.add(this.schoolId, this.newSeason).then(
+      if (!this.selectedSeason.id) {
+        seasonApi.add(this.schoolId, this.selectedSeason).then(
           function(resp) {
             self.notifySuccess("The season inserted");
             self.$refs.newSeasonModalRef.hide();
-            self.localData.results.forEach(function(school) {
-              if (school.id === self.schoolId) {
-                school.seasons.push(resp.data);
-              }
-            });
+            self.seasonData.results.push(resp.data);
           },
           function() {
             self.notifyError(
@@ -397,15 +391,10 @@ export default {
           }
         );
       } else {
-        seasonApi.put(this.newSeason).then(
-          function(resp) {
+        seasonApi.put(this.selectedSeason).then(
+          function() {
             self.notifySuccess("The season updated");
             self.$refs.newSeasonModalRef.hide();
-            self.localData.results.forEach(function(school) {
-              if (school.id === self.selectedSchoolId) {
-                school.seasons.push(resp.data);
-              }
-            });
           },
           function() {
             self.notifyError(
@@ -424,9 +413,5 @@ export default {
   margin-top: 15px;
   margin-left: 15px;
   margin-right: 15px;
-}
-
-.clickable {
-  cursor: pointer;
 }
 </style>

@@ -1,11 +1,12 @@
 import Api from "@/endpoint/Api";
+import SessionApi from "@/endpoint/SessionApi";
+
 
 export default {
   getAll(schoolId) {
-    return Api.get("staff/"+schoolId);
+    return Api.get("staff?id=" + schoolId);
   },
-  add(schoolId,staff) {
-    staff.school_id = schoolId;
+  add(staff) {
     return Api.post("staff", staff);
   },
   put(staff) {

@@ -2,7 +2,7 @@
   <section>
     <div class="row row-no-padding justify-content-end">
       <div class="col-md-4 col-sm-4 col-xs-4 ">
-        <button class="btn btn-block btn-primary" @click="$refs.StaffModalRef.show()">
+        <button class="btn btn-block btn-primary" @click="addStaff">
           <i class="fa fa-plus"></i> Add a new Staff
         </button>
       </div>
@@ -20,7 +20,7 @@
             <div class="left">
               <h6>
                 School staffs :
-                {{ localData.results ? localData.results.length : 0 }}
+                {{ staffData.results ? staffData.results.length : 0 }}
               </h6>
             </div>
             <div class="right"></div>
@@ -32,7 +32,7 @@
       <vuetable
         ref="vuetable"
         :api-mode="false"
-        :data="localData"
+        :data="staffData"
         :api-url="tableUrl"
         :fields="tableFields"
         :css="css.table"
@@ -64,8 +64,6 @@
         </template>
       </vuetable>
     </div>
-
-
     <b-modal
       size="lg"
       centered
@@ -89,7 +87,7 @@
                     <input
                       type="text"
                       class="form-control"
-                      v-model="Staff.first_name"
+                      v-model="selectedStaff.first_name"
                     />
                   </div>
                 </div>
@@ -99,7 +97,7 @@
                     <input
                       type="text"
                       class="form-control"
-                      v-model="Staff.last_name"
+                      v-model="selectedStaff.last_name"
                     />
                   </div>
                 </div>
@@ -111,7 +109,7 @@
                     <input
                       type="text"
                       class="form-control"
-                      v-model="Staff.user_name"
+                      v-model="selectedStaff.user_name"
                     />
                   </div>
                 </div>
@@ -121,7 +119,7 @@
                     <input
                       type="email"
                       class="form-control"
-                      v-model="Staff.email"
+                      v-model="selectedStaff.email"
                     />
                   </div>
                 </div>
@@ -133,7 +131,7 @@
                     <input
                       type="text"
                       class="form-control"
-                      v-model="Staff.phone_number"
+                      v-model="selectedStaff.phone_number"
                     />
                   </div>
                 </div>
@@ -143,7 +141,7 @@
                     <input
                       type="password"
                       class="form-control"
-                      v-model="Staff.password"
+                      v-model="selectedStaff.password"
                     />
                   </div>
                 </div>
@@ -201,7 +199,6 @@
         </div>
       </div>
     </b-modal>
-
     <b-modal
       centered
       ref="confirmDeleteModalRef"
@@ -257,23 +254,11 @@ export default {
   },
   created: function() {
     let self = this;
-    self.localData = staffApi.getAll(self.schoolId);
-    staffApi.getAll(this.schoolId).then(
-      function(response) {
-        console.log( self.localData = response.data.results  );
-      }
-    );
+    self.staffData = staffApi.getAll(self.schoolId);
   },
   data: function() {
     return {
-      staffs: {},
-      Staff: {},
-      staffShown: false,
-      selectedStaff: null,
-      selectedStaffForDelete: null,
-      deletingRecord: false,
-      localData: {},
-      tableUrl: "/api/v1/staff",
+      staffData: {},
       tableFields: [
         {
           sortField: "first_name",
@@ -307,14 +292,13 @@ export default {
           dataClass: "text-left"
         },
         "__slot:actions"
-      ]
+      ],
+      selectedStaff: {},
+      deletingRecord: false,
+      staffShown: false
     };
   },
   methods: {
-    showNewStaffModal: function() {
-      this.selectedStaff = null;
-      this.$refs.StaffModalRef.show();
-    },
     showConfirmDeleteModal: function(staff) {
       this.selectedStaffForDelete = staff;
       this.$refs.confirmDeleteModalRef.show();
@@ -339,28 +323,31 @@ export default {
       );
     },
     editRow: function(staff) {
-      this.selectedStaff = staff.id
+      this.selectedStaff = staff.id;
       this.Staff = staff;
+      this.$refs.StaffModalRef.show();
+    },
+    addStaff: function() {
+      this.selectedStaff = {};
       this.$refs.StaffModalRef.show();
     },
     submitStaff: function() {
       let self = this;
-      if (this.selectedStaff != null)
-      {
-          staffApi.put(self.Staff).then(
-            function() {
-              self.notifySuccess("The staff updated");
-              self.$refs.StaffModalRef.hide();
-            },
-            function() {
-              self.notifyError(
-                "Some error happened when trying to update the staff"
-              );
-            }
-          );
-
-      }else{
-        staffApi.add(self.schoolId,self.Staff).then(
+      if (self.selectedStaff.id != null) {
+        staffApi.put(self.selectedStaff).then(
+          function() {
+            self.notifySuccess("The staff updated");
+            self.$refs.StaffModalRef.hide();
+          },
+          function() {
+            self.notifyError(
+              "Some error happened when trying to update the staff"
+            );
+          }
+        );
+      } else {
+        self.selectedStaff.school = self.schoolId;
+        staffApi.add(self.selectedStaff).then(
           function() {
             self.notifySuccess("The staff inserted");
             self.$refs.StaffModalRef.hide();

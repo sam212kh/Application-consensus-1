@@ -180,8 +180,8 @@
                   <div class="form-group">
                     <label class="pull-left">Gender</label>
                     <select class="form-control" v-model="newApp.gender">
-                      <option>Male</option>
-                      <option>Female</option>
+                      <option value="m">Male</option>
+                      <option value="f">Female</option>
                     </select>
                   </div>
                 </div>
@@ -400,8 +400,8 @@
                   <div class="form-group">
                     <label class="pull-left">Gender</label>
                     <select class="form-control" v-model="review.gender">
-                      <option>Male</option>
-                      <option>Female</option>
+                      <option value="m">Male</option>
+                      <option value="f">Female</option>
                     </select>
                   </div>
                 </div>
@@ -569,7 +569,7 @@ export default {
       enrolledShown: false,
       rejectConfirm: false,
       acceptConfirm: false,
-      localData: {},
+      seasonData: {},
       scoreData: {},
       enrolledData: {},
       reviewData: {},
@@ -668,12 +668,17 @@ export default {
       this.$refs.newApplicationModalRef.show();
     },
     reAssignData: function() {
-      this.localData = applicationApi.getAll(this.seasonId);
-      this.reviewData = [];
-      this.enrolledData = [];
-      this.season.applicationScored = 0;
-      this.season.applicationEnrolled = 0;
-      this.fragmentationApplication(this.localData.results);
+      let self = this;
+      self.reviewData = [];
+      self.enrolledData = [];
+      self.season.applicationScored = 0;
+      self.season.applicationEnrolled = 0;
+      self.season.newApplication = 0;
+      self.season.newEnrolled = 0;
+      applicationApi.getAll(this.seasonId).then(function(response) {
+        self.seasonData = response.data;
+        self.fragmentationApplication(response.data.results);
+      });
     },
     fragmentationApplication: function(applications) {
       let self = this;
@@ -736,6 +741,7 @@ export default {
         .toJSON()
         .slice(0, 10)
         .replace(/-/g, "-");
+      self.newApp.season =  self.seasonId;
       applicationApi.add(self.newApp).then(
         function() {
           self.notifySuccess("The application inserted");
@@ -780,12 +786,14 @@ export default {
       );
     },
     rejectApplication: function() {
+
       let self = this;
       this.selectedApplication.status = "reject";
       applicationApi.put(this.selectedApplication).then(
         function() {
           self.notifySuccess("The application rejected");
           self.$refs.confirmModalRef.hide();
+          self.$refs.vuetable.refresh();
         },
         function() {
           self.notifyError(

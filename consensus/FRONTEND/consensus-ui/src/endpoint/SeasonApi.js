@@ -1,11 +1,11 @@
 import Api from "@/endpoint/Api";
 
 export default {
-  getAll(schoolId) {
-    return Api.get("season/"+schoolId);
+  getByScoolId(schoolId) {
+    return Api.get("season?school_id=" + schoolId);
   },
-  add(schoolId,season) {
-    season.school_id = schoolId;
+  add(schoolId, season) {
+    season.school = schoolId;
     return Api.post("season", season);
   },
   put(season) {

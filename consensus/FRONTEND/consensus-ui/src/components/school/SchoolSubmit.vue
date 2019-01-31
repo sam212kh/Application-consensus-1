@@ -21,8 +21,7 @@
               <div class="col-md-6 col-sm-6 col-xs-6">
                 <div class="form-group">
                   <label class="pull-left">Grade</label>
-                  <select class="form-control select"
-                  v-model="school.grade">
+                  <select class="form-control select" v-model="school.grade">
                     <option>1</option>
                     <option>2</option>
                     <option>3</option>
@@ -59,9 +58,7 @@
               <div class="col-md-6 col-sm-6 col-xs-6">
                 <div class="form-group">
                   <label class="pull-left">Country</label>
-                  <select class="form-control select"
-                  v-model="school.country"
-                  >
+                  <select class="form-control select" v-model="school.country">
                     <option>US</option>
                     <option>United kingdom</option>
                     <option>Canada</option>
@@ -71,8 +68,10 @@
               <div class="col-md-6 col-sm-6 col-xs-6">
                 <div class="form-group">
                   <label class="pull-left">State</label>
-                  <input type="text" class="form-control"
-                  v-model="school.state"
+                  <input
+                    type="text"
+                    class="form-control"
+                    v-model="school.state"
                   />
                 </div>
               </div>
@@ -81,8 +80,7 @@
               <div class="col-md-6 col-sm-6 col-xs-6">
                 <div class="form-group">
                   <label class="pull-left">City</label>
-                  <select class="form-control select"
-                  v-model="school.city">
+                  <select class="form-control select" v-model="school.city">
                     <option>Seattle</option>
                     <option>Boston</option>
                     <option>Austin</option>
@@ -92,8 +90,10 @@
               <div class="col-md-6 col-sm-6 col-xs-6">
                 <div class="form-group">
                   <label class="pull-left">Zipcode</label>
-                  <input type="text" class="form-control"
-                  v-model="school.zip_code"
+                  <input
+                    type="text"
+                    class="form-control"
+                    v-model="school.zip_code"
                   />
                 </div>
               </div>
@@ -125,7 +125,7 @@
               <div class="col-md-3 col-sm-3 col-xs-12">
                 <router-link
                   class="btn btn-block btn-danger"
-                  :to="{ name: 'schools'}"
+                  :to="{ name: 'schools' }"
                 >
                   <i class="fa fa-close"></i> Cancel
                 </router-link>
