@@ -1,8 +1,8 @@
 import Api from "@/endpoint/Api";
 
 export default {
-  getAll(seasonId) {
-    return Api.get("application/" + seasonId);
+  getBySeasonId(seasonId) {
+    return Api.get("application?season_id=" + seasonId);
   },
   add(application) {
     return Api.post("application", application);
