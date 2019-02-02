@@ -66,9 +66,21 @@ class ApplicationView(viewsets.ModelViewSet):
     ordering = 'email'
     ordering_fields = '__all__'
 
+    def get_queryset(self):
+        seasonId = self.request.query_params.get('season_id')
+        if seasonId is None:
+            return self.queryset
+        return self.queryset.filter(season=seasonId)
+
 
 class ScoreView(viewsets.ModelViewSet):
     queryset = Score.objects.all()
     serializer_class = ScoreSerializer
     ordering = 'score_date'
     ordering_fields = '__all__'
+
+    def get_queryset(self):
+        applicationId = self.request.query_params.get('application_id')
+        if applicationId is None:
+            return self.queryset
+        return self.queryset.filter(application=applicationId)

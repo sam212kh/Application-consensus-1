@@ -302,7 +302,7 @@ export default {
   created: function() {
     this.$eventsBus.$emit("header:title", "School");
     let self = this;
-    seasonApi.getByScoolId(this.schoolId).then(function(response) {
+    seasonApi.getBySchoolId(this.schoolId).then(function(response) {
       self.seasonData = response.data;
     });
   },
@@ -378,7 +378,8 @@ export default {
     submitSeason: function() {
       let self = this;
       if (!this.selectedSeason.id) {
-        seasonApi.add(this.schoolId, this.selectedSeason).then(
+        this.selectedSeason.school = this.schoolId;
+        seasonApi.add(this.selectedSeason).then(
           function(resp) {
             self.notifySuccess("The season inserted");
             self.$refs.newSeasonModalRef.hide();

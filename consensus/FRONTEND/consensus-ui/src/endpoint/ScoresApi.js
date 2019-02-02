@@ -1,8 +1,8 @@
 import Api from "@/endpoint/Api";
 
 export default {
-  getAll(applicationId) {
-    return Api.get("score/" + applicationId);
+  getByApplicationId(applicationId) {
+    return Api.get("score?application_id=" + applicationId);
   },
   add(score) {
     return Api.post("score", score);
