@@ -743,7 +743,7 @@ export default {
         .slice(0, 10)
         .replace(/-/g, "-");
       self.newApp.season = self.seasonId;
-      applicationApi.add(self.newApp).then(
+      applicationApi.add(this.seasonId, self.newApp).then(
         function() {
           self.notifySuccess("The application inserted");
           self.$refs.newApplicationModalRef.hide();
@@ -773,7 +773,7 @@ export default {
     acceptApplication: function() {
       let self = this;
       this.selectedApplication.status = "enrolled";
-      applicationApi.put(this.selectedApplication).then(
+      applicationApi.put(this.seasonId, this.selectedApplication).then(
         function() {
           self.notifySuccess("The application accepted");
           self.$refs.confirmModalRef.hide();
@@ -789,7 +789,7 @@ export default {
     rejectApplication: function() {
       let self = this;
       this.selectedApplication.status = "reject";
-      applicationApi.put(this.selectedApplication).then(
+      applicationApi.put(this.seasonId, this.selectedApplication).then(
         function() {
           self.notifySuccess("The application rejected");
           self.$refs.confirmModalRef.hide();
@@ -810,7 +810,7 @@ export default {
     updateReview: function() {
       let self = this;
       this.selectedReview.status = "scored";
-      applicationApi.put(this.selectedReview).then(
+      applicationApi.put(this.seasonId, this.selectedReview).then(
         function() {
           self.notifySuccess("The application reviewed");
           self.$refs.reviewAppModalRef.hide();

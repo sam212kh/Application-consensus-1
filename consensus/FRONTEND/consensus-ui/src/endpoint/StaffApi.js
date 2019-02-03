@@ -2,15 +2,15 @@ import Api from "@/endpoint/Api";
 
 export default {
   getBySchoolId(schoolId) {
-    return Api.get("staff?school_id=" + schoolId);
+    return Api.get(`school\\${schoolId}\\staff`);
   },
-  add(staff) {
-    return Api.post("staff", staff);
+  add(schoolId, staff) {
+    return Api.post(`school\\${schoolId}\\staff`, staff);
   },
-  put(staff) {
-    return Api.put("staff/" + staff.id, staff);
+  put(schoolId, staff) {
+    return Api.put(`school\\${schoolId}\\staff\\${staff.id}`, staff);
   },
-  delete(staff) {
-    return Api.delete("staff/" + staff.id);
+  delete(schoolId, staff) {
+    return Api.delete(`school\\${schoolId}\\staff\\${staff.id}`);
   }
 };
