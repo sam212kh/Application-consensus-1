@@ -2,7 +2,7 @@ import Api from "@/endpoint/Api";
 
 export default {
   getByApplicationId(applicationId) {
-    return Api.get(`application\\${applicationId}\\score`);
+    return Api.get(`application/${applicationId}/score`);
   },
   add(score) {
     return Api.post("score", score);
