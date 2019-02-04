@@ -180,8 +180,8 @@
                   <div class="form-group">
                     <label class="pull-left">Gender</label>
                     <select class="form-control" v-model="newApp.gender">
-                      <option>Male</option>
-                      <option>Female</option>
+                      <option value="m">Male</option>
+                      <option value="f">Female</option>
                     </select>
                   </div>
                 </div>
@@ -400,8 +400,8 @@
                   <div class="form-group">
                     <label class="pull-left">Gender</label>
                     <select class="form-control" v-model="review.gender">
-                      <option>Male</option>
-                      <option>Female</option>
+                      <option value="m">Male</option>
+                      <option value="f">Female</option>
                     </select>
                   </div>
                 </div>
@@ -569,7 +569,7 @@ export default {
       enrolledShown: false,
       rejectConfirm: false,
       acceptConfirm: false,
-      localData: {},
+      seasonData: {},
       scoreData: {},
       enrolledData: {},
       reviewData: {},
@@ -668,12 +668,17 @@ export default {
       this.$refs.newApplicationModalRef.show();
     },
     reAssignData: function() {
-      this.localData = applicationApi.getAll(this.schoolId);
-      this.reviewData = [];
-      this.enrolledData = [];
-      this.season.applicationScored = 0;
-      this.season.applicationEnrolled = 0;
-      this.fragmentationApplication(this.localData.results);
+      let self = this;
+      self.reviewData = [];
+      self.enrolledData = [];
+      self.season.applicationScored = 0;
+      self.season.applicationEnrolled = 0;
+      self.season.newApplication = 0;
+      self.season.newEnrolled = 0;
+      applicationApi.getBySeasonId(this.seasonId).then(function(response) {
+        self.seasonData = response.data;
+        self.fragmentationApplication(response.data.results);
+      });
     },
     fragmentationApplication: function(applications) {
       let self = this;
@@ -717,8 +722,10 @@ export default {
       this.decisionActionField.visible = !this.enrolledShown;
       this.$refs.vuetable && this.$refs.vuetable.normalizeFields();
     },
-    scoreBoxClick: function() {
-      this.scoreData = ScoresApi.getAll();
+    scoreBoxClick: function(application) {
+      ScoresApi.getByApplicationId(application.id).then(function(response) {
+        this.scoreData = response.data;
+      });
       this.$refs.scoreModalRef.show();
     },
     onApplicationBoxClick: function() {
@@ -735,7 +742,8 @@ export default {
         .toJSON()
         .slice(0, 10)
         .replace(/-/g, "-");
-      applicationApi.add(self.newApp).then(
+      self.newApp.season = self.seasonId;
+      applicationApi.add(this.seasonId, self.newApp).then(
         function() {
           self.notifySuccess("The application inserted");
           self.$refs.newApplicationModalRef.hide();
@@ -765,7 +773,7 @@ export default {
     acceptApplication: function() {
       let self = this;
       this.selectedApplication.status = "enrolled";
-      applicationApi.put(this.selectedApplication).then(
+      applicationApi.put(this.seasonId, this.selectedApplication).then(
         function() {
           self.notifySuccess("The application accepted");
           self.$refs.confirmModalRef.hide();
@@ -781,10 +789,11 @@ export default {
     rejectApplication: function() {
       let self = this;
       this.selectedApplication.status = "reject";
-      applicationApi.put(this.selectedApplication).then(
+      applicationApi.put(this.seasonId, this.selectedApplication).then(
         function() {
           self.notifySuccess("The application rejected");
           self.$refs.confirmModalRef.hide();
+          self.$refs.vuetable.refresh();
         },
         function() {
           self.notifyError(
@@ -801,7 +810,7 @@ export default {
     updateReview: function() {
       let self = this;
       this.selectedReview.status = "scored";
-      applicationApi.put(this.selectedReview).then(
+      applicationApi.put(this.seasonId, this.selectedReview).then(
         function() {
           self.notifySuccess("The application reviewed");
           self.$refs.reviewAppModalRef.hide();

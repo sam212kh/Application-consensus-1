@@ -1,3 +1,7 @@
 from django.contrib import admin
 
-# Register your models here.
+from reversion.admin import VersionAdmin
+
+from apps.user.models import UserProfile
+
+admin.site.register(UserProfile, VersionAdmin)
