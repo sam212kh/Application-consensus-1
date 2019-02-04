@@ -7,6 +7,69 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 
 
+class SchoolBasedViewMixin(object):
+    _base_school = None
+    school_base_rel = 'school'
+
+    @property
+    def base_school_id(self):
+        return self.kwargs.get('_school_pk')
+
+    @property
+    def base_school(self):
+        if not self._base_school:
+            self._base_school = get_object_or_404(School.objects.all(), pk=self.base_school_id)
+        return self._base_school
+
+    def get_queryset(self):
+        qs = super(SchoolBasedViewMixin, self).get_queryset()
+        if self.school_base_rel:
+            qs = qs.filter(**{self.school_base_rel: self.base_school_id})
+        return qs
+
+
+class SeasonBasedViewMixin(object):
+    _base_season = None
+    season_base_rel = 'season'
+
+    @property
+    def base_season_id(self):
+        return self.kwargs.get('_season_pk')
+
+    @property
+    def base_season(self):
+        if not self._base_season:
+            self._base_season = get_object_or_404(School.objects.all(), pk=self.base_season_id)
+        return self._base_season
+
+    def get_queryset(self):
+        qs = super(SeasonBasedViewMixin, self).get_queryset()
+        if self.season_base_rel:
+            qs = qs.filter(**{self.season_base_rel: self.base_season_id})
+        return qs
+
+
+class ApplicationBasedViewMixin(object):
+    _base_application = None
+    application_base_rel = 'application'
+
+    @property
+    def base_application_id(self):
+        return self.kwargs.get('_application_pk')
+
+    @property
+    def base_application(self):
+        if not self._base_application:
+            self._base_application = get_object_or_404(School.objects.all(), pk=self.base_application_id)
+        return self._base_application
+
+    def get_queryset(self):
+        qs = super(ApplicationBasedViewMixin, self).get_queryset()
+        if self.application_base_rel:
+            qs = qs.filter(**{self.application_base_rel: self.base_application_id})
+        return qs
+
+
 class SchoolView(viewsets.ModelViewSet):
     queryset = School.objects.all()
     serializer_class = SchoolSerializer
@@ -34,53 +97,29 @@ class SchoolView(viewsets.ModelViewSet):
         return serializer.save(owner=self.request.user)
 
 
-class StaffView(viewsets.ModelViewSet):
+class StaffView(SchoolBasedViewMixin, viewsets.ModelViewSet):
     queryset = Staff.objects.all()
     serializer_class = StaffSerializer
     ordering = 'first_name'
     ordering_fields = '__all__'
 
-    def get_queryset(self):
-        schoolId = self.request.query_params.get('school_id')
-        if schoolId is None:
-            return self.queryset
-        return self.queryset.filter(school=schoolId)
 
-
-class SeasonView(viewsets.ModelViewSet):
+class SeasonView(SchoolBasedViewMixin, viewsets.ModelViewSet):
     queryset = Season.objects.all()
     serializer_class = SeasonSerializer
     ordering = 'start_date'
     ordering_fields = '__all__'
 
-    def get_queryset(self):
-        schoolId = self.request.query_params.get('school_id')
-        if schoolId is None:
-            return self.queryset
-        return self.queryset.filter(school=schoolId)
 
-
-class ApplicationView(viewsets.ModelViewSet):
+class ApplicationView(SeasonBasedViewMixin, viewsets.ModelViewSet):
     queryset = Application.objects.all()
     serializer_class = ApplicationSerializer
     ordering = 'email'
     ordering_fields = '__all__'
 
-    def get_queryset(self):
-        seasonId = self.request.query_params.get('season_id')
-        if seasonId is None:
-            return self.queryset
-        return self.queryset.filter(season=seasonId)
 
-
-class ScoreView(viewsets.ModelViewSet):
+class ScoreView(ApplicationBasedViewMixin, viewsets.ModelViewSet):
     queryset = Score.objects.all()
     serializer_class = ScoreSerializer
     ordering = 'score_date'
     ordering_fields = '__all__'
-
-    def get_queryset(self):
-        applicationId = self.request.query_params.get('application_id')
-        if applicationId is None:
-            return self.queryset
-        return self.queryset.filter(application=applicationId)

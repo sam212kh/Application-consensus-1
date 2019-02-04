@@ -301,18 +301,21 @@ export default {
   },
   methods: {
     showConfirmDeleteModal: function(staff) {
-      this.selectedStaffForDelete = staff;
+      this.selectedStaff = staff;
       this.$refs.confirmDeleteModalRef.show();
     },
     deleteStaff: function() {
       let self = this;
       self.deletingRecord = true;
 
-      staffApi.delete(self.selectedStaffForDelete).then(
+      staffApi.delete(self.schoolId, self.selectedStaff).then(
         function() {
           self.$refs.vuetable.refresh();
           self.deletingRecord = false;
           self.$refs.confirmDeleteModalRef.hide();
+          self.staffData.results.splice(
+            self.staffData.result.indexOf(self.selectedStaff)
+          );
           self.notifySuccess("The staff deleted");
         },
         function() {
@@ -334,11 +337,10 @@ export default {
     submitStaff: function() {
       let self = this;
       if (this.selectedStaff.id) {
-        staffApi.put(self.selectedStaff).then(
-          function(resp) {
+        staffApi.put(self.schoolId, self.selectedStaff).then(
+          function() {
             self.notifySuccess("The staff updated");
             self.$refs.staffModalRef.hide();
-            self.staffData.results.push(resp.data);
           },
           function() {
             self.notifyError(
@@ -348,10 +350,11 @@ export default {
         );
       } else {
         self.selectedStaff.school = this.schoolId;
-        staffApi.add(self.selectedStaff).then(
-          function() {
+        staffApi.add(self.schoolId, self.selectedStaff).then(
+          function(resp) {
             self.notifySuccess("The staff inserted");
             self.$refs.staffModalRef.hide();
+            self.staffData.results.push(resp.data);
           },
           function() {
             self.notifyError(
