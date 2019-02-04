@@ -302,7 +302,7 @@ export default {
   created: function() {
     this.$eventsBus.$emit("header:title", "School");
     let self = this;
-    seasonApi.getByScoolId(this.schoolId).then(function(response) {
+    seasonApi.getBySchoolId(this.schoolId).then(function(response) {
       self.seasonData = response.data;
     });
   },
@@ -352,11 +352,15 @@ export default {
     deleteSeason: function() {
       let self = this;
       self.deletingRecord = true;
-      seasonApi.delete(self.selectedSeason).then(
+      seasonApi.delete(this.schoolId, self.selectedSeason).then(
         function() {
-          self.$refs.vuetable.refresh();
           self.deletingRecord = false;
           self.$refs.confirmDeleteModalRef.hide();
+          self.seasonData.results.splice(
+            self.seasonData.results.indexOf(self.selectedSeason),
+            1
+          );
+          self.$refs.vuetable.refresh();
           self.notifySuccess("The school deleted");
         },
         function() {
@@ -378,6 +382,7 @@ export default {
     submitSeason: function() {
       let self = this;
       if (!this.selectedSeason.id) {
+        this.selectedSeason.school = this.schoolId;
         seasonApi.add(this.schoolId, this.selectedSeason).then(
           function(resp) {
             self.notifySuccess("The season inserted");
@@ -391,7 +396,7 @@ export default {
           }
         );
       } else {
-        seasonApi.put(this.selectedSeason).then(
+        seasonApi.put(this.schoolId, this.selectedSeason).then(
           function() {
             self.notifySuccess("The season updated");
             self.$refs.newSeasonModalRef.hide();

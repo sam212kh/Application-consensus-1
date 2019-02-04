@@ -1,17 +1,16 @@
 import Api from "@/endpoint/Api";
 
 export default {
-  getByScoolId(schoolId) {
-    return Api.get("season?school_id=" + schoolId);
+  getBySchoolId(schoolId) {
+    return Api.get(`school\\${schoolId}\\season`);
   },
   add(schoolId, season) {
-    season.school = schoolId;
-    return Api.post("season", season);
+    return Api.post(`school\\${schoolId}\\season`, season);
   },
-  put(season) {
-    return Api.put("season/" + season.id, season);
+  put(schoolId, season) {
+    return Api.put(`school\\${schoolId}\\season\\${season.id}`, season);
   },
-  delete(season) {
-    return Api.delete("season/" + season.id);
+  delete(schoolId, season) {
+    return Api.delete(`school\\${schoolId}\\season\\${season.id}`);
   }
 };

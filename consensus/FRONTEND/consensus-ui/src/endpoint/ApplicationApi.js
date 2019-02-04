@@ -1,16 +1,19 @@
 import Api from "@/endpoint/Api";
 
 export default {
-  getAll(seasonId) {
-    return Api.get("application/?id=" + seasonId);
+  getBySeasonId(seasonId) {
+    return Api.get(`season\\${seasonId}\\application`);
   },
-  add(application) {
-    return Api.post("application", application);
+  add(seasonId, application) {
+    return Api.post(`season\\${seasonId}\\application`, application);
   },
-  put(application) {
-    return Api.put("application/" + application.id, application);
+  put(seasonId, application) {
+    return Api.put(
+      `season\\${seasonId}\\application\\${application.id}`,
+      application
+    );
   },
-  delete(application) {
-    return Api.delete("application/" + application.id);
+  delete(seasonId, application) {
+    return Api.delete(`season\\${seasonId}\\application\\${application.id}`);
   }
 };

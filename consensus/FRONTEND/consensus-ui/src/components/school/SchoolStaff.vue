@@ -33,7 +33,6 @@
         ref="vuetable"
         :api-mode="false"
         :data="staffData"
-        :api-url="tableUrl"
         :fields="tableFields"
         :css="css.table"
         class="staff-table"
@@ -67,7 +66,7 @@
     <b-modal
       size="lg"
       centered
-      ref="StaffModalRef"
+      ref="staffModalRef"
       id="StaffModal"
       title="Edit staff"
       :header-bg-variant="'modal-header padding-10 background-light-silver'"
@@ -254,7 +253,9 @@ export default {
   },
   created: function() {
     let self = this;
-    self.staffData = staffApi.getAll(self.schoolId);
+    staffApi.getBySchoolId(self.schoolId).then(function(response) {
+      self.staffData = response.data;
+    });
   },
   data: function() {
     return {
@@ -300,18 +301,21 @@ export default {
   },
   methods: {
     showConfirmDeleteModal: function(staff) {
-      this.selectedStaffForDelete = staff;
+      this.selectedStaff = staff;
       this.$refs.confirmDeleteModalRef.show();
     },
     deleteStaff: function() {
       let self = this;
       self.deletingRecord = true;
 
-      staffApi.delete(self.selectedStaffForDelete).then(
+      staffApi.delete(self.schoolId, self.selectedStaff).then(
         function() {
           self.$refs.vuetable.refresh();
           self.deletingRecord = false;
           self.$refs.confirmDeleteModalRef.hide();
+          self.staffData.results.splice(
+            self.staffData.result.indexOf(self.selectedStaff)
+          );
           self.notifySuccess("The staff deleted");
         },
         function() {
@@ -323,21 +327,20 @@ export default {
       );
     },
     editRow: function(staff) {
-      this.selectedStaff = staff.id;
-      this.Staff = staff;
-      this.$refs.StaffModalRef.show();
+      this.selectedStaff = staff;
+      this.$refs.staffModalRef.show();
     },
     addStaff: function() {
       this.selectedStaff = {};
-      this.$refs.StaffModalRef.show();
+      this.$refs.staffModalRef.show();
     },
     submitStaff: function() {
       let self = this;
-      if (self.selectedStaff.id != null) {
-        staffApi.put(self.selectedStaff).then(
+      if (this.selectedStaff.id) {
+        staffApi.put(self.schoolId, self.selectedStaff).then(
           function() {
             self.notifySuccess("The staff updated");
-            self.$refs.StaffModalRef.hide();
+            self.$refs.staffModalRef.hide();
           },
           function() {
             self.notifyError(
@@ -346,11 +349,12 @@ export default {
           }
         );
       } else {
-        self.selectedStaff.school = self.schoolId;
-        staffApi.add(self.selectedStaff).then(
-          function() {
+        self.selectedStaff.school = this.schoolId;
+        staffApi.add(self.schoolId, self.selectedStaff).then(
+          function(resp) {
             self.notifySuccess("The staff inserted");
-            self.$refs.StaffModalRef.hide();
+            self.$refs.staffModalRef.hide();
+            self.staffData.results.push(resp.data);
           },
           function() {
             self.notifyError(
