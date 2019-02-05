@@ -22,5 +22,3 @@ app_name = 'school'
 urlpatterns = [
     path('', include(rest_router.urls)),
 ]
-
-

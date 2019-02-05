@@ -560,6 +560,7 @@ export default {
         newEnrolled: 0,
         newApplication: 0
       },
+      newScore: {},
       newApp: {},
       review: {},
       selectedApplication: {},
@@ -724,6 +725,7 @@ export default {
     },
     scoreBoxClick: function(application) {
       ScoresApi.getByApplicationId(application.id).then(function(response) {
+        alert( JSON.stringify( response.data ) )
         this.scoreData = response.data;
       });
       this.$refs.scoreModalRef.show();
@@ -812,6 +814,18 @@ export default {
     updateReview: function() {
       let self = this;
       this.selectedReview.status = "scored";
+      this.newScore.application  = this.selectedReview.id;
+      this.newScore.score        = 5;
+      ScoresApi.add(this.newScore).then(
+        function()
+        {
+          alert('good');
+        },function()
+        {
+          alert('error');
+        }
+      );
+
       applicationApi.put(this.seasonId, this.selectedReview).then(
         function() {
           self.notifySuccess("The application reviewed");
