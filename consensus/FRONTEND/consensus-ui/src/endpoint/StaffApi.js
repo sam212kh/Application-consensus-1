@@ -1,83 +1,16 @@
+import Api from "@/endpoint/Api";
+
 export default {
-  mockStaff: {
-    pagination: {
-      next_url: null,
-      previous_url: null,
-      current_page: 1,
-      next_page: null,
-      previous_page: null,
-      first_page: 1,
-      last_page: 1,
-      page_size: 10,
-      total: 1
-    },
-    results: [
-      {
-        id: 12,
-        school_id: 12,
-        first_name: "staff 1",
-        last_name: "one",
-        email: "staff1@gmail.com",
-        phone_number: "09121111111",
-        user_name: "staff_1"
-      },
-      {
-        id: 13,
-        school_id: 12,
-        first_name: "staff 2",
-        last_name: "two",
-        email: "staff2@gmail.com",
-        phone_number: "09122222222",
-        user_name: "staff_2"
-      },
-      {
-        id: 14,
-        school_id: 13,
-        first_name: "staff 3",
-        last_name: "three",
-        email: "staff3@gmail.com",
-        phone_number: "09133333333",
-        user_name: "staff_3"
-      }
-    ]
+  getBySchoolId(schoolId) {
+    return Api.get(`school/${schoolId}/staff`);
   },
-  getAll() {
-    return this.mockStaff;
-    // return Api.get("staff", schoolId);
+  add(schoolId, staff) {
+    return Api.post(`school/${schoolId}/staff`, staff);
   },
-  get(id) {
-    for (let i = 0; i < this.mockStaff.results.length; i++) {
-      if (this.mockStaff.results[i].id === +id) {
-        return Promise.resolve({
-          status: 200,
-          data: this.mockStaff.results[i]
-        });
-      }
-    }
-    // return Api.get("staff/" + schoolId);
+  put(schoolId, staff) {
+    return Api.put(`school/${schoolId}/staff/${staff.id}`, staff);
   },
-  add(staff) {
-    staff.id = Math.floor(Math.random() * 10000 + 1);
-    this.mockStaff.results.push(staff);
-    return Promise.resolve({ status: 200 });
-    // return Api.post("staff", staff);
-  },
-  put(staff) {
-    return this.get(staff.id).then(function(persistedStaff) {
-      Object.assign(this.get(persistedStaff.data.id), staff);
-      return Promise.resolve({ status: 200 });
-    });
-    // return Api.put("staff/" + staff.id, staff);
-  },
-  delete(staff) {
-    let self = this;
-    return this.get(staff.id).then(function(persistedStaff) {
-      self.mockStaff.results.splice(
-        self.mockStaff.results.indexOf(persistedStaff.data),
-        1
-      );
-      return Promise.resolve({ status: 200 });
-    });
-    // return Api.delete("staff/" + staff.id);
+  delete(schoolId, staff) {
+    return Api.delete(`school/${schoolId}/staff/${staff.id}`);
   }
 };

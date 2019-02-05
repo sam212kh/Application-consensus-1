@@ -4,7 +4,7 @@
       <div class="col-md-4 col-sm-4 col-xs-4">
         <button
           class="btn btn-block btn-success"
-          @click="showNewApplicationModal();"
+          @click="showNewApplicationModal()"
         >
           <i class="glyphicon glyphicon-ok"></i> Submit a new application
         </button>
@@ -69,7 +69,7 @@
           <div class="table-button-container">
             <button
               class="btn btn-warning btn-sm"
-              @click="reviewApplication(props.rowData);"
+              @click="reviewApplication(props.rowData)"
             >
               <span class="glyphicon glyphicon-pencil"></span></button
             >&nbsp;&nbsp;
@@ -79,13 +79,13 @@
           <div class="table-button-container">
             <button
               class="btn btn-success btn-sm"
-              @click="acceptConfirmation(props.rowData);"
+              @click="acceptConfirmation(props.rowData)"
             >
               <span class="glyphicon glyphicon-check"></span></button
             >&nbsp;&nbsp;
             <button
               class="btn btn-outline-danger btn-sm"
-              @click="rejectConfirmation(props.rowData);"
+              @click="rejectConfirmation(props.rowData)"
             >
               <span class="glyphicon glyphicon-trash"></span></button
             >&nbsp;&nbsp;
@@ -113,6 +113,16 @@
         pagination-path="pagination"
         @vuetable:pagination-data="onPaginationData"
       >
+        <template slot="review_actions" scope="props">
+          <div class="table-button-container">
+            <button
+              class="btn btn-warning btn-sm"
+              @click="scoreBoxClick(props.rowData)"
+            >
+              <span class="fa fa-eye"></span></button
+            >&nbsp;&nbsp;
+          </div>
+        </template>
       </vuetable>
     </div>
     <!-- End Enrolled Application -->
@@ -170,8 +180,8 @@
                   <div class="form-group">
                     <label class="pull-left">Gender</label>
                     <select class="form-control" v-model="newApp.gender">
-                      <option>Male</option>
-                      <option>Female</option>
+                      <option value="m">Male</option>
+                      <option value="f">Female</option>
                     </select>
                   </div>
                 </div>
@@ -264,7 +274,7 @@
               type="button"
               class="btn btn-danger btn-block"
               data-dismiss="modal"
-              @click="$refs.newApplicationModalRef.hide();"
+              @click="$refs.newApplicationModalRef.hide()"
             >
               <i class="fa fa-close"></i> Cancel
             </button>
@@ -289,7 +299,7 @@
         <button
           type="button"
           class="btn btn-secondary float-left"
-          @click="$refs.confirmModalRef.hide();"
+          @click="$refs.confirmModalRef.hide()"
         >
           <i class="la la-close"></i> Cancel
         </button>
@@ -297,7 +307,7 @@
           v-if="rejectConfirm"
           type="button"
           class="btn btn-danger float-right"
-          @click="rejectApplication();"
+          @click="rejectApplication()"
         >
           <span v-show="rejectApplication">reject</span>
         </button>
@@ -305,7 +315,7 @@
           v-if="acceptConfirm"
           type="button"
           class="btn btn-success float-right"
-          @click="acceptApplication();"
+          @click="acceptApplication()"
         >
           <span v-show="acceptApplication">Accept</span>
         </button>
@@ -390,8 +400,8 @@
                   <div class="form-group">
                     <label class="pull-left">Gender</label>
                     <select class="form-control" v-model="review.gender">
-                      <option>Male</option>
-                      <option>Female</option>
+                      <option value="m">Male</option>
+                      <option value="f">Female</option>
                     </select>
                   </div>
                 </div>
@@ -466,7 +476,7 @@
               type="button"
               class="btn btn-danger btn-block"
               data-dismiss="modal"
-              @click="$refs.reviewAppModalRef.hide();"
+              @click="$refs.reviewAppModalRef.hide()"
             >
               <i class="fa fa-close"></i> Cancel
             </button>
@@ -474,8 +484,33 @@
         </div>
       </div>
     </b-modal>
-
     <!-- end review model -->
+
+    <!-- scores modal -->
+    <b-modal centered ref="scoreModalRef" id="scoreModal" :hide-header="true">
+      <!-- Scores -->
+      <div class="row row-no-padding">
+        <vuetable
+          ref="vuetable"
+          :api-mode="false"
+          :data="scoreData"
+          :fields="scoreTableFields"
+          :css="css.table"
+          class="application-table"
+          :query-params="{
+            sort: 'order_by',
+            page: 'page',
+            perPage: 'page_size'
+          }"
+          data-path="results"
+          pagination-path="pagination"
+        >
+        </vuetable>
+      </div>
+      <!-- End Scores -->
+    </b-modal>
+
+    <!-- end scores modal -->
   </section>
 </template>
 
@@ -484,9 +519,10 @@ import Vuetable from "vuetable-2/src/components/Vuetable";
 import VuetablePagination from "vuetable-2/src/components/VuetablePagination";
 import bModal from "bootstrap-vue/es/components/modal/modal";
 import utilMixin from "@/mixins/UtilMixin";
-import vuetableBootstrapMixin from "../../mixins/VuetableBootstrapMixin";
-import applicationApi from "../../endpoint/ApplicationApi";
-import ApplicationStatus from "./model/ApplicationStatus";
+import vuetableBootstrapMixin from "../../../mixins/VuetableBootstrapMixin";
+import applicationApi from "../../../endpoint/ApplicationApi";
+import ApplicationStatus from "../model/ApplicationStatus";
+import ScoresApi from "@/endpoint/ScoresApi";
 
 let reviewActionField = {
   name: "__slot:review_actions",
@@ -500,28 +536,23 @@ let decisionActionField = {
 };
 
 export default {
-  name: "SchoolSeason",
+  name: "SeasonHome",
   mixins: [utilMixin, vuetableBootstrapMixin],
   components: {
     Vuetable,
     VuetablePagination,
     "b-modal": bModal
   },
-  props: {
-    schoolId: {
-      type: Number,
-      required: true
-    },
-    seasonId: {
-      type: Number,
-      required: true
-    }
-  },
   created: function() {
+    this.$eventsBus.$emit("header:title", "School's season");
+    this.schoolId = +this.$route.params.school_id;
+    this.seasonId = +this.$route.params.season_id;
     this.reAssignData();
   },
   data: function() {
     return {
+      schoolId: 0,
+      seasonId: 0,
       season: {
         application: 0,
         applicationScored: 0,
@@ -533,15 +564,38 @@ export default {
       review: {},
       selectedApplication: {},
       selectedReview: null,
+      selectedScore: null,
       applicationShown: false,
       enrolledShown: false,
       rejectConfirm: false,
       acceptConfirm: false,
-      localData: {},
+      seasonData: {},
+      scoreData: {},
       enrolledData: {},
       reviewData: {},
       reviewActionField: reviewActionField,
       decisionActionField: decisionActionField,
+      scoreTableFields: [
+        {
+          sortField: "first_name",
+          name: "first_name",
+          title: "First Name",
+          titleClass: "text-left",
+          dataClass: "text-left"
+        },
+        {
+          name: "last_name",
+          title: "Last Name",
+          titleClass: "text-left",
+          dataClass: "text-left"
+        },
+        {
+          name: "score",
+          title: "score",
+          titleClass: "text-left",
+          dataClass: "text-left"
+        }
+      ],
       tableFields: [
         {
           sortField: "first_name",
@@ -614,12 +668,17 @@ export default {
       this.$refs.newApplicationModalRef.show();
     },
     reAssignData: function() {
-      this.localData = applicationApi.getAll(this.schoolId);
-      this.reviewData = [];
-      this.enrolledData = [];
-      this.season.applicationScored = 0;
-      this.season.applicationEnrolled = 0;
-      this.fragmentationApplication(this.localData.results);
+      let self = this;
+      self.reviewData = [];
+      self.enrolledData = [];
+      self.season.applicationScored = 0;
+      self.season.applicationEnrolled = 0;
+      self.season.newApplication = 0;
+      self.season.newEnrolled = 0;
+      applicationApi.getBySeasonId(this.seasonId).then(function(response) {
+        self.seasonData = response.data;
+        self.fragmentationApplication(response.data.results);
+      });
     },
     fragmentationApplication: function(applications) {
       let self = this;
@@ -663,6 +722,12 @@ export default {
       this.decisionActionField.visible = !this.enrolledShown;
       this.$refs.vuetable && this.$refs.vuetable.normalizeFields();
     },
+    scoreBoxClick: function(application) {
+      ScoresApi.getByApplicationId(application.id).then(function(response) {
+        this.scoreData = response.data;
+      });
+      this.$refs.scoreModalRef.show();
+    },
     onApplicationBoxClick: function() {
       this.applicationShown = !this.applicationShown;
       this.enrolledShown = false;
@@ -677,7 +742,8 @@ export default {
         .toJSON()
         .slice(0, 10)
         .replace(/-/g, "-");
-      applicationApi.add(self.newApp).then(
+      self.newApp.season = self.seasonId;
+      applicationApi.add(this.seasonId, self.newApp).then(
         function() {
           self.notifySuccess("The application inserted");
           self.$refs.newApplicationModalRef.hide();
@@ -707,7 +773,7 @@ export default {
     acceptApplication: function() {
       let self = this;
       this.selectedApplication.status = "enrolled";
-      applicationApi.put(this.selectedApplication).then(
+      applicationApi.put(this.seasonId, this.selectedApplication).then(
         function() {
           self.notifySuccess("The application accepted");
           self.$refs.confirmModalRef.hide();
@@ -723,10 +789,11 @@ export default {
     rejectApplication: function() {
       let self = this;
       this.selectedApplication.status = "reject";
-      applicationApi.put(this.selectedApplication).then(
+      applicationApi.put(this.seasonId, this.selectedApplication).then(
         function() {
           self.notifySuccess("The application rejected");
           self.$refs.confirmModalRef.hide();
+          self.$refs.vuetable.refresh();
         },
         function() {
           self.notifyError(
@@ -743,7 +810,7 @@ export default {
     updateReview: function() {
       let self = this;
       this.selectedReview.status = "scored";
-      applicationApi.put(this.selectedReview).then(
+      applicationApi.put(this.seasonId, this.selectedReview).then(
         function() {
           self.notifySuccess("The application reviewed");
           self.$refs.reviewAppModalRef.hide();

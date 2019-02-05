@@ -1,10 +1,12 @@
 import Vue from "vue";
 import Router from "vue-router";
+import Home from "./components/Home";
 import SchoolHome from "./components/school/SchoolHome";
 import SchoolSubmit from "./components/school/SchoolSubmit";
-import SchoolDetail from "./components/school/SchoolDetail";
-import School from "./components/school/School.vue";
+import SeasonHome from "./components/school/season/SeasonHome";
+import Schools from "./components/school/Schools.vue";
 import SignIn from "./components/SignIn.vue";
+
 import store from "./store.js";
 
 Vue.use(Router);
@@ -14,11 +16,8 @@ export default new Router({
   routes: [
     {
       path: "/",
-      redirect: "/school"
-    },
-    {
-      path: "/school",
-      component: School,
+      component: Home,
+
       beforeEnter: (to, from, next) => {
         store.dispatch("checkSession").then(function() {
           if (store.getters.isLoadedUser) {
@@ -28,26 +27,30 @@ export default new Router({
         //TODO: should be handle dispatch promise failed
       },
       children: [
-        { path: "", redirect: "home" },
         {
-          path: "home",
+          path: "",
+          name: "schools",
+          component: Schools
+        },
+        {
+          path: "/school/:id/home",
           name: "school.home",
           component: SchoolHome
         },
         {
-          path: "add",
+          path: "/school/add",
           name: "school.add",
           component: SchoolSubmit
         },
         {
-          path: ":id/edit",
+          path: "/school/:id/edit",
           name: "school.edit",
           component: SchoolSubmit
         },
         {
-          path: ":school_id/season/:season_id",
-          name: "school.detail",
-          component: SchoolDetail
+          path: "/school/:school_id/season/:season_id",
+          name: "season.home",
+          component: SeasonHome
         }
       ]
     },
