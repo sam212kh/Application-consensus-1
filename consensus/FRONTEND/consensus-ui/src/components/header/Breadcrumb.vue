@@ -38,6 +38,9 @@ export default {
     },
     updateLinkList: function(newRoute) {
       let self = this;
+      if (self.breadcrumbList.length === 0) {
+        this.breadcrumbList.push({ name: "schools", link: "/" });
+      }
       // If the new route already exists in the bread crumb list
       self.breadcrumbList.forEach(function(currentBreadcrumbItem, index) {
         if (currentBreadcrumbItem.name === newRoute.name) {

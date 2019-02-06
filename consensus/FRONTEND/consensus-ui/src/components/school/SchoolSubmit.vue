@@ -5,7 +5,7 @@
         <div class="main-div">
           <h6 class="modal-title">Register a New School</h6>
           <hr />
-          <form>
+          <form @submit.prevent="submitSchool">
             <div class="row">
               <div class="col-md-6 col-sm-6 col-xs-6">
                 <div class="form-group">
@@ -115,10 +115,9 @@
             <div class="row row-no-padding width-full">
               <div class="col-md-4 col-sm-4 col-xs-12">
                 <button
-                  type="button"
+                  type="Submit"
                   class="btn btn-success btn-block"
-                  v-on:click="submitSchool"
-                >
+                  >
                   <i class="glyphicon glyphicon-ok"></i> Submit School
                 </button>
               </div>
