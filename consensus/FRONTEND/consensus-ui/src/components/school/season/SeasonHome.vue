@@ -169,11 +169,7 @@
                 <div class="col-md-6 col-sm-6 col-xs-6">
                   <div class="form-group">
                     <label class="pull-left">Birthday</label>
-                    <input
-                      type="date"
-                      class="form-control"
-                      v-model="newApp.date_of_birth"
-                    />
+                    <dateTime v-model="newApp.date_of_birth"></dateTime>
                   </div>
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-6">
@@ -389,11 +385,7 @@
                 <div class="col-md-6 col-sm-6 col-xs-6">
                   <div class="form-group">
                     <label class="pull-left">Birthday</label>
-                    <input
-                      type="date"
-                      class="form-control"
-                      v-model="review.date_of_birth"
-                    />
+                    <dateTime v-model="review.date_of_birth"></dateTime>
                   </div>
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-6">
@@ -523,6 +515,7 @@ import vuetableBootstrapMixin from "../../../mixins/VuetableBootstrapMixin";
 import applicationApi from "../../../endpoint/ApplicationApi";
 import ApplicationStatus from "../model/ApplicationStatus";
 import ScoresApi from "@/endpoint/ScoresApi";
+import dateTime from "../../Datetimepicker.vue";
 
 let reviewActionField = {
   name: "__slot:review_actions",
@@ -540,6 +533,7 @@ export default {
   mixins: [utilMixin, vuetableBootstrapMixin],
   components: {
     Vuetable,
+    dateTime,
     VuetablePagination,
     "b-modal": bModal
   },
@@ -816,7 +810,7 @@ export default {
       this.selectedReview.status = "scored";
       this.newScore.application  = this.selectedReview.id;
       this.newScore.score        = 5;
-      ScoresApi.add(this.newScore).then(
+      ScoresApi.add(this.selectedReview.id,this.newScore).then(
         function()
         {
           alert('good');
