@@ -154,25 +154,13 @@
                 <div class="col-md-6 col-sm-6 col-xs-6">
                   <div class="form-group">
                     <label class="pull-left">Start Date</label>
-                    <input
-                      type="date"
-                      class="form-control"
-                      data-date-format="dd/mm/yyyy"
-                      id="startDate"
-                      v-model="selectedSeason.start_date"
-                    />
+                      <dateTime v-model="selectedSeason.start_date"></dateTime>
                   </div>
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-6">
                   <div class="form-group">
                     <label class="pull-left">End Date</label>
-                    <input
-                      type="date"
-                      class="form-control"
-                      data-date-format="dd/mm/yyyy"
-                      id="endDate"
-                      v-model="selectedSeason.end_date"
-                    />
+                    <dateTime v-model="selectedSeason.end_date"></dateTime>
                   </div>
                 </div>
               </div>
@@ -180,15 +168,8 @@
                 <div class="col-md-6 col-sm-6 col-xs-6">
                   <div class="form-group">
                     <label class="pull-left"
-                      >Application acceptance Start Date</label
-                    >
-                    <input
-                      type="date"
-                      class="form-control"
-                      data-date-format="dd/mm/yyyy"
-                      id="appStartDate"
-                      v-model="selectedSeason.acceptance_start_date"
-                    />
+                      >Application acceptance Start Date</label>
+                    <dateTime v-model="selectedSeason.acceptance_start_date"></dateTime>
                   </div>
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-6">
@@ -196,13 +177,7 @@
                     <label class="pull-left"
                       >Application acceptance End Date</label
                     >
-                    <input
-                      type="date"
-                      class="form-control"
-                      data-date-format="dd/mm/yyyy"
-                      id="appEndDate"
-                      v-model="selectedSeason.acceptance_end_date"
-                    />
+                    <dateTime v-model="selectedSeason.acceptance_end_date"></dateTime>
                   </div>
                 </div>
               </div>
@@ -285,12 +260,14 @@ import VuetablePagination from "vuetable-2/src/components/VuetablePagination";
 import VuetableBootstrapMixin from "@/mixins/VuetableBootstrapMixin";
 import bModal from "bootstrap-vue/es/components/modal/modal";
 import seasonApi from "@/endpoint/SeasonApi";
+import dateTime from "../../dateTimePicker/DateTimePicker";
 
 export default {
   name: "SchoolSeason",
   mixins: [UtilMixin, VuetableBootstrapMixin],
   components: {
     Vuetable,
+    dateTime,
     VuetablePagination,
     "b-modal": bModal
   },

@@ -102,16 +102,10 @@ class Score(models.Model):
         on_delete=models.CASCADE
     )
 
-    staff = models.ForeignKey(
-        Staff,
-        related_name='staff_score',
-        on_delete=models.CASCADE
-    )
+    staff = models.ForeignKey(User, on_delete=models.CASCADE, editable=False)
 
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255, null=True, blank=True)
     score_date = models.DateTimeField(auto_now_add=True, null=True)
     score = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
-        return self.first_name
+        return self.score

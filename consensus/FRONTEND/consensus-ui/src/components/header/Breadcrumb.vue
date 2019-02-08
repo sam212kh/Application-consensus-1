@@ -38,6 +38,12 @@ export default {
     },
     updateLinkList: function(newRoute) {
       let self = this;
+
+      // Push home page as a default
+      if (self.breadcrumbList.length === 0) {
+        this.breadcrumbList.push({ name: "schools", link: "/" });
+      }
+
       // If the new route already exists in the bread crumb list
       self.breadcrumbList.forEach(function(currentBreadcrumbItem, index) {
         if (currentBreadcrumbItem.name === newRoute.name) {
@@ -46,9 +52,12 @@ export default {
           self.breadcrumbList.splice(index + 1, self.breadcrumbList.length);
         }
       });
+
+      // Push current route into the breadcrumb
       if (this.shouldBeAddedToNavigation) {
         this.breadcrumbList.push({ name: newRoute.name, link: newRoute.path });
       }
+
       this.shouldBeAddedToNavigation = true;
     }
   }

@@ -39,7 +39,7 @@ class SeasonBasedViewMixin(object):
     @property
     def base_season(self):
         if not self._base_season:
-            self._base_season = get_object_or_404(School.objects.all(), pk=self.base_season_id)
+            self._base_season = get_object_or_404(Season.objects.all(), pk=self.base_season_id)
         return self._base_season
 
     def get_queryset(self):
@@ -60,7 +60,7 @@ class ApplicationBasedViewMixin(object):
     @property
     def base_application(self):
         if not self._base_application:
-            self._base_application = get_object_or_404(School.objects.all(), pk=self.base_application_id)
+            self._base_application = get_object_or_404(Application.objects.all(), pk=self.base_application_id)
         return self._base_application
 
     def get_queryset(self):
@@ -123,3 +123,6 @@ class ScoreView(ApplicationBasedViewMixin, viewsets.ModelViewSet):
     serializer_class = ScoreSerializer
     ordering = 'score_date'
     ordering_fields = '__all__'
+
+    def perform_create(self, serializer):
+        return serializer.save(staff=self.request.user)

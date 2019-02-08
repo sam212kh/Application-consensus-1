@@ -3,6 +3,9 @@
 </template>
 
 <script>
+
+window.moment = require("moment");
+
 export default {
   name: "App",
   props: [],
