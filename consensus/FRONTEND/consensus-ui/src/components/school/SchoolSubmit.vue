@@ -114,10 +114,7 @@
             <hr />
             <div class="row row-no-padding width-full">
               <div class="col-md-4 col-sm-4 col-xs-12">
-                <button
-                  type="Submit"
-                  class="btn btn-success btn-block"
-                  >
+                <button type="Submit" class="btn btn-success btn-block">
                   <i class="glyphicon glyphicon-ok"></i> Submit School
                 </button>
               </div>

@@ -3,7 +3,6 @@
 </template>
 
 <script>
-
 window.moment = require("moment");
 
 export default {
