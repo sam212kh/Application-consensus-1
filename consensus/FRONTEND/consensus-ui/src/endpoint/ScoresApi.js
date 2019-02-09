@@ -5,7 +5,7 @@ export default {
     return Api.get(`application/${applicationId}/score`);
   },
   add(score) {
-    return Api.post("score", score);
+    return Api.post(`application/${score.application}/score`, score);
   },
   put(score) {
     return Api.put("score/" + score.id, score);

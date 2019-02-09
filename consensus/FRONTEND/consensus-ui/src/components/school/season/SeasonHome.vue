@@ -810,10 +810,10 @@ export default {
       this.selectedReview.status = "scored";
       this.newScore.application  = this.selectedReview.id;
       this.newScore.score        = 5;
-      ScoresApi.add(this.selectedReview.id,this.newScore).then(
+      ScoresApi.add(this.newScore).then(
         function()
         {
-          alert('good');
+          alert('done');
         },function()
         {
           alert('error');

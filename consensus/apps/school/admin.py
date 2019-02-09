@@ -9,7 +9,7 @@ class SchoolInstanceAdmin(VersionAdmin):
     list_filter = ('full_name', 'owner', 'phone_number', 'address', 'country', 'country', 'state', 'city', 'zip_code')
 
 
-admin.site.register(School, SchoolInstanceAdmin)
+#admin.site.register(School, SchoolInstanceAdmin)
 admin.site.register(Application, VersionAdmin)
 admin.site.register(Score, VersionAdmin)
 admin.site.register(Season, VersionAdmin)

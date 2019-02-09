@@ -10,7 +10,7 @@ User = get_user_model()
 @reversion.register()
 class School(models.Model):
     full_name = models.CharField(max_length=255)
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, editable=False)
+    owner = models.ManyToManyField(User)
     phone_number = models.CharField(max_length=255, null=True, blank=True)
     email = models.CharField(max_length=255, null=True, blank=True)
     grade = models.IntegerField(null=True, blank=True)
@@ -28,12 +28,7 @@ class School(models.Model):
 
 @reversion.register()
 class Staff(models.Model):
-    school = models.ForeignKey(
-        School,
-        related_name='school_staff',
-        on_delete=models.CASCADE
-    )
-
+    school = models.ManyToManyField(School)
     user = models.OneToOneField(User, primary_key=False, related_name='user',
                                 on_delete=models.CASCADE)
     first_name = models.CharField(max_length=255)
