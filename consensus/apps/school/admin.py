@@ -5,8 +5,8 @@ from apps.school.models import School, Application, Score, Season, Staff
 
 
 class SchoolInstanceAdmin(VersionAdmin):
-    list_display = ('full_name', 'owner', 'phone_number', 'address', 'country', 'country', 'state', 'city', 'zip_code')
-    list_filter = ('full_name', 'owner', 'phone_number', 'address', 'country', 'country', 'state', 'city', 'zip_code')
+    list_display = ('full_name', 'phone_number', 'address', 'country', 'country', 'state', 'city', 'zip_code')
+    list_filter = ('full_name', 'phone_number', 'address', 'country', 'country', 'state', 'city', 'zip_code')
 
 
 admin.site.register(School, SchoolInstanceAdmin)

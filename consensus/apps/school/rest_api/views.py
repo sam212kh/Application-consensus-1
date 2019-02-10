@@ -1,10 +1,10 @@
-from apps.school.models import School, Application, Score, Season, Staff
+from apps.school.models import School, Application, Score, Season, Staff, Participation
 from apps.school.rest_api.serializers import SchoolSerializer, ApplicationSerializer, ScoreSerializer, SeasonSerializer, \
     StaffSerializer
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
-from rest_framework.decorators import action
 from rest_framework.response import Response
+import datetime
 
 
 class SchoolBasedViewMixin(object):
@@ -90,11 +90,11 @@ class SchoolView(viewsets.ModelViewSet):
     #
     #     return Response(custom_data)
 
-    def get_queryset(self):
-        return self.queryset.filter(owner=self.request.user).only('id', 'full_name')
+    # def get_queryset(self):
+    #     return self.queryset.filter('participants.user'=self.request.user).only('id', 'full_name')
 
     def perform_create(self, serializer):
-        return serializer.save(owner=self.request.user)
+        return serializer.save(participations=Participation(this, self.request.user, datetime.datetime.now(), self.request.user))
 
 
 class StaffView(SchoolBasedViewMixin, viewsets.ModelViewSet):
