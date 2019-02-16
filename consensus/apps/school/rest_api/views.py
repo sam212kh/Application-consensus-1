@@ -3,8 +3,6 @@ from apps.school.rest_api.serializers import SchoolSerializer, ApplicationSerial
     StaffSerializer
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
-from rest_framework.response import Response
-import datetime
 
 
 class SchoolBasedViewMixin(object):
@@ -94,7 +92,7 @@ class SchoolView(viewsets.ModelViewSet):
     #     return self.queryset.filter('participants.user'=self.request.user).only('id', 'full_name')
 
     def perform_create(self, serializer):
-        return serializer.save(participations=Participation(this, self.request.user, datetime.datetime.now(), self.request.user))
+        return serializer.save()
 
 
 class StaffView(SchoolBasedViewMixin, viewsets.ModelViewSet):
