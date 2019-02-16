@@ -154,7 +154,7 @@
                 <div class="col-md-6 col-sm-6 col-xs-6">
                   <div class="form-group">
                     <label class="pull-left">Start Date</label>
-                      <dateTime v-model="selectedSeason.start_date"></dateTime>
+                    <dateTime v-model="selectedSeason.start_date"></dateTime>
                   </div>
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-6">
@@ -168,8 +168,11 @@
                 <div class="col-md-6 col-sm-6 col-xs-6">
                   <div class="form-group">
                     <label class="pull-left"
-                      >Application acceptance Start Date</label>
-                    <dateTime v-model="selectedSeason.acceptance_start_date"></dateTime>
+                      >Application acceptance Start Date</label
+                    >
+                    <dateTime
+                      v-model="selectedSeason.acceptance_start_date"
+                    ></dateTime>
                   </div>
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-6">
@@ -177,7 +180,9 @@
                     <label class="pull-left"
                       >Application acceptance End Date</label
                     >
-                    <dateTime v-model="selectedSeason.acceptance_end_date"></dateTime>
+                    <dateTime
+                      v-model="selectedSeason.acceptance_end_date"
+                    ></dateTime>
                   </div>
                 </div>
               </div>
@@ -260,7 +265,7 @@ import VuetablePagination from "vuetable-2/src/components/VuetablePagination";
 import VuetableBootstrapMixin from "@/mixins/VuetableBootstrapMixin";
 import bModal from "bootstrap-vue/es/components/modal/modal";
 import seasonApi from "@/endpoint/SeasonApi";
-import dateTime from "../../Datetimepicker.vue";
+import dateTime from "../../dateTimePicker/DateTimePicker";
 
 export default {
   name: "SchoolSeason",

@@ -10,7 +10,7 @@ User = get_user_model()
 @reversion.register()
 class School(models.Model):
     full_name = models.CharField(max_length=255)
-    owner = models.ManyToManyField(User)
+    participations = models.ManyToManyField(User, through='Participation', through_fields=('school', 'participant'))
     phone_number = models.CharField(max_length=255, null=True, blank=True)
     email = models.CharField(max_length=255, null=True, blank=True)
     grade = models.IntegerField(null=True, blank=True)
@@ -28,7 +28,6 @@ class School(models.Model):
 
 @reversion.register()
 class Staff(models.Model):
-    school = models.ManyToManyField(School)
     user = models.OneToOneField(User, primary_key=False, related_name='user',
                                 on_delete=models.CASCADE)
     first_name = models.CharField(max_length=255)
@@ -38,6 +37,30 @@ class Staff(models.Model):
 
     def __str__(self):
         return self.first_name
+
+
+@reversion.register()
+class Participation(models.Model):
+    PARTICIPATION_OWNER = 'o'
+    PARTICIPATION_STAFF = 's'
+    PARTICIPATION_CHOICES = (
+        (PARTICIPATION_OWNER, 'Owner'),
+        (PARTICIPATION_STAFF, 'Staff'),
+    )
+    school = models.ForeignKey(School, on_delete=models.CASCADE)
+    participant = models.ForeignKey(User, on_delete=models.CASCADE)
+    participation_date = models.DateField()
+    participation_type = models.CharField('Participation', max_length=1, choices=PARTICIPATION_CHOICES)
+
+    def __init__(self, school, participant, participation_date, participation_type, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.school = school
+        self.participant = participant
+        self.participation_date = participation_date
+        self.participation_type = participation_type
+
+    def __str__(self):
+        return self.participation_type
 
 
 @reversion.register()
@@ -97,16 +120,10 @@ class Score(models.Model):
         on_delete=models.CASCADE
     )
 
-    staff = models.ForeignKey(
-        Staff,
-        related_name='staff_score',
-        on_delete=models.CASCADE
-    )
+    staff = models.ForeignKey(User, on_delete=models.CASCADE, editable=False)
 
-    first_name = models.CharField(max_length=255)
-    last_name = models.CharField(max_length=255, null=True, blank=True)
     score_date = models.DateTimeField(auto_now_add=True, null=True)
     score = models.IntegerField(null=True, blank=True)
 
     def __str__(self):
-        return self.first_name
+        return self.score

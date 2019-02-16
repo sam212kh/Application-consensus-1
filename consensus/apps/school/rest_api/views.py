@@ -1,10 +1,10 @@
-from apps.school.models import School, Application, Score, Season, Staff
+from apps.school.models import School, Application, Score, Season, Staff, Participation
 from apps.school.rest_api.serializers import SchoolSerializer, ApplicationSerializer, ScoreSerializer, SeasonSerializer, \
     StaffSerializer
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
-from rest_framework.decorators import action
 from rest_framework.response import Response
+import datetime
 
 
 class SchoolBasedViewMixin(object):
@@ -39,7 +39,7 @@ class SeasonBasedViewMixin(object):
     @property
     def base_season(self):
         if not self._base_season:
-            self._base_season = get_object_or_404(School.objects.all(), pk=self.base_season_id)
+            self._base_season = get_object_or_404(Season.objects.all(), pk=self.base_season_id)
         return self._base_season
 
     def get_queryset(self):
@@ -60,7 +60,7 @@ class ApplicationBasedViewMixin(object):
     @property
     def base_application(self):
         if not self._base_application:
-            self._base_application = get_object_or_404(School.objects.all(), pk=self.base_application_id)
+            self._base_application = get_object_or_404(Application.objects.all(), pk=self.base_application_id)
         return self._base_application
 
     def get_queryset(self):
@@ -76,25 +76,9 @@ class SchoolView(viewsets.ModelViewSet):
     ordering = 'id'
     ordering_fields = '__all__'
 
-    # def list(self, request, *args, **kwargs):
-    #     # return Response(data.data)
-    #     queryset = School.objects.filter(owner=self.request.user.id).only('id', 'full_name')
-    #     se = Season.objects.prefetch_related('school')
-    #     serializer = self.get_serializer(queryset, many=True)
-    #     ser = serialize('json', se)
-    #
-    #     custom_data = {
-    #         'list_of_items': serializer.data,
-    #         'seasons ': ser
-    #     }
-    #
-    #     return Response(custom_data)
-
-    def get_queryset(self):
-        return self.queryset.filter(owner=self.request.user).only('id', 'full_name')
 
     def perform_create(self, serializer):
-        return serializer.save(owner=self.request.user)
+        return serializer.save(participations=Participation(self, self.request.user, datetime.datetime.now(), self.request.user))
 
 
 class StaffView(SchoolBasedViewMixin, viewsets.ModelViewSet):
@@ -123,3 +107,6 @@ class ScoreView(ApplicationBasedViewMixin, viewsets.ModelViewSet):
     serializer_class = ScoreSerializer
     ordering = 'score_date'
     ordering_fields = '__all__'
+
+    def perform_create(self, serializer):
+        return serializer.save(staff=self.request.user)

@@ -4,13 +4,13 @@ export default {
   getByApplicationId(applicationId) {
     return Api.get(`application/${applicationId}/score`);
   },
-  add(score) {
-    return Api.post(`application/${score.application}/score`, score);
+  add(applicationId, score) {
+    return Api.post(`application/${applicationId}/score`, score);
   },
-  put(score) {
-    return Api.put("score/" + score.id, score);
+  put(applicationId, score) {
+    return Api.put(`application/${applicationId}/score/` + score.id, score);
   },
-  delete(score) {
-    return Api.delete("score/" + score.id);
+  delete(applicationId, score) {
+    return Api.delete(`application/${applicationId}/score/` + score.id);
   }
 };

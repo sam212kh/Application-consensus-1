@@ -515,7 +515,7 @@ import vuetableBootstrapMixin from "../../../mixins/VuetableBootstrapMixin";
 import applicationApi from "../../../endpoint/ApplicationApi";
 import ApplicationStatus from "../model/ApplicationStatus";
 import ScoresApi from "@/endpoint/ScoresApi";
-import dateTime from "../../Datetimepicker.vue";
+import dateTime from "../../dateTimePicker/DateTimePicker";
 
 let reviewActionField = {
   name: "__slot:review_actions",
@@ -718,9 +718,9 @@ export default {
       this.$refs.vuetable && this.$refs.vuetable.normalizeFields();
     },
     scoreBoxClick: function(application) {
+      let self = this;
       ScoresApi.getByApplicationId(application.id).then(function(response) {
-        alert( JSON.stringify( response.data ) )
-        this.scoreData = response.data;
+        self.scoreData = response.data;
       });
       this.$refs.scoreModalRef.show();
     },
@@ -808,15 +808,15 @@ export default {
     updateReview: function() {
       let self = this;
       this.selectedReview.status = "scored";
-      this.newScore.application  = this.selectedReview.id;
-      this.newScore.score        = 5;
-      ScoresApi.add(this.newScore).then(
-        function()
-        {
-          alert('done');
-        },function()
-        {
-          alert('error');
+      this.newScore.application = this.selectedReview.id;
+      this.newScore.score = 5;
+      //TODO: check if this staff already scored the application?
+      ScoresApi.add(this.selectedReview.id, this.newScore).then(
+        function() {
+          alert("good");
+        },
+        function() {
+          alert("error");
         }
       );
 
