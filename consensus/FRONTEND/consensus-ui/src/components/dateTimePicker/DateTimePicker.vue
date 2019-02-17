@@ -4,6 +4,7 @@
 
 <script>
 import "jquery-datetimepicker";
+
 require("jquery-datetimepicker/jquery.datetimepicker.css");
 
 const jQuery = window.jQuery;
@@ -156,6 +157,7 @@ export default {
         (value && momentValue.format(comparatorFormat)) !==
         (this.value && oldMomentValue.format(comparatorFormat))
       ) {
+        value = value && momentValue.format(comparatorFormat);
         this.$emit("input", value);
       }
     },
