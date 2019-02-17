@@ -156,6 +156,7 @@
                     <label class="pull-left">Start Date</label>
                     <dateTime
                       v-model="selectedSeason.start_date"
+                      :config="{ timepicker: false }"
                       comparator="date"
                     ></dateTime>
                   </div>
@@ -165,6 +166,7 @@
                     <label class="pull-left">End Date</label>
                     <dateTime
                       v-model="selectedSeason.end_date"
+                      :config="{ timepicker: false }"
                       comparator="date"
                     ></dateTime>
                   </div>

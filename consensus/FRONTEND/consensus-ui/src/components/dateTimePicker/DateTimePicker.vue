@@ -125,7 +125,7 @@ export default {
         .toDate();
     },
     onChange: function(value) {
-      var momentValue = value && moment(value),
+      let momentValue = value && moment(value),
         oldMomentValue = null;
       if (this.timeonly) {
         value = value && momentValue.format("HH:mm:ss");
@@ -145,7 +145,7 @@ export default {
         value = value && momentValue.toDate();
         oldMomentValue = this.value && moment(this.value);
       }
-      var comparatorFormat = this.comparator;
+      let comparatorFormat = this.comparator;
       if (this.comparator === "date") {
         comparatorFormat = "YYYY-MM-DD";
       } else if (this.comparator === "time") {
@@ -157,6 +157,7 @@ export default {
         (value && momentValue.format(comparatorFormat)) !==
         (this.value && oldMomentValue.format(comparatorFormat))
       ) {
+        debugger;
         value = value && momentValue.format(comparatorFormat);
         this.$emit("input", value);
       }
