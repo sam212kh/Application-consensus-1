@@ -88,12 +88,6 @@ class SchoolView(viewsets.ModelViewSet):
     #
     #     return Response(custom_data)
 
-    # def get_queryset(self):
-    #     return self.queryset.filter('participants.user'=self.request.user).only('id', 'full_name')
-
-    def perform_create(self, serializer):
-        return serializer.save()
-
 
 class StaffView(SchoolBasedViewMixin, viewsets.ModelViewSet):
     queryset = Staff.objects.all()
