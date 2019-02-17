@@ -12,7 +12,7 @@ class SchoolSerializer(serializers.ModelSerializer):
 
     @staticmethod
     def get_staff_count(school):
-        return Staff.objects.filter()
+        return Staff.objects.filter(user__participation__school=school).count()
 
     @staticmethod
     def get_season_count(school):
