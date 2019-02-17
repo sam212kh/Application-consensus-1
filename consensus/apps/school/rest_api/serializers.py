@@ -6,6 +6,15 @@ import datetime
 
 class SchoolSerializer(serializers.ModelSerializer):
 
+    seasonCount = serializers.SerializerMethodField()
+    applicationCount = serializers.SerializerMethodField()
+
+    def get_seasonCount(self, school):
+        return school.school_season.count()
+
+    def get_applicationCount(self, school):
+        return school.school_season.count()
+
     # Use this method for get current user
     def _user(self, obj):
         kwargs = getattr(self, '_kwargs', None)
