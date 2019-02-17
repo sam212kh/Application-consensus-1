@@ -49,7 +49,7 @@ class Participation(models.Model):
     )
     school = models.ForeignKey(School, on_delete=models.CASCADE)
     participant = models.ForeignKey(User, on_delete=models.CASCADE)
-    participation_date = models.DateField()
+    participation_date = models.DateTimeField()
     participation_type = models.CharField('Participation', max_length=1, choices=PARTICIPATION_CHOICES)
 
     def __init__(self, school, participant, participation_date, participation_type, *args, **kwargs):
@@ -72,8 +72,8 @@ class Season(models.Model):
         on_delete=models.CASCADE
     )
     kind = models.CharField(max_length=255, null=True, blank=True)
-    start_date = models.DateTimeField(auto_now_add=True, null=True)
-    end_date = models.DateTimeField(auto_now_add=True, null=True)
+    start_date = models.DateField(null=True)
+    end_date = models.DateField(null=True)
     info = models.CharField(max_length=255, null=True, blank=True)
 
     def __str__(self):
