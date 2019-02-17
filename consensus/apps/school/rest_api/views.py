@@ -3,8 +3,6 @@ from apps.school.rest_api.serializers import SchoolSerializer, ApplicationSerial
     StaffSerializer
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
-from rest_framework.response import Response
-import datetime
 
 
 class SchoolBasedViewMixin(object):
@@ -76,9 +74,19 @@ class SchoolView(viewsets.ModelViewSet):
     ordering = 'id'
     ordering_fields = '__all__'
 
-
-    def perform_create(self, serializer):
-        return serializer.save(participations=Participation(self, self.request.user, datetime.datetime.now(), self.request.user))
+    # def list(self, request, *args, **kwargs):
+    #     # return Response(data.data)
+    #     queryset = School.objects.filter(owner=self.request.user.id).only('id', 'full_name')
+    #     se = Season.objects.prefetch_related('school')
+    #     serializer = self.get_serializer(queryset, many=True)
+    #     ser = serialize('json', se)
+    #
+    #     custom_data = {
+    #         'list_of_items': serializer.data,
+    #         'seasons ': ser
+    #     }
+    #
+    #     return Response(custom_data)
 
 
 class StaffView(SchoolBasedViewMixin, viewsets.ModelViewSet):

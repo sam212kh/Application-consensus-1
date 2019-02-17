@@ -68,7 +68,7 @@ class Season(models.Model):
     full_name = models.CharField(max_length=255)
     school = models.ForeignKey(
         School,
-        related_name='school_season',
+        related_name='season',
         on_delete=models.CASCADE
     )
     kind = models.CharField(max_length=255, null=True, blank=True)
@@ -93,7 +93,7 @@ class Application(models.Model):
 
     season = models.ForeignKey(
         Season,
-        related_name='season_application',
+        related_name='application',
         on_delete=models.CASCADE
     )
     first_name = models.CharField(max_length=255)
@@ -104,7 +104,6 @@ class Application(models.Model):
     email = models.CharField(max_length=255, null=True, blank=True)
     info = models.CharField(max_length=255, null=True, blank=True)
     educational_info = models.CharField(max_length=255, null=True, blank=True)
-    score = models.IntegerField(null=True, blank=True)
     created_date = models.DateTimeField(auto_now_add=True, null=True)
     status = models.CharField(max_length=255, null=True, blank=True)
 
@@ -116,7 +115,7 @@ class Application(models.Model):
 class Score(models.Model):
     application = models.ForeignKey(
         Application,
-        related_name='application_score',
+        related_name='score',
         on_delete=models.CASCADE
     )
 

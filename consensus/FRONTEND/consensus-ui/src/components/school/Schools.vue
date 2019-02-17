@@ -142,19 +142,19 @@ export default {
           dataClass: "text-left"
         },
         {
-          name: "total_staff_count",
+          name: "staff_count",
           title: `<span class="icon is-small orange"><i class="fa fa-users color-gray"></i></span> Staff`,
           titleClass: "text-left",
           dataClass: "text-left"
         },
         {
-          name: "total_season_count",
+          name: "season_count",
           title: `<span class="icon is-small orange"><i class="fa fa-calendar color-gray"></i></span> Season`,
           titleClass: "text-left",
           dataClass: "text-left"
         },
         {
-          name: "total_application_count",
+          name: "application_count",
           title: `<span class="icon is-small orange"><i class="fa fa-send color-gray"></i></span> Application`,
           titleClass: "text-left",
           dataClass: "text-left"
