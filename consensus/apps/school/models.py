@@ -57,13 +57,6 @@ class Participation(models.Model):
     participation_date = models.DateTimeField()
     participation_type = models.CharField('Participation', max_length=1, choices=PARTICIPATION_CHOICES)
 
-    def __init__(self, school, participant, participation_date, participation_type, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.school = school
-        self.participant = participant
-        self.participation_date = participation_date
-        self.participation_type = participation_type
-
     def __str__(self):
         return self.participation_type
 

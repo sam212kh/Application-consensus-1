@@ -2,7 +2,8 @@ from apps.school.models import School, Application, Score, Season, Staff, Partic
 from apps.school.rest_api.serializers import SchoolSerializer, ApplicationSerializer, ScoreSerializer, SeasonSerializer, \
     StaffSerializer
 from django.shortcuts import get_object_or_404
-from rest_framework import viewsets
+from rest_framework import viewsets, status
+from rest_framework.response import Response
 
 
 class SchoolBasedViewMixin(object):
@@ -73,6 +74,26 @@ class SchoolView(viewsets.ModelViewSet):
     serializer_class = SchoolSerializer
     ordering = 'id'
     ordering_fields = '__all__'
+
+    def perform_update(self, serializer):
+        participation = Participation.objects.filter(
+            school=serializer.instance,
+            participation_type=Participation.PARTICIPATION_OWNER
+        ).first()
+        if participation and participation.participant == self.request.user:
+            serializer.save()
+        else:
+            return Response(status=status.HTTP_403_FORBIDDEN)
+
+    def perform_destroy(self, instance):
+        participation = Participation.objects.filter(
+            school=instance,
+            participation_type=Participation.PARTICIPATION_OWNER
+        ).first()
+        if participation and participation.participant == self.request.user:
+            instance.delete()
+        else:
+            return Response(status=status.HTTP_403_FORBIDDEN)
 
     # def list(self, request, *args, **kwargs):
     #     # return Response(data.data)
