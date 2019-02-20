@@ -6,6 +6,7 @@ import SchoolSubmit from "./components/school/SchoolSubmit";
 import SeasonHome from "./components/school/season/SeasonHome";
 import Schools from "./components/school/Schools.vue";
 import SignIn from "./components/SignIn.vue";
+import SignUp from "./components/SignUp.vue";
 
 import store from "./store.js";
 
@@ -58,6 +59,11 @@ export default new Router({
       path: "/singIn",
       name: "signIn",
       component: SignIn
+    },
+      {
+      path: "/singUp",
+      name: "signUp",
+      component: SignUp
     },
     {
       path: "/about",
