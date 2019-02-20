@@ -95,20 +95,6 @@ class SchoolView(viewsets.ModelViewSet):
         else:
             return Response(status=status.HTTP_403_FORBIDDEN)
 
-    # def list(self, request, *args, **kwargs):
-    #     # return Response(data.data)
-    #     queryset = School.objects.filter(owner=self.request.user.id).only('id', 'full_name')
-    #     se = Season.objects.prefetch_related('school')
-    #     serializer = self.get_serializer(queryset, many=True)
-    #     ser = serialize('json', se)
-    #
-    #     custom_data = {
-    #         'list_of_items': serializer.data,
-    #         'seasons ': ser
-    #     }
-    #
-    #     return Response(custom_data)
-
 
 class StaffView(SchoolBasedViewMixin, viewsets.ModelViewSet):
     queryset = Staff.objects.all()
