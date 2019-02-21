@@ -3,6 +3,7 @@ from apps.school.rest_api.serializers import SchoolSerializer, ApplicationSerial
     StaffSerializer
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets, status
+from rest_framework.exceptions import PermissionDenied
 from rest_framework.response import Response
 
 
@@ -75,6 +76,10 @@ class SchoolView(viewsets.ModelViewSet):
     ordering = 'id'
     ordering_fields = '__all__'
 
+    def get_queryset(self):
+        self.queryset.filter(participation__participant=self.request.user.id)
+        return self.queryset
+
     def perform_update(self, serializer):
         participation = Participation.objects.filter(
             school=serializer.instance,
@@ -83,7 +88,7 @@ class SchoolView(viewsets.ModelViewSet):
         if participation and participation.participant == self.request.user:
             serializer.save()
         else:
-            return Response(status=status.HTTP_403_FORBIDDEN)
+            raise PermissionDenied
 
     def perform_destroy(self, instance):
         participation = Participation.objects.filter(
@@ -93,7 +98,7 @@ class SchoolView(viewsets.ModelViewSet):
         if participation and participation.participant == self.request.user:
             instance.delete()
         else:
-            return Response(status=status.HTTP_403_FORBIDDEN)
+            raise PermissionDenied
 
 
 class StaffView(SchoolBasedViewMixin, viewsets.ModelViewSet):
