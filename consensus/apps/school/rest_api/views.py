@@ -77,25 +77,29 @@ class SchoolView(viewsets.ModelViewSet):
     ordering_fields = '__all__'
 
     def get_queryset(self):
-        self.queryset.filter(participation__participant=self.request.user.id)
-        return self.queryset
+        # All schools that the current user has participation with them
+        return self.queryset.filter(participation__participant=self.request.user.id)
 
     def perform_update(self, serializer):
+        # If the current user is the owner of the given school
         participation = Participation.objects.filter(
             school=serializer.instance,
+            participant=self.request.user,
             participation_type=Participation.PARTICIPATION_OWNER
         ).first()
-        if participation and participation.participant == self.request.user:
+        if participation:
             serializer.save()
         else:
             raise PermissionDenied
 
     def perform_destroy(self, instance):
+        # If the current user is the owner of the given school
         participation = Participation.objects.filter(
             school=instance,
+            participant=self.request.user,
             participation_type=Participation.PARTICIPATION_OWNER
         ).first()
-        if participation and participation.participant == self.request.user:
+        if participation:
             instance.delete()
         else:
             raise PermissionDenied
@@ -107,6 +111,58 @@ class StaffView(SchoolBasedViewMixin, viewsets.ModelViewSet):
     ordering = 'first_name'
     ordering_fields = '__all__'
 
+    def get_queryset(self):
+        # If the current user is the owner of the given school
+        participation = Participation.objects.filter(
+            school=self.base_school_id,
+            participant=self.request.user,
+            participation_type=Participation.PARTICIPATION_OWNER
+        ).first()
+        if not participation:
+            raise PermissionDenied
+
+        # All staffs that have participation with the given school
+        return self.queryset.filter(
+            user__participation__school=self.base_school_id,
+            user__participation__participation_type=Participation.PARTICIPATION_STAFF
+        )
+
+    def perform_create(self, serializer):
+        # If the current user is the owner of the given school
+        participation = Participation.objects.filter(
+            school=self.base_school_id,
+            participant=self.request.user,
+            participation_type=Participation.PARTICIPATION_OWNER
+        ).first()
+        if participation:
+            serializer.save()
+        else:
+            raise PermissionDenied
+
+    def perform_update(self, serializer):
+        # If the current user is the owner of the given school
+        participation = Participation.objects.filter(
+            school=self.base_school_id,
+            participant=self.request.user,
+            participation_type=Participation.PARTICIPATION_OWNER
+        ).first()
+        if participation:
+            serializer.save()
+        else:
+            raise PermissionDenied
+
+    def perform_destroy(self, instance):
+        # If the current user is the owner of the given school
+        participation = Participation.objects.filter(
+            school=self.base_school_id,
+            participant=self.request.user,
+            participation_type=Participation.PARTICIPATION_OWNER
+        ).first()
+        if participation:
+            instance.delete()
+        else:
+            raise PermissionDenied
+
 
 class SeasonView(SchoolBasedViewMixin, viewsets.ModelViewSet):
     queryset = Season.objects.all()
@@ -114,12 +170,105 @@ class SeasonView(SchoolBasedViewMixin, viewsets.ModelViewSet):
     ordering = 'start_date'
     ordering_fields = '__all__'
 
+    def get_queryset(self):
+        # If the current user has participation with the given school
+        participation = Participation.objects.filter(
+            school=self.base_school_id,
+            participant=self.request.user
+        ).first()
+        if not participation:
+            raise PermissionDenied
+
+        # All school's seasons
+        return self.queryset.filter(school=self.base_school_id)
+
+    def perform_create(self, serializer):
+        # If the current user is the owner of the given school
+        participation = Participation.objects.filter(
+            school=self.base_school_id,
+            participant=self.request.user,
+            participation_type=Participation.PARTICIPATION_OWNER
+        ).first()
+        if participation:
+            serializer.save()
+        else:
+            raise PermissionDenied
+
+    def perform_update(self, serializer):
+        # If the current user is the owner of the given school
+        participation = Participation.objects.filter(
+            school=self.base_school_id,
+            participant=self.request.user,
+            participation_type=Participation.PARTICIPATION_OWNER
+        ).first()
+        if participation:
+            serializer.save()
+        else:
+            raise PermissionDenied
+
+    def perform_destroy(self, instance):
+        # If the current user is the owner of the given school
+        participation = Participation.objects.filter(
+            school=self.base_school_id,
+            participant=self.request.user,
+            participation_type=Participation.PARTICIPATION_OWNER
+        ).first()
+        if participation:
+            instance.delete()
+        else:
+            raise PermissionDenied
+
 
 class ApplicationView(SeasonBasedViewMixin, viewsets.ModelViewSet):
     queryset = Application.objects.all()
     serializer_class = ApplicationSerializer
     ordering = 'email'
     ordering_fields = '__all__'
+
+    def get_queryset(self):
+        # If the current user has participation with the given school
+        participation = Participation.objects.filter(
+            school=self.base_season.school,
+            participant=self.request.user
+        ).first()
+        if not participation:
+            raise PermissionDenied
+
+        # All school's applications for the given season
+        return self.queryset.filter(season__school=self.base_season.school)
+
+    def perform_create(self, serializer):
+        # If the current user has participation with the given school
+        participation = Participation.objects.filter(
+            school=self.base_season.school,
+            participant=self.request.user
+        ).first()
+        if participation:
+            serializer.save()
+        else:
+            raise PermissionDenied
+
+    def perform_update(self, serializer):
+        # If the current user has participation with the given school
+        participation = Participation.objects.filter(
+            school=self.base_season.school,
+            participant=self.request.user
+        ).first()
+        if participation:
+            serializer.save()
+        else:
+            raise PermissionDenied
+
+    def perform_destroy(self, instance):
+        # If the current user has participation with the given school
+        participation = Participation.objects.filter(
+            school=self.base_season.school,
+            participant=self.request.user
+        ).first()
+        if participation:
+            instance.delete()
+        else:
+            raise PermissionDenied
 
 
 class ScoreView(ApplicationBasedViewMixin, viewsets.ModelViewSet):

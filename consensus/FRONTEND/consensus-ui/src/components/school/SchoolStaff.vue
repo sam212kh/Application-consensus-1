@@ -190,7 +190,7 @@
               type="button"
               class="btn btn-danger btn-block"
               data-dismiss="modal"
-              @click="$refs.StaffModalRef.hide()"
+              @click="$refs.staffModalRef.hide()"
             >
               <i class="fa fa-close"></i> Cancel
             </button>
