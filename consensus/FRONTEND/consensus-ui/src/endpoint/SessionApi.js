@@ -8,7 +8,7 @@ export default {
     return Api.post("session", { username: username, password: password });
   },
   register(fields) {
-    return Api.put("singup", fields);
+    return Api.post("register/", fields);
   },
   logout() {
     return Api.delete("session");

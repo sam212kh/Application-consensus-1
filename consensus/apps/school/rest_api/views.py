@@ -4,6 +4,46 @@ from apps.school.rest_api.serializers import SchoolSerializer, ApplicationSerial
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
 
+from django.db import models
+from django.contrib.auth.models import User
+
+from django.contrib.auth import get_user_model
+from django.contrib.auth.hashers import make_password
+
+from rest_framework.views import APIView
+
+from rest_framework.response import Response
+
+
+class CreateUser(viewsets.ModelViewSet):
+
+    def signup(request,version):
+        if request.method == 'POST':
+            user = User.objects.create(
+                    username=request.POST['username'],
+                    email=request.POST['email'],
+                    first_name=request.POST['first_name'],
+                    last_name=request.POST['last_name'],
+                    #country=request.POST.get('country'),
+                    #city=request.POST.get('city'),
+                    #phone_number=request.POST.get('phone_number'),
+
+                )
+            user.set_password(str(request.POST.get('password')))
+            user.save()
+            return Response({"status":"success","response":"User Successfully Created"}, status=status.HTTP_201_CREATED)
+
+    def create(self, validated_data):
+        if validated_data.get('password'):
+            validated_data['password'] = make_password(
+                validated_data['password']
+            )
+
+        user = get_user_model().objects.create(**validated_data)
+
+
+        return user
+
 
 class SchoolBasedViewMixin(object):
     _base_school = None
@@ -45,6 +85,10 @@ class SeasonBasedViewMixin(object):
         if self.season_base_rel:
             qs = qs.filter(**{self.season_base_rel: self.base_season_id})
         return qs
+
+
+
+
 
 
 class ApplicationBasedViewMixin(object):

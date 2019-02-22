@@ -1,7 +1,8 @@
 from django.urls import path, include
+from django.conf.urls import url
 from rest_framework import routers
 
-from apps.school.rest_api.views import SchoolView, ApplicationView, ScoreView, SeasonView, StaffView
+from apps.school.rest_api.views import SchoolView, ApplicationView, ScoreView, SeasonView, StaffView, CreateUser
 
 SCHOOL_BASE_ENDPOINT = 'school/(?P<_school_pk>[0-9]+)'
 SEASON_BASE_ENDPOINT = 'season/(?P<_season_pk>[0-9]+)'
@@ -21,4 +22,5 @@ rest_router.register(r'{}/score'.format(APPLICATION_BASE_ENDPOINT), ScoreView)
 app_name = 'school'
 urlpatterns = [
     path('', include(rest_router.urls)),
+    url(r'^register/', CreateUser.signup, name='signup'),
 ]
