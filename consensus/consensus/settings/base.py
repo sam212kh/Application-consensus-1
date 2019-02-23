@@ -45,7 +45,6 @@ INSTALLED_APPS = [
     'apps.school'
 ]
 
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -133,6 +132,14 @@ WSGI_APPLICATION = 'consensus.wsgi.application'
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
 
+# anymail
+ANYMAIL = {
+    'MAILGUN_SENDER_DOMAIN': '<DOMAIN>',
+    'MAILGUN_API_KEY': '<KEY>',
+}
+# EMAIL_BACKEND = 'anymail.backends.mailgun.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_FILE_PATH = '/consensus-messages'
 
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases

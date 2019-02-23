@@ -68,7 +68,7 @@
       centered
       ref="staffModalRef"
       id="StaffModal"
-      title="Edit staff"
+      title="Add staff"
       :header-bg-variant="'modal-header padding-10 background-light-silver'"
       :footer-bg-variant="
         'modal-footer padding-10 background-light-silver border-bottom-right-radius-10 border-bottom-left-radius-10'
@@ -182,7 +182,8 @@
               type="button"
               class="btn btn-success btn-block"
             >
-              <i class="glyphicon glyphicon-ok"></i> Submit Staff
+              <i class="glyphicon glyphicon-ok" @click="inviteStaff()"></i>
+              Submit Staff
             </button>
           </div>
           <div class="col-md-3 col-sm-3 col-xs-12">

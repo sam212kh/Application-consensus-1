@@ -1,10 +1,11 @@
 from apps.school.models import School, Application, Score, Season, Staff, Participation
 from apps.school.rest_api.serializers import SchoolSerializer, ApplicationSerializer, ScoreSerializer, SeasonSerializer, \
     StaffSerializer
+from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets, status
+from rest_framework.decorators import action
 from rest_framework.exceptions import PermissionDenied
-from rest_framework.response import Response
 
 
 class SchoolBasedViewMixin(object):
@@ -126,6 +127,28 @@ class StaffView(SchoolBasedViewMixin, viewsets.ModelViewSet):
             user__participation__school=self.base_school_id,
             user__participation__participation_type=Participation.PARTICIPATION_STAFF
         )
+
+    @action(detail=False, methods=['POST'])
+    def invite(self, request, *args, **kwargs):
+        # If the current user is the owner of the given school
+        participation = Participation.objects.filter(
+            school=self.base_school_id,
+            participant=self.request.user,
+            participation_type=Participation.PARTICIPATION_OWNER
+        ).first()
+        if participation:
+            filter_by_email_or_user_name = \
+                Staff.objects.filter(email=kwargs.get('email')) | \
+                Staff.objects.filter(user_name=kwargs.get('user_name'))
+            staff = filter_by_email_or_user_name.first()
+            if staff:
+                send_mail("It works!", "Invitation email",
+                          "Anymail Sender <from@example.com>", ["to@example.com"])
+            else:
+                send_mail("It works!", "Sign up email",
+                          "Anymail Sender <from@example.com>", ["to@example.com"])
+        else:
+            raise PermissionDenied
 
     def perform_create(self, serializer):
         # If the current user is the owner of the given school
