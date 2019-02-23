@@ -11,6 +11,7 @@ APPLICATION_BASE_ENDPOINT = 'application/(?P<_application_pk>[0-9]+)'
 rest_router = routers.DefaultRouter()
 rest_router.trailing_slash = "/?"  # added to support both / and slashless
 rest_router.register(r'school', SchoolView)
+rest_router.register(r'register', CreateUser, 'register')
 rest_router.register(r'{}/staff'.format(SCHOOL_BASE_ENDPOINT), StaffView)
 rest_router.register(r'{}/season'.format(SCHOOL_BASE_ENDPOINT), SeasonView)
 rest_router.register(r'{}/application'.format(SEASON_BASE_ENDPOINT), ApplicationView)
@@ -18,9 +19,7 @@ rest_router.register(r'{}/score'.format(APPLICATION_BASE_ENDPOINT), ScoreView)
 
 
 
-
 app_name = 'school'
 urlpatterns = [
     path('', include(rest_router.urls)),
-    url(r'^register/', CreateUser.signup, name='signup'),
 ]

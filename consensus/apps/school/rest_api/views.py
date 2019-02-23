@@ -2,47 +2,58 @@ from apps.school.models import School, Application, Score, Season, Staff, Partic
 from apps.school.rest_api.serializers import SchoolSerializer, ApplicationSerializer, ScoreSerializer, SeasonSerializer, \
     StaffSerializer
 from django.shortcuts import get_object_or_404
-from rest_framework import viewsets
+from rest_framework import viewsets,status
 
 from django.db import models
-from django.contrib.auth.models import User
+
 
 from django.contrib.auth import get_user_model
-from django.contrib.auth.hashers import make_password
-
-from rest_framework.views import APIView
-
 from rest_framework.response import Response
+from rest_framework import serializers
+from rest_framework import permissions
+from rest_framework.serializers import ModelSerializer
+from rest_framework.viewsets import GenericViewSet
+from rest_framework.mixins import CreateModelMixin
+
+
+UserModel = get_user_model()
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = get_user_model()
+
+    password = serializers.CharField(write_only=True)
+
+    class Meta:
+        model = UserModel
+        # Tuple of serialized model fields (see link [2])
+        fields = ( "id", "username", "password", "first_name", "last_name", "phone_number", "country", "city" )
 
 
 class CreateUser(viewsets.ModelViewSet):
+    model = get_user_model()
+    permission_classes = [
+        permissions.AllowAny # Or anon users can't register
+    ]
+    serializer_class = UserSerializer
 
-    def signup(request,version):
-        if request.method == 'POST':
-            user = User.objects.create(
-                    username=request.POST['username'],
-                    email=request.POST['email'],
-                    first_name=request.POST['first_name'],
-                    last_name=request.POST['last_name'],
-                    #country=request.POST.get('country'),
-                    #city=request.POST.get('city'),
-                    #phone_number=request.POST.get('phone_number'),
-
-                )
-            user.set_password(str(request.POST.get('password')))
-            user.save()
-            return Response({"status":"success","response":"User Successfully Created"}, status=status.HTTP_201_CREATED)
-
-    def create(self, validated_data):
-        if validated_data.get('password'):
-            validated_data['password'] = make_password(
-                validated_data['password']
+    def create(self, request, *args, **kwargs):
+        VALID_USER_FIELDS = [f.name for f in get_user_model()._meta.fields]
+        DEFAULTS = {
+            # you can define any defaults that you would like for the user, here
+        }
+        serialized = UserSerializer(data=request.data)
+        if serialized.is_valid():
+            user_data = {field: data for (field, data) in request.data.items() if field in VALID_USER_FIELDS}
+            user_data.update(DEFAULTS)
+            user = get_user_model().objects.create_user(
+                **user_data
             )
+            return Response(UserSerializer(instance=user).data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serialized._errors, status=status.HTTP_400_BAD_REQUEST)
 
-        user = get_user_model().objects.create(**validated_data)
 
-
-        return user
 
 
 class SchoolBasedViewMixin(object):
