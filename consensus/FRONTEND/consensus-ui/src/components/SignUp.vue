@@ -103,6 +103,13 @@
                                       </div>
                                   </div>
                               </div>
+                              <div class="row">
+                                  <div class="col-md-12 col-sm-12 col-xs-12">
+                                      <div class="form-group">
+                                        <div class="g-recaptcha" data-sitekey="6Lcz5mwUAAAAAApZlebKWHYLt_Gx3w6CkPfBGPyq"></div>
+                                      </div>
+                                  </div>
+                              </div>
                               <button type="submit" class="btn btn-block btn-success">
                                   Sign up
                               </button>
@@ -122,7 +129,8 @@
       </div>
     </div>
 </template>
-
+<script src='https://www.google.com/recaptcha/api.js'>
+</script>
 <script>
 import SessionApi from "@/endpoint/SessionApi";
 import UtilMixin from "@/mixins/UtilMixin";
@@ -132,13 +140,13 @@ export default {
   mixins: [UtilMixin],
   data: function() {
     return {
-      registerFilds:{}
+      registerFilds: {}
     };
   },
   methods: {
     submit: function() {
       if (this.registerFilds.username === "" || this.registerFilds.password === "") {
-        this.notifyError('please fill all required fields');
+        this.notifyError("please fill all required fields");
         return;
       }
 
