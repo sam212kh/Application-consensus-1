@@ -106,7 +106,8 @@
                               <div class="row">
                                   <div class="col-md-12 col-sm-12 col-xs-12">
                                       <div class="form-group">
-                                        <div class="g-recaptcha" data-sitekey="6Lcz5mwUAAAAAApZlebKWHYLt_Gx3w6CkPfBGPyq"></div>
+                                        <div id="recaptcha" class="g-recaptcha" data-sitekey="6Lcz5mwUAAAAAApZlebKWHYLt_Gx3w6CkPfBGPyq"></div>
+
                                       </div>
                                   </div>
                               </div>
@@ -129,8 +130,7 @@
       </div>
     </div>
 </template>
-<script src='https://www.google.com/recaptcha/api.js'>
-</script>
+
 <script>
 import SessionApi from "@/endpoint/SessionApi";
 import UtilMixin from "@/mixins/UtilMixin";
@@ -143,13 +143,28 @@ export default {
       registerFilds: {}
     };
   },
+  mounted: function() {
+    let recaptchaScript = document.createElement("script");
+    recaptchaScript.setAttribute( "src", "https://www.google.com/recaptcha/api.js?render=explicit&hl=en");
+    document.head.appendChild(recaptchaScript);
+    this.initReCaptcha();
+  },
   methods: {
+    initReCaptcha: function() {
+      var self = this;
+      setTimeout(function() {
+        if (typeof grecaptcha === "undefined") {
+          self.initReCaptcha();
+        }
+        else {
+          grecaptcha.render('recaptcha');
+        }
+      }, 100);
+    },
+    validate: function() {
+      grecaptcha.execute();
+    },
     submit: function() {
-      if (this.registerFilds.username === "" || this.registerFilds.password === "") {
-        this.notifyError("please fill all required fields");
-        return;
-      }
-
       let self = this;
       SessionApi.register(this.registerFilds).then(
         function() {
