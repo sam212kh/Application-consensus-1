@@ -172,13 +172,12 @@ export default {
         return;
       }
 
-
       if(
         ! event.target['g-recaptcha-response'].value
       )
       {
-        this.notifyError("Please tick recaptcha.");
-        return true; // prevent form from submitting
+        this.notifyError("Please check recaptcha.");
+        return true;
       }
 
       let self = this;
