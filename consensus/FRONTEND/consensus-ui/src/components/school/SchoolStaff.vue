@@ -238,6 +238,8 @@ import VuetablePagination from "vuetable-2/src/components/VuetablePagination";
 import bModal from "bootstrap-vue/es/components/modal/modal";
 import utilMixin from "@/mixins/UtilMixin";
 import vuetableBootstrapMixin from "../../mixins/VuetableBootstrapMixin";
+import SessionApi from "@/endpoint/SessionApi";
+
 
 export default {
   name: "SchoolStaff",
@@ -351,6 +353,12 @@ export default {
         );
       } else {
         self.selectedStaff.school = this.schoolId;
+        SessionApi.getUser().then(
+          function(response) {
+            self.selectedStaff.user   = response.data.id ;
+          }
+        );
+        self.selectedStaff.user  = 10;
         staffApi.add(self.schoolId, self.selectedStaff).then(
           function(resp) {
             self.notifySuccess("The staff inserted");
