@@ -2,10 +2,16 @@ from apps.school.models import School, Application, Score, Season, Staff, Partic
 from apps.school.rest_api.serializers import SchoolSerializer, ApplicationSerializer, ScoreSerializer, SeasonSerializer, \
     StaffSerializer
 from django.core.mail import send_mail
+from django.contrib.auth.hashers import make_password
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
+from djoser.serializers import UserSerializer
+from requests import Response
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.exceptions import PermissionDenied
+
+from apps.school.models import User
 
 
 class SchoolBasedViewMixin(object):

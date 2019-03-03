@@ -55,7 +55,9 @@
                 <hr />
                 <div class="singup">
                   <span>Not have an account?</span>
-                  <a href="SignUp.html">Create a new one</a>
+                  <router-link class="linked" :to="{ name: 'signUp' }"
+                    >Create a new one</router-link
+                  >
                 </div>
               </form>
             </div>

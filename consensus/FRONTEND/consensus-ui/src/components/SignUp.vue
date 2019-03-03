@@ -17,7 +17,7 @@
                       <input
                         type="text"
                         class="form-control"
-                        v-model="registerFilds.first_name"
+                        v-model="registerFields.first_name"
                         placeholder="put your first name"
                       />
                     </div>
@@ -28,7 +28,7 @@
                       <input
                         type="text"
                         class="form-control"
-                        v-model="registerFilds.last_name"
+                        v-model="registerFields.last_name"
                         placeholder="put your last name"
                       />
                     </div>
@@ -41,7 +41,7 @@
                       <input
                         type="text"
                         class="form-control"
-                        v-model="registerFilds.username"
+                        v-model="registerFields.username"
                         placeholder="pick a username"
                       />
                     </div>
@@ -54,7 +54,7 @@
                       <input
                         type="email"
                         class="form-control"
-                        v-model="registerFilds.email"
+                        v-model="registerFields.email"
                         placeholder="yourmail@example.com"
                       />
                     </div>
@@ -66,11 +66,10 @@
                       <label class="pull-left">Country</label>
                       <select
                         class="form-control select"
-                        v-model="registerFilds.country"
+                        v-model="registerFields.country"
                       >
-                        <option>Iran</option>
-                        <option>India</option>
-                        <option>Iraq</option>
+                        <option>USA</option>
+                        <option>UK</option>
                       </select>
                     </div>
                   </div>
@@ -79,11 +78,10 @@
                       <label class="pull-left">City</label>
                       <select
                         class="form-control select"
-                        v-model="registerFilds.city"
+                        v-model="registerFields.city"
                       >
-                        <option>Tehran</option>
-                        <option>Qom</option>
-                        <option>Shiraz</option>
+                        <option>California</option>
+                        <option>Colorado</option>
                       </select>
                     </div>
                   </div>
@@ -95,7 +93,7 @@
                       <input
                         type="text"
                         class="form-control"
-                        v-model="registerFilds.phone_number"
+                        v-model="registerFields.phone_number"
                         placeholder="Write down your phone number"
                       />
                     </div>
@@ -108,13 +106,24 @@
                       <input
                         type="password"
                         class="form-control"
-                        v-model="registerFilds.password"
+                        v-model="registerFields.password"
                         placeholder="Create a password"
                       />
                       <p class="text-left color-gray">
                         Make sure it's at least 7 characters, including a
                         number, and a lowercase letter.
                       </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                      <div
+                        id="recaptcha"
+                        class="g-recaptcha"
+                        data-sitekey="6Lcz5mwUAAAAAApZlebKWHYLt_Gx3w6CkPfBGPyq"
+                      ></div>
                     </div>
                   </div>
                 </div>
@@ -143,25 +152,28 @@ import SessionApi from "@/endpoint/SessionApi";
 import UtilMixin from "@/mixins/UtilMixin";
 
 export default {
-  name: "signUp",
+  name: "SignUp",
   mixins: [UtilMixin],
+  created: function() {
+    this.addReCaptchaScriptTag();
+  },
   data: function() {
     return {
-      registerFilds: {}
+      registerFields: {}
     };
   },
   methods: {
     submit: function() {
       if (
-        this.registerFilds.username === "" ||
-        this.registerFilds.password === ""
+        this.registerFields.username === "" ||
+        this.registerFields.password === ""
       ) {
         this.notifyError("please fill all required fields");
         return;
       }
 
       let self = this;
-      SessionApi.register(this.registerFilds).then(
+      SessionApi.signUp(this.registerFields).then(
         function() {
           self.$router.push("/");
         },
@@ -169,6 +181,11 @@ export default {
           self.notifyDefaultServerError(error);
         }
       );
+    },
+    addReCaptchaScriptTag: function() {
+      let recaptcha = document.createElement("script");
+      recaptcha.setAttribute("src", "https://www.google.com/recaptcha/api.js");
+      document.head.appendChild(recaptcha);
     }
   }
 };
@@ -176,13 +193,7 @@ export default {
 
 <style scoped>
 .signUp {
-  height: 100%;
   background: -webkit-linear-gradient(left, #3931af, #00c6ff);
-}
-
-.form-heading {
-  color: #fff;
-  font-size: 23px;
 }
 
 .panel h2 {
