@@ -21,3 +21,4 @@ jsonfield==2.0.2
 pytest==3.7.2
 pytest-cov==2.5.1
 pytest-django==3.4.2
+django-anymail[mailgun]==5.0

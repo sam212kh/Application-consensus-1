@@ -154,13 +154,21 @@
                 <div class="col-md-6 col-sm-6 col-xs-6">
                   <div class="form-group">
                     <label class="pull-left">Start Date</label>
-                    <dateTime v-model="selectedSeason.start_date"></dateTime>
+                    <dateTime
+                      v-model="selectedSeason.start_date"
+                      :config="{ timepicker: false }"
+                      comparator="date"
+                    ></dateTime>
                   </div>
                 </div>
                 <div class="col-md-6 col-sm-6 col-xs-6">
                   <div class="form-group">
                     <label class="pull-left">End Date</label>
-                    <dateTime v-model="selectedSeason.end_date"></dateTime>
+                    <dateTime
+                      v-model="selectedSeason.end_date"
+                      :config="{ timepicker: false }"
+                      comparator="date"
+                    ></dateTime>
                   </div>
                 </div>
               </div>

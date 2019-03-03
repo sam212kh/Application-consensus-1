@@ -6,8 +6,13 @@ import datetime
 
 class SchoolSerializer(serializers.ModelSerializer):
 
+    staff_count = serializers.SerializerMethodField()
     season_count = serializers.SerializerMethodField()
     application_count = serializers.SerializerMethodField()
+
+    @staticmethod
+    def get_staff_count(school):
+        return Staff.objects.filter(user__participation__school=school).count()
 
     @staticmethod
     def get_season_count(school):

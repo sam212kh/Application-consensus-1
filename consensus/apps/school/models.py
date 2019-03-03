@@ -10,7 +10,12 @@ User = get_user_model()
 @reversion.register()
 class School(models.Model):
     full_name = models.CharField(max_length=255)
-    participations = models.ManyToManyField(User, through='Participation', through_fields=('school', 'participant'))
+    participants = models.ManyToManyField(
+        User,
+        through='Participation',
+        through_fields=('school', 'participant'),
+        related_name="participants"
+    )
     phone_number = models.CharField(max_length=255, null=True, blank=True)
     email = models.CharField(max_length=255, null=True, blank=True)
     grade = models.IntegerField(null=True, blank=True)
@@ -28,7 +33,7 @@ class School(models.Model):
 
 @reversion.register()
 class Staff(models.Model):
-    user = models.OneToOneField(User, primary_key=False, related_name='user',
+    user = models.OneToOneField(User, primary_key=False, related_name='staff',
                                 on_delete=models.CASCADE)
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255, null=True, blank=True)
@@ -47,17 +52,10 @@ class Participation(models.Model):
         (PARTICIPATION_OWNER, 'Owner'),
         (PARTICIPATION_STAFF, 'Staff'),
     )
-    school = models.ForeignKey(School, on_delete=models.CASCADE)
-    participant = models.ForeignKey(User, on_delete=models.CASCADE)
-    participation_date = models.DateField()
+    school = models.ForeignKey(School, on_delete=models.CASCADE, related_name='participation')
+    participant = models.ForeignKey(User, on_delete=models.CASCADE, related_name='participation')
+    participation_date = models.DateTimeField()
     participation_type = models.CharField('Participation', max_length=1, choices=PARTICIPATION_CHOICES)
-
-    def __init__(self, school, participant, participation_date, participation_type, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.school = school
-        self.participant = participant
-        self.participation_date = participation_date
-        self.participation_type = participation_type
 
     def __str__(self):
         return self.participation_type
@@ -72,8 +70,8 @@ class Season(models.Model):
         on_delete=models.CASCADE
     )
     kind = models.CharField(max_length=255, null=True, blank=True)
-    start_date = models.DateTimeField(auto_now_add=True, null=True)
-    end_date = models.DateTimeField(auto_now_add=True, null=True)
+    start_date = models.DateField(null=True)
+    end_date = models.DateField(null=True)
     info = models.CharField(max_length=255, null=True, blank=True)
 
     def __str__(self):
